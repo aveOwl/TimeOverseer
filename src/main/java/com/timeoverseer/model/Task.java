@@ -2,6 +2,17 @@ package com.timeoverseer.model;
 
 import com.timeoverseer.model.enums.Qualification;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,43 +20,56 @@ import java.util.Set;
  * The <code>Task</code> class represents a single step to complete
  * a certain {@link Sprint}.
  * A <code>Task</code> describes a required {@link Employee} proficiency level
- * {@link Qualification} to complete it, estimate time to complete the task
- * {@link Estimate}, time in which a task was actually completed, indicates whether
- * it was assigned to an {@link Employee} or not. May contain several subtasks,
- * required to complete it and keeps track of employees {@link Employee} working on it.
+ * {@link Qualification} to complete it, estimate time to complete the task,
+ * time in which a task was actually completed, indicates whether it was assigned
+ * to an {@link Employee} or not. May contain several subtasks, required to complete
+ * it and keeps track of employees {@link Employee} working on it.
  */
+@Entity
+@Table(name = "task", schema = "overseer")
 public class Task {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String name;
-
-    // task is assigned to specific sprint
+    // if task removed -> sprint stays
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sprint_id")
     private Sprint sprint;
 
-    private Estimate timeToCompleteTask;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    private Estimate developmentTime;
-
+    @Column(name = "is_assigned", nullable = false)
     private boolean isAssigned;
 
     // required employee proficiency level
+    @Column(name = "proficiency", nullable = false)
     private Qualification proficiency;
 
-    // subtasks of this tasks
-    private Set<Task> subTasks;
+    @Column(name = "time_to_complete")
+    private Long timeToComplete;
 
-    // different employees may work on the same task
-    private Set<Employee> employees;
+    @Column(name = "time_in_development")
+    private Long timeInDevelopment;
 
-    public Task() {
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
+    private Set<Developer> developers;
+
+    protected Task() {
     }
 
-    public Task(String name, Sprint sprint, Estimate timeToCompleteTask, Qualification proficiency) {
-        this.name = name;
+    public Task(Sprint sprint,
+                String name,
+                boolean isAssigned,
+                Qualification proficiency,
+                Long timeToComplete) {
         this.sprint = sprint;
-        this.timeToCompleteTask = timeToCompleteTask;
+        this.name = name;
+        this.isAssigned = isAssigned;
         this.proficiency = proficiency;
+        this.timeToComplete = timeToComplete;
     }
 
     public Long getId() {
@@ -72,20 +96,12 @@ public class Task {
         this.sprint = sprint;
     }
 
-    public Estimate getTimeToCompleteTask() {
-        return timeToCompleteTask;
+    public Long getTimeToComplete() {
+        return timeToComplete;
     }
 
-    public void setTimeToCompleteTask(Estimate timeToCompleteTask) {
-        this.timeToCompleteTask = timeToCompleteTask;
-    }
-
-    public Estimate getDevelopmentTime() {
-        return developmentTime;
-    }
-
-    public void setDevelopmentTime(Estimate developmentTime) {
-        this.developmentTime = developmentTime;
+    public void setTimeToComplete(Long timeToCompleteTask) {
+        this.timeToComplete = timeToCompleteTask;
     }
 
     public boolean isAssigned() {
@@ -104,52 +120,15 @@ public class Task {
         this.proficiency = proficiency;
     }
 
-    public Set<Task> getSubTasks() {
-        return subTasks;
+    public Set<Developer> getEmployees() {
+        return developers;
     }
 
-    public void addSubTask(Task task) {
-        if (this.subTasks == null) {
-            this.subTasks = new HashSet<>();
+    public void addDeveloper(Developer developer) {
+        if (this.developers == null) {
+            this.developers = new HashSet<>();
         }
-        this.subTasks.add(task);
-    }
-
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void addEmployee(Employee employee) {
-        if (this.employees == null) {
-            this.employees = new HashSet<>();
-        }
-        this.employees.add(employee);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Task task = (Task) o;
-
-        if (isAssigned != task.isAssigned) return false;
-        if (id != null ? !id.equals(task.id) : task.id != null) return false;
-        if (!name.equals(task.name)) return false;
-        if (!sprint.equals(task.sprint)) return false;
-        if (!timeToCompleteTask.equals(task.timeToCompleteTask)) return false;
-        return proficiency == task.proficiency;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + sprint.hashCode();
-        result = 31 * result + timeToCompleteTask.hashCode();
-        result = 31 * result + (isAssigned ? 1 : 0);
-        result = 31 * result + proficiency.hashCode();
-        return result;
+        this.developers.add(developer);
     }
 
     @Override
@@ -158,12 +137,10 @@ public class Task {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", sprint=" + sprint +
-                ", timeToCompleteTask=" + timeToCompleteTask +
-                ", developmentTime=" + developmentTime +
+                ", timeToCompleteTask=" + timeToComplete +
                 ", isAssigned=" + isAssigned +
                 ", proficiency=" + proficiency +
-                ", subTasks=" + subTasks +
-                ", employees=" + employees +
+                ", developers=" + developers +
                 '}';
     }
 }

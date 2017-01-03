@@ -1,13 +1,20 @@
 package com.timeoverseer.model;
 
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
- * The <code>Administrator</code> class represents a person in charge
+ * The <code>Administrator</code> class represents a {@link Person} in charge
  * of registering instances of {@link Employee}, {@link Customer}, {@link Project}
- * and assigning Project Managers {@link Employee}.
+ * and assigning project managers {@link ProjectManager} to developers {@link Developer}.
  */
+@Entity
+@Table(name = "administrator", schema = "overseer")
+@PrimaryKeyJoinColumn(name = "person_id", referencedColumnName = "id")
 public class Administrator extends Person {
 
-    public Administrator() {
+    protected Administrator() {
     }
 
     public Administrator(String firstName, String lastName, String login, String password) {

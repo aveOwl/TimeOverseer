@@ -1,15 +1,37 @@
 package com.timeoverseer.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.Table;
+
 /**
  * The <code>Person</code> class represents common features for all
  * human entities, such as {@link Employee}, {@link Customer}, {@link Administrator}.
  */
-public abstract class Person {
+@Entity
+@Table(name = "person", schema = "overseer")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Person {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Column(name = "login", nullable = false)
     private String login;
+
+    @Column(name = "password", nullable = false)
     private String password;
 
     public Person(String firstName, String lastName, String login, String password) {
@@ -19,7 +41,7 @@ public abstract class Person {
         this.password = password;
     }
 
-    Person() {
+    protected Person() {
     }
 
     public Long getId() {

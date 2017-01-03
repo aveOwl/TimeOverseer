@@ -1,5 +1,17 @@
 package com.timeoverseer.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -10,27 +22,40 @@ import java.util.Set;
  * A <code>Project</code> has a Project Manager {@link Employee} assigned to it
  * and a set of sprints {@link Sprint}, required to complete it.
  */
+@Entity
+@Table(name = "project", schema = "overseer")
 public class Project {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Employee projectManager;
+    // if project removed -> ProjectManager stays
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "project")
+    private ProjectManager projectManager;
 
+    @Column(name = "description", nullable = false)
     private String description;
 
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    // project contains several sprints
+    // if project removed -> all sprints removed as well
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
     private Set<Sprint> sprints;
 
-    // project is requested by specific customer
+    // if project removed -> customer stays
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    public Project() {
+    protected Project() {
     }
 
-    public Project(Employee projectManager,
+    public Project(ProjectManager projectManager,
                    String description,
                    LocalDate startDate,
                    LocalDate endDate,
@@ -50,11 +75,11 @@ public class Project {
         this.id = id;
     }
 
-    public Employee getProjectManager() {
+    public ProjectManager getProjectManager() {
         return projectManager;
     }
 
-    public void setProjectManager(Employee projectManager) {
+    public void setProjectManager(ProjectManager projectManager) {
         this.projectManager = projectManager;
     }
 

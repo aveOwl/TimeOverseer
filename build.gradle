@@ -1,23 +1,23 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    ext {
+        springBootVersion = '1.4.3.RELEASE'
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+    }
+}
+
 group 'TimeOverseer'
 version '0.0.1'
 description = "Time Overseer - Make things manageable"
 
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    ext {
-        springBootPluginVersion = '1.4.3.RELEASE'
-    }
-    dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:$springBootPluginVersion"
-    }
-}
-
 apply plugin: 'groovy'
 apply plugin: 'java'
 apply plugin: 'war'
-//apply plugin: 'org.springframework.boot'
+apply plugin: 'org.springframework.boot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -33,10 +33,18 @@ ext {
 }
 
 dependencies {
+    compile "org.springframework.boot:spring-boot-starter-data-rest"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa"
+    compile "com.h2database:h2"
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
+    testCompile "org.springframework.boot:spring-boot-starter-test"
     testCompile "org.spockframework:spock-core:$spockVersion"
     testCompile "org.hamcrest:hamcrest-core:$hamcrestVersion"
+}
+
+bootRepackage {
+    mainClass = 'com.timeoverseer.Application'
 }
 
 task wrapper(type: Wrapper) {

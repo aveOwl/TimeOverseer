@@ -1,5 +1,17 @@
 package com.timeoverseer.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -7,21 +19,46 @@ import java.util.Set;
 /**
  * The <code>Company</code> class represents a business entity that focuses
  * on the development and manufacturing of technology.
- * <code>Company</code> provides business solutions for its customers {@link Customer}.
+ * <p>
+ * <code>Company</code> provides business solutions for its
+ * customers {@link Customer}.
  */
+@Entity
+@Table(name = "company", schema = "overseer")
 public class Company {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @Column(name = "founded", nullable = false)
     private LocalDate founded;
+
+    @Column(name = "industry", nullable = false)
     private String industry;
+
+    @Column(name = "founders", nullable = false)
     private String founders;
+
+    @Column(name = "products", nullable = false)
     private String products;
 
-    // company has several customers
+    // if company removed -> customers stays
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinTable(name = "company_customer", catalog = "postgres",
+            joinColumns = {@JoinColumn(name = "company_id")},
+            inverseJoinColumns = {@JoinColumn(name = "customer_id")})
     private Set<Customer> customers;
 
+    // if company removed -> all employees removed as well
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employer")
     private Set<Employee> employees;
+
+    protected Company() {
+    }
 
     public Company(String name, LocalDate founded, String industry, String founders, String products) {
         this.name = name;

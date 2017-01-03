@@ -1,23 +1,36 @@
 package com.timeoverseer.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * The <code>Customer</code> class represents a person interested in development
- * of certain {@link Project} by certain {@link Company}.
+ * The <code>Customer</code> class represents a {@link Person} interested
+ * in development of certain {@link Project} by certain {@link Company}.
  */
+@Entity
+@Table(name = "customer", schema = "overseer")
+@PrimaryKeyJoinColumn(name = "person_id", referencedColumnName = "id")
 public class Customer extends Person {
 
+    @Column(name = "business_interests", nullable = false)
     private String businessInterests;
 
-    // companies to develop projects
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
     private Set<Company> companies;
 
-    // customer may have several projects
+    // if customer removed -> all projects removed as well
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
     private Set<Project> projects;
 
-    public Customer() {
+    protected Customer() {
     }
 
     public Customer(String firstName, String lastName, String login, String password, String businessInterests) {

@@ -1,5 +1,16 @@
 package com.timeoverseer.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,19 +19,27 @@ import java.util.Set;
  * A <code>Sprint</code> itself consists of several tasks {@link Task},
  * required to complete it.
  */
+@Entity
+@Table(name = "sprint", schema = "overseer")
 public class Sprint {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
-    // sprint is assigned to specific project
+    // if sprint removed -> project stays
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id")
     private Project project;
 
-    // sprint may have several tasks to complete it
+    // if sprint removed -> all tasks removed as well
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint")
     private Set<Task> tasks;
 
-    public Sprint() {
+    protected Sprint() {
     }
 
     public Sprint(String name, Project project) {
