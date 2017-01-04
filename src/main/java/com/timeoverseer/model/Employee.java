@@ -2,10 +2,10 @@ package com.timeoverseer.model;
 
 import com.timeoverseer.model.enums.Qualification;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -18,11 +18,12 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "employee", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "person_id", referencedColumnName = "id")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Employee extends Person {
 
     // if employee removed -> company stays
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company employer;
 
     // employee proficiency level

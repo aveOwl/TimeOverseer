@@ -5,7 +5,7 @@ ALTER TABLE overseer.customer
   DROP CONSTRAINT customer_person_fk;
 
 ALTER TABLE overseer.company_customer
---   DROP CONSTRAINT comp_cust_pk,
+  DROP CONSTRAINT comp_cust_pk,
   DROP CONSTRAINT company_fk,
   DROP CONSTRAINT customer_fk;
 
@@ -32,7 +32,7 @@ ALTER TABLE overseer.task
   DROP CONSTRAINT task_sprint_fk;
 
 ALTER TABLE overseer.developer_task
---   DROP CONSTRAINT dev_task_pk,
+  DROP CONSTRAINT dev_task_pk,
   DROP CONSTRAINT dev_fk,
   DROP CONSTRAINT task_fk;
 
@@ -143,9 +143,9 @@ REFERENCES overseer.person (id);
 
 -- Company_Customer --
 ALTER TABLE overseer.company_customer
---   ADD CONSTRAINT comp_cust_pk PRIMARY KEY (company_id, customer_id), // TODO primary key on delete
+  ADD CONSTRAINT comp_cust_pk PRIMARY KEY (company_id, customer_id),
   ADD CONSTRAINT company_fk FOREIGN KEY (company_id)
-REFERENCES overseer.company (id) ON DELETE SET NULL,
+REFERENCES overseer.company (id),
   ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id)
 REFERENCES overseer.customer (id);
 
@@ -154,7 +154,7 @@ ALTER TABLE overseer.project
   ADD CONSTRAINT project_customer_fk FOREIGN KEY (customer_id)
 REFERENCES overseer.customer (id) ON DELETE CASCADE,
   ADD CONSTRAINT project_employee_fk FOREIGN KEY (project_manager)
-REFERENCES overseer.employee (id) ON DELETE SET NULL;
+REFERENCES overseer.project_manager (id) ON DELETE SET NULL;
 
 -- Employee --
 ALTER TABLE overseer.employee
@@ -189,8 +189,8 @@ REFERENCES overseer.sprint (id) ON DELETE CASCADE;
 
 -- Developer_Task --
 ALTER TABLE overseer.developer_task
---   ADD CONSTRAINT dev_task_pk PRIMARY KEY (developer_id, task_id), // TODO primary key on delete
+  ADD CONSTRAINT dev_task_pk PRIMARY KEY (developer_id, task_id),
   ADD CONSTRAINT dev_fk FOREIGN KEY (developer_id)
-REFERENCES overseer.developer (id) ON DELETE SET NULL,
+REFERENCES overseer.developer (id),
   ADD CONSTRAINT task_fk FOREIGN KEY (task_id)
-REFERENCES overseer.task (id) ON DELETE SET NULL;
+REFERENCES overseer.task (id);

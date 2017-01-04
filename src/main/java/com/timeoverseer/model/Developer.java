@@ -24,15 +24,15 @@ import java.util.Set;
 public class Developer extends Employee {
 
     // if developer removed -> ProjectManager stays
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_manager")
+    @ManyToOne
+    @JoinColumn(name = "project_manager", referencedColumnName = "id")
     private ProjectManager projectManager;
 
     // if developer removed -> task stays
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinTable(name = "developer_task", catalog = "postgres",
-            joinColumns = {@JoinColumn(name = "developer_id")},
-            inverseJoinColumns ={@JoinColumn(name = "task_id")})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinTable(name = "developer_task",
+            joinColumns = {@JoinColumn(name = "developer_id", referencedColumnName = "id")},
+            inverseJoinColumns ={@JoinColumn(name = "task_id", referencedColumnName = "id")})
     private Set<Task> tasks;
 
     protected Developer() {

@@ -31,12 +31,12 @@ public class Sprint {
     private String name;
 
     // if sprint removed -> project stays
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
+    @ManyToOne
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
 
     // if sprint removed -> all tasks removed as well
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint", orphanRemoval = true)
     private Set<Task> tasks;
 
     protected Sprint() {

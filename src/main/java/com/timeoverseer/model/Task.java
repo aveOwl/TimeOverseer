@@ -2,7 +2,6 @@ package com.timeoverseer.model;
 
 import com.timeoverseer.model.enums.Qualification;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -34,8 +33,8 @@ public class Task {
     private Long id;
 
     // if task removed -> sprint stays
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "sprint_id")
+    @ManyToOne
+    @JoinColumn(name = "sprint_id", referencedColumnName = "id")
     private Sprint sprint;
 
     @Column(name = "name", nullable = false)

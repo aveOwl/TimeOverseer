@@ -31,7 +31,8 @@ public class Project {
     private Long id;
 
     // if project removed -> ProjectManager stays
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_manager", referencedColumnName = "id")
     private ProjectManager projectManager;
 
     @Column(name = "description", nullable = false)
@@ -44,12 +45,12 @@ public class Project {
     private LocalDate endDate;
 
     // if project removed -> all sprints removed as well
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private Set<Sprint> sprints;
 
     // if project removed -> customer stays
-    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
 
     protected Project() {

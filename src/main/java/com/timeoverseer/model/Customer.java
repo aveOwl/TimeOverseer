@@ -27,7 +27,7 @@ public class Customer extends Person {
     private Set<Company> companies;
 
     // if customer removed -> all projects removed as well
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer", orphanRemoval = true)
     private Set<Project> projects;
 
     protected Customer() {

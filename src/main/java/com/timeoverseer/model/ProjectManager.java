@@ -5,6 +5,7 @@ import com.timeoverseer.model.enums.Qualification;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -23,11 +24,12 @@ import java.util.Set;
 public class ProjectManager extends Employee {
 
     // if ProjectManager removed -> project stays
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "projectManager")
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
 
     // if ProjectManager removed -> Developer stays
-    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY, mappedBy = "projectManager")
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "projectManager")
     private Set<Developer> developers;
 
     public ProjectManager() {
