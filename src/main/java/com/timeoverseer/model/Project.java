@@ -28,12 +28,8 @@ public class Project {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
-
-    // if project removed -> ProjectManager stays
-    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_manager", referencedColumnName = "id")
-    private ProjectManager projectManager;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -44,28 +40,33 @@ public class Project {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
+    // if project removed -> customer stays
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    // if project removed -> ProjectManager stays
+    @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "project_manager")
+    private ProjectManager projectManager;
+
     // if project removed -> all sprints removed as well
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private Set<Sprint> sprints;
 
-    // if project removed -> customer stays
-    @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
-    private Customer customer;
-
     protected Project() {
     }
 
-    public Project(ProjectManager projectManager,
-                   String description,
+    public Project(String description,
                    LocalDate startDate,
                    LocalDate endDate,
-                   Customer customer) {
-        this.projectManager = projectManager;
+                   Customer customer,
+                   ProjectManager projectManager) {
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.customer = customer;
+        this.projectManager = projectManager;
     }
 
     public Long getId() {
@@ -125,44 +126,5 @@ public class Project {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Project project = (Project) o;
-
-        if (id != null ? !id.equals(project.id) : project.id != null) return false;
-        if (!projectManager.equals(project.projectManager)) return false;
-        if (!description.equals(project.description)) return false;
-        if (!startDate.equals(project.startDate)) return false;
-        if (!endDate.equals(project.endDate)) return false;
-        return customer.equals(project.customer);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + projectManager.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + startDate.hashCode();
-        result = 31 * result + endDate.hashCode();
-        result = 31 * result + customer.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + id +
-                ", projectManager=" + projectManager +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", sprints=" + sprints +
-                ", customer=" + customer +
-                '}';
     }
 }

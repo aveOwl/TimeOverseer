@@ -29,6 +29,7 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -49,8 +50,8 @@ public class Company {
     // if company removed -> customers stays
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "company_customer",
-            joinColumns = {@JoinColumn(name = "company_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "customer_id", referencedColumnName = "id")})
+            joinColumns = {@JoinColumn(name = "company_id", nullable = false)},
+            inverseJoinColumns = {@JoinColumn(name = "customer_id", nullable = false)})
     private Set<Customer> customers;
 
     // if company removed -> all employees removed as well
@@ -126,7 +127,6 @@ public class Company {
         }
         this.customers.add(customer);
     }
-
     public Set<Employee> getEmployees() {
         return employees;
     }
@@ -136,45 +136,5 @@ public class Company {
             this.employees = new HashSet<>();
         }
         this.employees.add(employee);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Company company = (Company) o;
-
-        if (id != null ? !id.equals(company.id) : company.id != null) return false;
-        if (!name.equals(company.name)) return false;
-        if (!founded.equals(company.founded)) return false;
-        if (!industry.equals(company.industry)) return false;
-        if (!founders.equals(company.founders)) return false;
-        return products.equals(company.products);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + founded.hashCode();
-        result = 31 * result + industry.hashCode();
-        result = 31 * result + founders.hashCode();
-        result = 31 * result + products.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", founded=" + founded +
-                ", industry='" + industry + '\'' +
-                ", founders='" + founders + '\'' +
-                ", products='" + products + '\'' +
-                ", customers=" + customers +
-                ", employees=" + employees +
-                '}';
     }
 }

@@ -11,7 +11,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "administrator", schema = "overseer")
-@PrimaryKeyJoinColumn(name = "person_id", referencedColumnName = "id")
+@PrimaryKeyJoinColumn(name = "admin_id", referencedColumnName = "id")
 public class Administrator extends Person {
 
     protected Administrator() {

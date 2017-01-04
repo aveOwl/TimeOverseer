@@ -17,13 +17,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "employee", schema = "overseer")
-@PrimaryKeyJoinColumn(name = "person_id", referencedColumnName = "id")
+@PrimaryKeyJoinColumn(name = "emp_id", referencedColumnName = "id")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Employee extends Person {
 
     // if employee removed -> company stays
     @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @JoinColumn(name = "company_id")
     private Company employer;
 
     // employee proficiency level
@@ -57,13 +57,5 @@ public class Employee extends Person {
 
     public void setQualification(Qualification qualification) {
         this.qualification = qualification;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "employer=" + employer +
-                ", qualification=" + qualification +
-                "} " + super.toString();
     }
 }

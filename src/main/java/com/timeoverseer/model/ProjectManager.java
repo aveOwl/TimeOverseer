@@ -20,12 +20,12 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "project_manager", schema = "overseer")
-@PrimaryKeyJoinColumn(name = "emp_id", referencedColumnName = "id")
+@PrimaryKeyJoinColumn(name = "pm_id", referencedColumnName = "emp_id")
 public class ProjectManager extends Employee {
 
     // if ProjectManager removed -> project stays
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     // if ProjectManager removed -> Developer stays
@@ -58,36 +58,10 @@ public class ProjectManager extends Employee {
         return developers;
     }
 
-    public void addEmployee(Developer developer) {
+    public void addDeveloper(Developer developer) {
         if (this.developers == null) {
             this.developers = new HashSet<>();
         }
         this.developers.add(developer);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-
-        ProjectManager that = (ProjectManager) o;
-
-        return project != null ? project.equals(that.project) : that.project == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (project != null ? project.hashCode() : 0);
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "ProjectManager{" +
-                "project=" + project +
-                ", employees=" + developers +
-                "} " + super.toString();
     }
 }

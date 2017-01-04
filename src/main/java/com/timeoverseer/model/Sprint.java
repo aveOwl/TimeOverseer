@@ -25,6 +25,7 @@ public class Sprint {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     @Column(name = "name", nullable = false)
@@ -80,35 +81,5 @@ public class Sprint {
             this.tasks = new HashSet<>();
         }
         this.tasks.add(task);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Sprint sprint = (Sprint) o;
-
-        if (id != null ? !id.equals(sprint.id) : sprint.id != null) return false;
-        if (!name.equals(sprint.name)) return false;
-        return project.equals(sprint.project);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + project.hashCode();
-        return result;
-    }
-
-    @Override
-    public String toString() {
-        return "Sprint{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", project=" + project +
-                ", tasks=" + tasks +
-                '}';
     }
 }

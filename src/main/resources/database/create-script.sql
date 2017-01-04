@@ -58,13 +58,11 @@ CREATE TABLE overseer.person (
 );
 
 CREATE TABLE overseer.administrator (
-  id        SERIAL PRIMARY KEY,
-  person_id INT NOT NULL
+  admin_id SERIAL PRIMARY KEY
 );
 
 CREATE TABLE overseer.customer (
-  id                 SERIAL PRIMARY KEY,
-  person_id          INT          NOT NULL,
+  cust_id                 SERIAL PRIMARY KEY,
   business_interests VARCHAR(255) NOT NULL
 );
 
@@ -92,21 +90,18 @@ CREATE TABLE overseer.project (
 );
 
 CREATE TABLE overseer.employee (
-  id            SERIAL PRIMARY KEY,
-  person_id     INT         NOT NULL,
+  emp_id        SERIAL PRIMARY KEY,
   company_id    INT         NOT NULL,
   qualification VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE overseer.developer (
-  id              SERIAL PRIMARY KEY,
-  emp_id          INT NOT NULL,
+  dev_id          SERIAL PRIMARY KEY,
   project_manager INT NULL
 );
 
 CREATE TABLE overseer.project_manager (
-  id         SERIAL PRIMARY KEY,
-  emp_id     INT NOT NULL,
+  pm_id      SERIAL PRIMARY KEY,
   project_id INT NULL
 );
 
@@ -133,12 +128,12 @@ CREATE TABLE overseer.developer_task (
 
 -- Administrator --
 ALTER TABLE overseer.administrator
-  ADD CONSTRAINT admin_person_fk FOREIGN KEY (person_id)
+  ADD CONSTRAINT admin_person_fk FOREIGN KEY (admin_id)
 REFERENCES overseer.person (id);
 
 -- Customer --
 ALTER TABLE overseer.customer
-  ADD CONSTRAINT customer_person_fk FOREIGN KEY (person_id)
+  ADD CONSTRAINT customer_person_fk FOREIGN KEY (cust_id)
 REFERENCES overseer.person (id);
 
 -- Company_Customer --
@@ -147,33 +142,33 @@ ALTER TABLE overseer.company_customer
   ADD CONSTRAINT company_fk FOREIGN KEY (company_id)
 REFERENCES overseer.company (id),
   ADD CONSTRAINT customer_fk FOREIGN KEY (customer_id)
-REFERENCES overseer.customer (id);
+REFERENCES overseer.customer (cust_id);
 
 -- Project --
 ALTER TABLE overseer.project
   ADD CONSTRAINT project_customer_fk FOREIGN KEY (customer_id)
-REFERENCES overseer.customer (id) ON DELETE CASCADE,
+REFERENCES overseer.customer (cust_id) ON DELETE CASCADE,
   ADD CONSTRAINT project_employee_fk FOREIGN KEY (project_manager)
-REFERENCES overseer.project_manager (id) ON DELETE SET NULL;
+REFERENCES overseer.project_manager (pm_id) ON DELETE SET NULL;
 
 -- Employee --
 ALTER TABLE overseer.employee
-  ADD CONSTRAINT emp_person_fk FOREIGN KEY (person_id)
+  ADD CONSTRAINT emp_person_fk FOREIGN KEY (emp_id)
 REFERENCES overseer.person (id),
   ADD CONSTRAINT emp_company_fk FOREIGN KEY (company_id)
 REFERENCES overseer.company (id) ON DELETE CASCADE;
 
 -- Developer --
 ALTER TABLE overseer.developer
-  ADD CONSTRAINT dev_emp_fk FOREIGN KEY (emp_id)
-REFERENCES overseer.employee (id) ON DELETE CASCADE,
+  ADD CONSTRAINT dev_emp_fk FOREIGN KEY (dev_id)
+REFERENCES overseer.employee (emp_id) ON DELETE CASCADE,
   ADD CONSTRAINT dev_pm_fk FOREIGN KEY (project_manager)
-REFERENCES overseer.project_manager (id) ON DELETE SET NULL;
+REFERENCES overseer.project_manager (pm_id);
 
 -- Project Manager --
 ALTER TABLE overseer.project_manager
-  ADD CONSTRAINT pm_emp_fk FOREIGN KEY (emp_id)
-REFERENCES overseer.employee (id) ON DELETE CASCADE,
+  ADD CONSTRAINT pm_emp_fk FOREIGN KEY (pm_id)
+REFERENCES overseer.employee (emp_id) ON DELETE CASCADE,
   ADD CONSTRAINT pm_project_fk FOREIGN KEY (project_id)
 REFERENCES overseer.project (id) ON DELETE SET NULL;
 
@@ -191,6 +186,6 @@ REFERENCES overseer.sprint (id) ON DELETE CASCADE;
 ALTER TABLE overseer.developer_task
   ADD CONSTRAINT dev_task_pk PRIMARY KEY (developer_id, task_id),
   ADD CONSTRAINT dev_fk FOREIGN KEY (developer_id)
-REFERENCES overseer.developer (id),
+REFERENCES overseer.developer (dev_id),
   ADD CONSTRAINT task_fk FOREIGN KEY (task_id)
 REFERENCES overseer.task (id);

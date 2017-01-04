@@ -30,6 +30,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
     // if task removed -> sprint stays
@@ -128,18 +129,5 @@ public class Task {
             this.developers = new HashSet<>();
         }
         this.developers.add(developer);
-    }
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", sprint=" + sprint +
-                ", timeToCompleteTask=" + timeToComplete +
-                ", isAssigned=" + isAssigned +
-                ", proficiency=" + proficiency +
-                ", developers=" + developers +
-                '}';
     }
 }
