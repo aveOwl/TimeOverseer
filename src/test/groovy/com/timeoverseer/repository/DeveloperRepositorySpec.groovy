@@ -29,13 +29,12 @@ class DeveloperRepositorySpec extends Specification {
     def developer = ["Rob", "Lowe", "Sake", "enuss", company, TRAINEE, null] as Developer
 
     void setup() {
+        company.addEmployee(developer)
+        developer.employer = company
         entityManager.persistAndFlush(company)
     }
 
     def "should persist developer"() {
-        given:
-        entityManager.persistAndFlush(developer)
-
         when:
         def fetchedDeveloper = developerRepository.findByEmployer(company)
 
@@ -46,18 +45,17 @@ class DeveloperRepositorySpec extends Specification {
 
     def "should delete developer"() {
         given:
-        entityManager.persistAndFlush(developer)
+        company.removeEmployee(developer)
 
         when:
         developerRepository.delete(developer)
 
         then:
-        developerRepository.findByFirstName("Katy") == null
+        developerRepository.findByFirstName("Rob") == null
     }
 
     def "should update developer"() {
         given:
-        entityManager.persistAndFlush(developer)
         developer.qualification = MIDDLE
 
         when:
@@ -66,10 +64,5 @@ class DeveloperRepositorySpec extends Specification {
         then:
         updatedDeveloper.qualification == MIDDLE
         updatedDeveloper.employer == company
-    }
-
-    def "should return null if developer not exists"() {
-        expect:
-        developerRepository.findByLogin("RobStark") == null
     }
 }

@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -40,17 +41,14 @@ public class Project {
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
-    // if project removed -> customer stays
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-    // if project removed -> ProjectManager stays
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_manager")
     private ProjectManager projectManager;
 
-    // if project removed -> all sprints removed as well
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private Set<Sprint> sprints;
 
@@ -77,14 +75,6 @@ public class Project {
         this.id = id;
     }
 
-    public ProjectManager getProjectManager() {
-        return projectManager;
-    }
-
-    public void setProjectManager(ProjectManager projectManager) {
-        this.projectManager = projectManager;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -109,22 +99,49 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public Set<Sprint> getSprints() {
-        return sprints;
-    }
-
-    public void addSprint(Sprint sprint) {
-        if (this.sprints == null) {
-            this.sprints = new HashSet<>();
-        }
-        this.sprints.add(sprint);
-    }
-
     public Customer getCustomer() {
         return customer;
     }
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public ProjectManager getProjectManager() {
+        return projectManager;
+    }
+
+    public void setProjectManager(ProjectManager projectManager) {
+        this.projectManager = projectManager;
+    }
+
+    public Set<Sprint> getSprints() {
+        return sprints;
+    }
+
+    public void addSprint(Sprint... sprints) {
+        if (this.sprints == null) {
+            this.sprints = new HashSet<>();
+        }
+        Collections.addAll(this.sprints, sprints);
+    }
+
+    public void removeSprint(Sprint... sprints) {
+        for (Sprint s : sprints) {
+            this.sprints.remove(s);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", customer=" + customer +
+                ", projectManager=" + projectManager +
+                ", sprints=" + sprints +
+                '}';
     }
 }

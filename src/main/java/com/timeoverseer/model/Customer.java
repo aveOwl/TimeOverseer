@@ -8,6 +8,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +27,6 @@ public class Customer extends Person {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
     private Set<Company> companies;
 
-    // if customer removed -> all projects removed as well
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer", orphanRemoval = true)
     private Set<Project> projects;
 
@@ -50,21 +50,42 @@ public class Customer extends Person {
         return companies;
     }
 
-    public void addCompany(Company company) {
+    public void addCompany(Company... companies) {
         if (this.companies == null) {
             this.companies = new HashSet<>();
         }
-        this.companies.add(company);
+        Collections.addAll(this.companies, companies);
+    }
+
+    public void removeCompany(Company... companies) {
+        for (Company c : companies) {
+            this.companies.remove(c);
+        }
     }
 
     public Set<Project> getProjects() {
         return projects;
     }
 
-    public void addProject(Project project) {
+    public void addProject(Project... projects) {
         if (this.projects == null) {
             this.projects = new HashSet<>();
         }
-        this.projects.add(project);
+        Collections.addAll(this.projects, projects);
+    }
+
+    public void removeProject(Project... projects) {
+        for (Project p : projects) {
+            this.projects.remove(p);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "businessInterests='" + businessInterests + '\'' +
+                ", companies=" + companies +
+                ", projects=" + projects +
+                "} " + super.toString();
     }
 }

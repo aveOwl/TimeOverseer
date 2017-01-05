@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,20 +34,14 @@ public class Task {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    // if task removed -> sprint stays
-    @ManyToOne
-    @JoinColumn(name = "sprint_id", referencedColumnName = "id")
-    private Sprint sprint;
-
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "is_assigned", nullable = false)
     private boolean isAssigned;
 
-    // required employee proficiency level
-    @Column(name = "proficiency", nullable = false)
-    private Qualification proficiency;
+    @Column(name = "qualification", nullable = false)
+    private Qualification qualification;
 
     @Column(name = "time_to_complete")
     private Long timeToComplete;
@@ -54,22 +49,26 @@ public class Task {
     @Column(name = "time_in_development")
     private Long timeInDevelopment;
 
+    @ManyToOne
+    @JoinColumn(name = "sprint_id")
+    private Sprint sprint;
+
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
     private Set<Developer> developers;
 
     protected Task() {
     }
 
-    public Task(Sprint sprint,
-                String name,
+    public Task(String name,
                 boolean isAssigned,
-                Qualification proficiency,
-                Long timeToComplete) {
-        this.sprint = sprint;
+                Qualification qualification,
+                Long timeToComplete,
+                Sprint sprint) {
         this.name = name;
         this.isAssigned = isAssigned;
-        this.proficiency = proficiency;
+        this.qualification = qualification;
         this.timeToComplete = timeToComplete;
+        this.sprint = sprint;
     }
 
     public Long getId() {
@@ -88,22 +87,6 @@ public class Task {
         this.name = name;
     }
 
-    public Sprint getSprint() {
-        return sprint;
-    }
-
-    public void setSprint(Sprint sprint) {
-        this.sprint = sprint;
-    }
-
-    public Long getTimeToComplete() {
-        return timeToComplete;
-    }
-
-    public void setTimeToComplete(Long timeToCompleteTask) {
-        this.timeToComplete = timeToCompleteTask;
-    }
-
     public boolean isAssigned() {
         return isAssigned;
     }
@@ -112,22 +95,66 @@ public class Task {
         isAssigned = assigned;
     }
 
-    public Qualification getProficiency() {
-        return proficiency;
+    public Qualification getQualification() {
+        return qualification;
     }
 
-    public void setProficiency(Qualification proficiency) {
-        this.proficiency = proficiency;
+    public void setQualification(Qualification qualification) {
+        this.qualification = qualification;
     }
 
-    public Set<Developer> getEmployees() {
+    public Long getTimeToComplete() {
+        return timeToComplete;
+    }
+
+    public void setTimeToComplete(Long timeToComplete) {
+        this.timeToComplete = timeToComplete;
+    }
+
+    public Long getTimeInDevelopment() {
+        return timeInDevelopment;
+    }
+
+    public void setTimeInDevelopment(Long timeInDevelopment) {
+        this.timeInDevelopment = timeInDevelopment;
+    }
+
+    public Sprint getSprint() {
+        return sprint;
+    }
+
+    public void setSprint(Sprint sprint) {
+        this.sprint = sprint;
+    }
+
+    public Set<Developer> getDevelopers() {
         return developers;
     }
 
-    public void addDeveloper(Developer developer) {
+    public void addDeveloper(Developer... developers) {
         if (this.developers == null) {
             this.developers = new HashSet<>();
         }
-        this.developers.add(developer);
+        Collections.addAll(this.developers, developers);
+    }
+
+    public void removeDeveloper(Developer... developers) {
+        for (Developer dev : developers) {
+            this.developers.remove(dev);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", isAssigned=" + isAssigned +
+                ", qualification=" + qualification +
+                ", timeToComplete=" + timeToComplete +
+                ", timeInDevelopment=" + timeInDevelopment +
+                ", sprint=" + sprint +
+                ", developers=" + developers +
+                '}';
     }
 }

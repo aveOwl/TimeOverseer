@@ -13,6 +13,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,14 +48,12 @@ public class Company {
     @Column(name = "products", nullable = false)
     private String products;
 
-    // if company removed -> customers stays
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "company_customer",
             joinColumns = {@JoinColumn(name = "company_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "customer_id", nullable = false)})
     private Set<Customer> customers;
 
-    // if company removed -> all employees removed as well
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employer", orphanRemoval = true)
     private Set<Employee> employees;
 
@@ -121,20 +120,47 @@ public class Company {
         return customers;
     }
 
-    public void addCustomer(Customer customer) {
+    public void addCustomer(Customer... customers) {
         if (this.customers == null) {
             this.customers = new HashSet<>();
         }
-        this.customers.add(customer);
+        Collections.addAll(this.customers, customers);
     }
+
+    public void removeCustomer(Customer... customers) {
+        for (Customer c : customers) {
+            this.customers.remove(c);
+        }
+    }
+
     public Set<Employee> getEmployees() {
         return employees;
     }
 
-    public void addEmployee(Employee employee) {
+    public void addEmployee(Employee... employees) {
         if (this.employees == null) {
             this.employees = new HashSet<>();
         }
-        this.employees.add(employee);
+        Collections.addAll(this.employees, employees);
+    }
+
+    public void removeEmployee(Employee... employees) {
+        for (Employee e : employees) {
+            this.employees.remove(e);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", founded=" + founded +
+                ", industry='" + industry + '\'' +
+                ", founders='" + founders + '\'' +
+                ", products='" + products + '\'' +
+                ", customers=" + customers +
+                ", employees=" + employees +
+                '}';
     }
 }

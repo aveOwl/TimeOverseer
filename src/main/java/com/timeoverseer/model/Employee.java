@@ -21,12 +21,10 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Employee extends Person {
 
-    // if employee removed -> company stays
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company employer;
 
-    // employee proficiency level
     @Column(name = "qualification", nullable = false)
     private Qualification qualification;
 
@@ -57,5 +55,13 @@ public class Employee extends Person {
 
     public void setQualification(Qualification qualification) {
         this.qualification = qualification;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "employer=" + employer +
+                ", qualification=" + qualification +
+                "} " + super.toString();
     }
 }

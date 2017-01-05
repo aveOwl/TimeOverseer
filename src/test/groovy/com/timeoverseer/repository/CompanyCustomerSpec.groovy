@@ -35,12 +35,11 @@ class CompanyCustomerSpec extends Specification {
 
         company.addCustomer(cust1)
         company.addCustomer(cust2)
+
+        entityManager.persistAndFlush(company)
     }
 
     def "should persist customers with company"() {
-        given:
-        entityManager.persistAndFlush(company)
-
         when:
         def savedCompany = companyRepository.findByName("Apple")
         def savedCust1 = customerRepository.findByFirstName("Jake")
@@ -54,7 +53,8 @@ class CompanyCustomerSpec extends Specification {
 
     def "should not delete customers if company removed"() {
         given:
-        entityManager.persistAndFlush(company)
+        cust1.removeCompany(company)
+        cust2.removeCompany(company)
 
         when:
         companyRepository.delete(company)
@@ -63,23 +63,24 @@ class CompanyCustomerSpec extends Specification {
         def savedCust2 = customerRepository.findByLastName("Lowe")
 
         then:
+        cust1.companies.isEmpty()
+        cust2.companies.isEmpty()
         companyRepository.findByName("Apple") == null
         savedCust1.businessInterests.contains("software")
         savedCust2.businessInterests.contains("hardware")
     }
 
-    /*def "should not delete company if customer removed"() {
+    def "should not delete company if customer removed"() {
         given:
-        company.addCustomer(cust1)
-        cust1.addCompany(company)
-
-        entityManager.persistAndFlush(company)
+        company.removeCustomer(cust1)
 
         when:
-        customerRepository.delete(cust1) // TODO does not work yet
+        customerRepository.delete(cust1)
 
         then:
-        companyRepository.findByName("IBM").industry.contains("Cloud computing")
+        company.customers.size() == 1
+        companyRepository.findByName("Apple").industry.contains("Software")
         customerRepository.findByFirstName("Jake") == null
-    }*/
+        customerRepository.findByFirstName("Rob") != null
+    }
 }

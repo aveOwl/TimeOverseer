@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,12 +24,10 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "pm_id", referencedColumnName = "emp_id")
 public class ProjectManager extends Employee {
 
-    // if ProjectManager removed -> project stays
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    // if ProjectManager removed -> Developer stays
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "projectManager")
     private Set<Developer> developers;
 
@@ -58,10 +57,24 @@ public class ProjectManager extends Employee {
         return developers;
     }
 
-    public void addDeveloper(Developer developer) {
+    public void addDeveloper(Developer... developers) {
         if (this.developers == null) {
             this.developers = new HashSet<>();
         }
-        this.developers.add(developer);
+        Collections.addAll(this.developers, developers);
+    }
+
+    public void removeDeveloper(Developer... developers) {
+        for (Developer dev : developers) {
+            this.developers.remove(dev);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "ProjectManager{" +
+                "project=" + project +
+                ", developers=" + developers +
+                "} " + super.toString();
     }
 }

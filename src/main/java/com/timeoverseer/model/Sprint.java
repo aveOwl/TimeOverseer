@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,12 +32,10 @@ public class Sprint {
     @Column(name = "name", nullable = false)
     private String name;
 
-    // if sprint removed -> project stays
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
     private Project project;
 
-    // if sprint removed -> all tasks removed as well
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint", orphanRemoval = true)
     private Set<Task> tasks;
 
@@ -76,10 +75,26 @@ public class Sprint {
         return tasks;
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task... tasks) {
         if (this.tasks == null) {
             this.tasks = new HashSet<>();
         }
-        this.tasks.add(task);
+        Collections.addAll(this.tasks, tasks);
+    }
+
+    public void removeTask(Task... tasks) {
+        for (Task t : tasks) {
+            this.tasks.remove(t);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Sprint{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", project=" + project +
+                ", tasks=" + tasks +
+                '}';
     }
 }

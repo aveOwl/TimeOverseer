@@ -62,7 +62,7 @@ CREATE TABLE overseer.administrator (
 );
 
 CREATE TABLE overseer.customer (
-  cust_id                 SERIAL PRIMARY KEY,
+  cust_id            SERIAL PRIMARY KEY,
   business_interests VARCHAR(255) NOT NULL
 );
 
@@ -116,7 +116,7 @@ CREATE TABLE overseer.task (
   sprint_id           INT         NOT NULL,
   name                VARCHAR(50) NOT NULL,
   is_assigned         BOOLEAN     NOT NULL,
-  proficiency         VARCHAR(50) NOT NULL,
+  qualification       VARCHAR(50) NOT NULL,
   time_to_complete    INT         NOT NULL,
   time_in_development INT         NULL
 );

@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,12 +24,10 @@ import java.util.Set;
 @PrimaryKeyJoinColumn(name = "dev_id", referencedColumnName = "emp_id")
 public class Developer extends Employee {
 
-    // if developer removed -> ProjectManager stays
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_manager")
     private ProjectManager projectManager;
 
-    // if developer removed -> task stays
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "developer_task",
             joinColumns = {@JoinColumn(name = "developer_id")},
@@ -61,10 +60,24 @@ public class Developer extends Employee {
         return tasks;
     }
 
-    public void addTask(Task task) {
+    public void addTask(Task... tasks) {
         if (this.tasks == null) {
             this.tasks = new HashSet<>();
         }
-        this.tasks.add(task);
+        Collections.addAll(this.tasks, tasks);
+    }
+
+    public void removeTask(Task... tasks) {
+        for (Task t : tasks) {
+            this.tasks.remove(t);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "projectManager=" + projectManager +
+                ", tasks=" + tasks +
+                "} " + super.toString();
     }
 }

@@ -21,10 +21,11 @@ class CustomerRepositorySpec extends Specification {
 
     def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
 
-    def "should persist customer"() {
-        given:
+    void setup() {
         entityManager.persistAndFlush(customer)
+    }
 
+    def "should persist customer"() {
         when:
         def cust = customerRepository.findByFirstName("Jake")
 
@@ -34,9 +35,6 @@ class CustomerRepositorySpec extends Specification {
     }
 
     def "should delete customer"() {
-        given:
-        entityManager.persistAndFlush(customer)
-
         when:
         customerRepository.delete(customer)
 
@@ -46,7 +44,6 @@ class CustomerRepositorySpec extends Specification {
 
     def "should update customer"() {
         given:
-        entityManager.persistAndFlush(customer)
         customer.firstName = "Roland"
 
         when:
@@ -58,7 +55,10 @@ class CustomerRepositorySpec extends Specification {
     }
 
     def "should return null if customer not exists"() {
-        expect:
-        customerRepository.findByFirstName("Robin") == null
+        when:
+        customerRepository.delete(customer)
+
+        then:
+        customerRepository.findByFirstName("Jake") == null
     }
 }

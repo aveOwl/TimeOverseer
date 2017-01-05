@@ -28,13 +28,12 @@ class ProjectManagerRepositorySpec extends Specification {
     def projectManager = ["Jake", "Main", "Ross", "glanes", company, SENIOR, null] as ProjectManager
 
     void setup() {
+        company.addEmployee(projectManager)
+
         entityManager.persistAndFlush(company)
     }
 
     def "should persist project manager"() {
-        given:
-        entityManager.persistAndFlush(projectManager)
-
         when:
         def fetchedProjectManager = projectManagerRepository.findByEmployer(company)
 
@@ -45,7 +44,7 @@ class ProjectManagerRepositorySpec extends Specification {
 
     def "should delete project manager"() {
         given:
-        entityManager.persistAndFlush(projectManager)
+        company.removeEmployee(projectManager)
 
         when:
         projectManagerRepository.delete(projectManager)
@@ -56,7 +55,6 @@ class ProjectManagerRepositorySpec extends Specification {
 
     def "should update project manager"() {
         given:
-        entityManager.persistAndFlush(projectManager)
         projectManager.qualification = MIDDLE
 
         when:
@@ -65,10 +63,5 @@ class ProjectManagerRepositorySpec extends Specification {
         then:
         updatedProjectManager.qualification == MIDDLE
         updatedProjectManager.employer == company
-    }
-
-    def "should return null if project manager not exists"() {
-        expect:
-        projectManagerRepository.findByLogin("GlenBrak") == null
     }
 }

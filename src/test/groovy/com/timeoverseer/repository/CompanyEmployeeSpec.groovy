@@ -41,44 +41,47 @@ class CompanyEmployeeSpec extends Specification {
 
         company.addEmployee(projectManager)
         company.addEmployee(developer)
+
+        entityManager.persistAndFlush(company)
     }
 
     def "should persist employees with company"() {
-        given:
-        entityManager.persistAndFlush(company)
-
         when:
-        def savedCompany = companyRepository.findByName("Apple")
+        def savedCompany = companyRepository.findByName("IBM")
         def savedPM = projectManagerRepository.findByQualification(SENIOR)
         def savedDev = developerRepository.findByLogin("Sake")
 
         then:
-//        savedCompany.employees.size() == 2 // TODO fix this
+        savedCompany.employees.size() == 2
         savedPM.firstName.contains("Jake")
         savedDev.lastName.contains("Lowe")
     }
 
     def "should delete employees if company removed"() {
         given:
-        entityManager.persistAndFlush(company)
+        company.removeEmployee(developer, projectManager)
+        developer.employer == null
+        projectManager.employer == null
 
         when:
         companyRepository.delete(company)
 
         then:
-        companyRepository.findByName("Apple") == null
+        companyRepository.findByName("IBM") == null
         projectManagerRepository.findByFirstName("Jake") == null
         developerRepository.findByLogin("Sake") == null
     }
 
     def "should not delete company if employee removed"() {
         given:
-        entityManager.persistAndFlush(company)
+        company.removeEmployee(developer)
 
         when:
         developerRepository.delete(developer)
 
         then:
+        company.employees.size() == 1
         companyRepository.findByName("IBM") != null
+        developerRepository.findByLogin("Sake") == null
     }
 }

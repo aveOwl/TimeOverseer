@@ -23,10 +23,11 @@ class CompanyRepositorySpec extends Specification {
 
     def company = ["Apple", LocalDate.of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
 
-    def "should persist company"() {
-        given:
+    void setup() {
         entityManager.persistAndFlush(company)
+    }
 
+    def "should persist company"() {
         when:
         def fetchedCompany = companyRepository.findByName("Apple")
 
@@ -36,9 +37,6 @@ class CompanyRepositorySpec extends Specification {
     }
 
     def "should delete company"() {
-        given:
-        entityManager.persistAndFlush(company)
-
         when:
         companyRepository.delete(company)
 
@@ -48,7 +46,6 @@ class CompanyRepositorySpec extends Specification {
 
     def "should update company"() {
         given:
-        entityManager.persistAndFlush(company)
         company.name = "Apple Inc."
 
         when:
@@ -57,10 +54,5 @@ class CompanyRepositorySpec extends Specification {
         then:
         updatedCompany.name == "Apple Inc."
         updatedCompany.founders.contains("Steve Jobs")
-    }
-
-    def "should return null if company not exists"() {
-        expect:
-        companyRepository.findByName("Apple") == null
     }
 }

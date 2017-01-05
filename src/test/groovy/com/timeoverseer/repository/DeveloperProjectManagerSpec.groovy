@@ -36,25 +36,19 @@ class DeveloperProjectManagerSpec extends Specification {
     def developer2 = ["Katy", "Starr", "Wildow", "glass122", company, JUNIOR, projectManager] as Developer
 
     void setup() {
-        entityManager.persistAndFlush(company)
+        projectManager.addDeveloper(developer1, developer2)
+        company.addEmployee(projectManager, developer1, developer2)
 
-        projectManager.addDeveloper(developer1)
-        projectManager.addDeveloper(developer2)
+        entityManager.persistAndFlush(company)
     }
 
-    def "should persist employees with project manager"() {
-        given:
-        entityManager.persistAndFlush(projectManager)
-
+    def "should persist developers with project manager"() {
         expect:
         projectManagerRepository.findByQualification(SENIOR) != null
         developerRepository.findByFirstName("Rob") != null
         developerRepository.findByLogin("Wildow") != null
     }
     def "should not remove developer when project manager removed"() {
-        given:
-        entityManager.persistAndFlush(projectManager)
-
         when:
         projectManagerRepository.delete(projectManager)
 
@@ -64,9 +58,6 @@ class DeveloperProjectManagerSpec extends Specification {
     }
 
     def "should not remove project manager when developer removed"() {
-        given:
-        entityManager.persistAndFlush(projectManager)
-
         when:
         projectManagerRepository.delete(developer1)
 

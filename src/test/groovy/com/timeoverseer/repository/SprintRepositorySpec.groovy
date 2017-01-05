@@ -2,6 +2,7 @@ package com.timeoverseer.repository
 
 import com.timeoverseer.model.Customer
 import com.timeoverseer.model.Project
+import com.timeoverseer.model.Sprint
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
@@ -12,51 +13,57 @@ import spock.lang.Unroll
 
 import static java.time.LocalDate.of
 
-@ContextConfiguration(classes = ProjectRepository)
+@ContextConfiguration(classes = SprintRepository)
 @EntityScan(basePackages = "com.timeoverseer.model")
 @DataJpaTest
 @Unroll
-class ProjectRepositorySpec extends Specification {
+class SprintRepositorySpec extends Specification {
     @Autowired
-    ProjectRepository projectRepository
+    SprintRepository sprintRepository
     @Autowired
     TestEntityManager entityManager
 
     def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
     def project = ["Apple TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
+    def sprint = ["First Phase", project] as Sprint
 
     void setup() {
         customer.addProject(project)
+        project.customer = customer
+
+        project.addSprint(sprint)
+        sprint.project = project
+
         entityManager.persistAndFlush(customer)
     }
 
-    def "should persist project"() {
+    def "should persist sprint"() {
         when:
-        def fetchedProject = projectRepository.findByCustomer(customer)
+        def fetchedSprint = sprintRepository.findByName("First Phase")
 
         then:
-        fetchedProject.description.contains("Apple")
+        fetchedSprint.project == project
     }
 
-    def "should delete project"() {
+    def "should delete sprint"() {
         given:
-        customer.removeProject(project)
+        project.removeSprint(sprint)
 
         when:
-        projectRepository.delete(project)
+        sprintRepository.delete(sprint)
 
         then:
-        projectRepository.findByCustomer(customer) == null
+        sprintRepository.findByName("First Phase") == null
     }
 
-    def "should update project"() {
+    def "should update sprint"() {
         given:
-        project.description = "iPod"
+        sprint.name = "Best Phase"
 
         when:
-        def updatedProject = projectRepository.save(project)
+        def updatedSprint = sprintRepository.save(sprint)
 
         then:
-        updatedProject.description.contains("iPod")
+        updatedSprint.name.contains("Best")
     }
 }
