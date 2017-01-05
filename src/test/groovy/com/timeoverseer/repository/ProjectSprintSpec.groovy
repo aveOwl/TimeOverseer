@@ -47,6 +47,7 @@ class ProjectSprintSpec extends Specification {
 
     def "should delete sprint if project deleted"() {
         given:
+        project.removeSprint(sprint)
         sprint.project == null
 
         when:

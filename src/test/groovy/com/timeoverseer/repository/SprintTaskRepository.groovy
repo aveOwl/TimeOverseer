@@ -57,6 +57,7 @@ class SprintTaskRepository extends Specification {
 
     def "should delete task if sprint removed"() {
         given:
+        sprint.removeTask(task1, task2)
         task1.sprint == null
         task2.sprint == null
 
