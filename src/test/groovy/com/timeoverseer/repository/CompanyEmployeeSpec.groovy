@@ -58,11 +58,6 @@ class CompanyEmployeeSpec extends Specification {
     }
 
     def "should delete employees if company removed"() {
-        given:
-        company.removeEmployee(developer, projectManager)
-        developer.employer == null
-        projectManager.employer == null
-
         when:
         companyRepository.delete(company)
 
