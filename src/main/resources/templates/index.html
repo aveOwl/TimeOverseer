@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Time Overseer</title>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/3.3.7/dist/css/bootstrap.css}"/>
+    <link rel="stylesheet" th:href="@{/css/overseer.css}"/>
+    <link rel="stylesheet" href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+    <script th:src="@{/js/overseer.js}"></script>
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+<!-- Navigation -->
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <i class="fa fa-play-circle"></i> <span class="light">Time</span> Overseer
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#about">About</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#companies">Companies</a>
+                </li>
+                <li>
+                    <a class="page-scroll" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Intro Header -->
+<header class="intro">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <h1 class="brand-heading">Time Overseer</h1>
+                    <p class="intro-text">Manage your time effectively</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- About Section -->
+<section id="about" class="container content-section text-center">
+    <div class="row">
+        <div class="col-md-8 col-lg-offset-2">
+            <h2>About Time Overseer</h2>
+            <p>Time Overseer is a management platform with an integrated set of tools and
+                services allowing clients to arrange and keep track of working hours on their projects.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Companies Section -->
+<section id="companies" class="content-section text-center">
+    <div class="companies-section container">
+        <form name="frm" novalidate="novalidate">
+            <h3>Register Company</h3>
+            <div class="col-lg-8 col-lg-offset-2">
+                <div class="form-group">
+                    <label class="sr-only" for="name">Company Name</label>
+                    <input name="name" id="name" placeholder="Company Name" class="form-control" type="text"/>
+                </div>
+                <div class="form-group">
+                    <div class="input-group date" id="datepicker">
+                        <label class="sr-only" for="founded">Company Name</label>
+                        <input name="founded" id="founded" placeholder="Date Founded" class="form-control"
+                               type="text" data-format="MM/dd/yyyy HH:mm:ss PP"/>
+                        <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="industry">Industry</label>
+                    <input name="industry" id="industry" placeholder="Industry" class="form-control" type="text"/>
+                    <small class="form-text text-left">If company works in several industries separate
+                        each one with comma
+                    </small>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="founders">Founders</label>
+                    <input name="founders" id="founders" placeholder="Founders" class="form-control" type="text"/>
+                    <small class="form-text text-left">Separate each founder with comma</small>
+                </div>
+                <div class="form-group">
+                    <label class="sr-only" for="products">Products</label>
+                    <input name="products" id="products" placeholder="Products" class="form-control" type="text"/>
+                    <small class="form-text text-left">Separate each product with comma</small>
+                </div>
+                <button class="btn btn-default col-lg-12" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="container content-section text-center">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2">
+            <h2>Contact Information</h2>
+            <p>Feel free to email to provide some feedback and suggestions.</p>
+            <p><a href="mailto:goldfinchave@gmail.com">goldfinchave@gmail.com</a></p>
+            <ul class="list-inline banner-social-buttons">
+                <li>
+                    <a href="https://github.com/aveowl" class="btn btn-default btn-m"><i
+                            class="fa fa-github fa-fw"></i> <span class="network-name">Github</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container text-center text-muted">
+        <p>Copyright &copy; Bohdan Bachkala 2017</p>
+    </div>
+</footer>
+</body>
+</html>

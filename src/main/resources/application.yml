@@ -1,4 +1,20 @@
+##
+# Tomcat configuration.
+##
+server:
+  port: 9090
+
+##
+# Logging configuration.
+##
+logging:
+  level:
+    com:
+      overseer: debug
+
 spring:
+  thymeleaf:
+    cache: false
   jpa:
     hibernate:
       ddl-auto: update
