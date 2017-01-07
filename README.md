@@ -22,7 +22,7 @@ keep track of working hours on their projects.
 - [ ] **Employee** confirms the receipt of the **Task**, records execution time or sends the request to extend development time.
 
 * Application roles.
-- [ ] **Administrator** creates objects in the system such as **Employee**, **Customer**, **Project**, assigns **ProjectManager**.
+- [ ] **Administrator** creates objects in the system such as **Egitmployee**, **Customer**, **Project**, assigns **ProjectManager**.
 - [ ] **ProjectManager** controls **Project**, initiates **Sprints**, **Tasks**, assigns **Tasks** to **Employees**.
 - [ ] **Employee** confirms the receipt of the **Task** records execution time or sends the request to extend development time.
 - [ ] **Customer** monitors **Project** progress.
