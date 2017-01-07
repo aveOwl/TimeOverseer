@@ -1,5 +1,8 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.timeoverseer.util.LocalDateDeserializer;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,6 +40,7 @@ public class Company {
     private String name;
 
     @Column(name = "founded", nullable = false)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate founded;
 
     @Column(name = "industry", nullable = false)

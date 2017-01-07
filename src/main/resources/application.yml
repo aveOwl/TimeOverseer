@@ -1,16 +1,10 @@
-##
-# Tomcat configuration.
-##
 server:
   port: 9090
 
-##
-# Logging configuration.
-##
 logging:
   level:
     com:
-      overseer: debug
+      timeoverseer: debug
 
 spring:
   thymeleaf:
@@ -18,3 +12,4 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    show-sql: true

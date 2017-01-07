@@ -39,9 +39,9 @@ ALTER TABLE overseer.developer_task
 DROP TABLE overseer.developer_task;
 DROP TABLE overseer.task;
 DROP TABLE overseer.sprint;
+DROP TABLE overseer.project_manager;
 DROP TABLE overseer.project;
 DROP TABLE overseer.developer;
-DROP TABLE overseer.project_manager;
 DROP TABLE overseer.employee;
 DROP TABLE overseer.company_customer;
 DROP TABLE overseer.company;
