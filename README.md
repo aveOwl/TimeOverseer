@@ -14,16 +14,16 @@ keep track of working hours on their projects.
 - [x] Each **Sprint** consist of **Tasks**.
 - [x] **Task** has **Estimate** time to complete in hours.
 - [ ] **Task** depends on other tasks. Explicit task can start only when all affecting tasks are done.
-- [x] **Task** may contain subtasks.
+- [ ] **Task** may contain subtasks.
 - [x] **Task** may require specific **Employee** level of proficiency to realize it.
 - [x] **ProjectManager** settles tasks for **Employees** specifying start date and time to finish.
 - [x] **Employee** can work on different **Tasks** at the same time.
 - [x] Several **Employees** can be developing one **Task**.
-- [x] **Employee** confirms the receipt of the **Task**, records execution time or sends the request to extend development time.
+- [ ] **Employee** confirms the receipt of the **Task**, records execution time or sends the request to extend development time.
 
 * Application roles.
-- [x] **Administrator** creates objects in the system such as **Employee**, **Customer**, **Project**, assigns **ProjectManager**.
-- [x] **ProjectManager** controls **Project**, initiates **Sprints**, **Tasks**, assigns **Tasks** to **Employees**.
+- [ ] **Administrator** creates objects in the system such as **Employee**, **Customer**, **Project**, assigns **ProjectManager**.
+- [ ] **ProjectManager** controls **Project**, initiates **Sprints**, **Tasks**, assigns **Tasks** to **Employees**.
 - [ ] **Employee** confirms the receipt of the **Task** records execution time or sends the request to extend development time.
 - [ ] **Customer** monitors **Project** progress.
 
