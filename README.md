@@ -6,19 +6,19 @@ keep track of working hours on their projects.
 ## This is work-in-progress build
 
 * Subject description.
-- [ ] **Company** develops software for their clients.
-- [ ] Different **Projects** are in development for **Customers**.
-- [ ] **Project** has start and end date.
-- [ ] **Project** consist of **Sprints**.
+- [x] **Company** develops software for their clients.
+- [x] Different **Projects** are in development for **Customers**.
+- [x] **Project** has start and end date.
+- [x] **Project** consist of **Sprints**.
 - [ ] The next **Sprint** may only begin after all previous sprints are complete.
-- [ ] Each **Sprint** consist of **Tasks**.
-- [ ] **Task** has **Estimate** time to complete in hours.
+- [x] Each **Sprint** consist of **Tasks**.
+- [x] **Task** has **Estimate** time to complete in hours.
 - [ ] **Task** depends on other tasks. Explicit task can start only when all affecting tasks are done.
-- [ ] **Task** may contain **Sub-Tasks**.
-- [ ] **Task** may require specific **Employee** level of proficiency to realize it.
-- [ ] **ProjectManager** settles tasks for **Employees** specifying start date and time to finish.
-- [ ] **Employee** can work on different **Tasks** at the same time.
-- [ ] Several **Employees** can be developing one **Task**.
+- [ ] **Task** may contain subtasks.
+- [x] **Task** may require specific **Employee** level of proficiency to realize it.
+- [x] **ProjectManager** settles tasks for **Employees** specifying start date and time to finish.
+- [x] **Employee** can work on different **Tasks** at the same time.
+- [x] Several **Employees** can be developing one **Task**.
 - [ ] **Employee** confirms the receipt of the **Task**, records execution time or sends the request to extend development time.
 
 * Application roles.
