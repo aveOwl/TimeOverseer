@@ -76,19 +76,6 @@ class CompanyServiceSpec extends Specification {
         0 * repository._
     }
 
-    def "should throw exception if no company found by id"() {
-        when:
-        companyService.findById(9)
-
-        then:
-        EntityNotFoundException e = thrown()
-        e.message.contains("No company with id: 9 exists")
-
-        and:
-        1 * repository.findOne(9) >> null
-        0 * repository._
-    }
-
     def "should find company by name"() {
         when:
         companyService.findByName("IBM")
@@ -107,19 +94,6 @@ class CompanyServiceSpec extends Specification {
         e.message.contains("must not be empty")
 
         and:
-        0 * repository._
-    }
-
-    def "should throw exception if no company found by name"() {
-        when:
-        companyService.findByName("Apple")
-
-        then:
-        EntityNotFoundException e = thrown()
-        e.message.contains("No company with name: Apple exists")
-
-        and:
-        1 * repository.findByName("Apple") >> null
         0 * repository._
     }
 

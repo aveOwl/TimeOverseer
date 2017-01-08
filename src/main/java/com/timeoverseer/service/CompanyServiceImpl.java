@@ -54,9 +54,6 @@ public class CompanyServiceImpl implements CompanyService {
         Assert.notNull(id, "Id must not be null");
         LOG.debug("> Searching for company with id: {}", id);
         Company company = this.companyRepository.findOne(id);
-        if (company == null) {
-            throw new EntityNotFoundException("No company with id: " + id + " exists");
-        }
         LOG.debug("< Returning {}", company);
         return company;
     }
@@ -67,9 +64,6 @@ public class CompanyServiceImpl implements CompanyService {
         Assert.hasLength(name, "Name must not be empty");
         LOG.debug("> Searching for company with name: {}", name);
         Company company = this.companyRepository.findByName(name);
-        if (company == null) {
-            throw new EntityNotFoundException("No company with name: " + name + " exists");
-        }
         LOG.debug("< Returning {}", company);
         return company;
     }
