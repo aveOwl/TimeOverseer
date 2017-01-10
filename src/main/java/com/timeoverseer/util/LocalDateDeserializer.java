@@ -18,7 +18,7 @@ public class LocalDateDeserializer extends JsonDeserializer<LocalDate> {
     public LocalDate deserialize(JsonParser p,
                                  DeserializationContext ctxt) throws IOException {
         LOG.debug("> Deserializing date: {}", p.getText());
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy").withLocale(Locale.US);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd").withLocale(Locale.US);
         LocalDate date = LocalDate.parse(p.getText(), dtf);
         LOG.debug("< LocalDate: {} deserialized", date);
         return date;
