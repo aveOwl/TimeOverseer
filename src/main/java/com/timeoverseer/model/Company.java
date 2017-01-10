@@ -1,7 +1,11 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.timeoverseer.util.LocalDateDeserializer;
+import com.timeoverseer.util.LocalDateSerializer;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,7 +20,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -28,6 +31,7 @@ import java.util.Set;
  * <code>Company</code> provides business solutions for its
  * customers {@link Customer}.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
 @Table(name = "company", schema = "overseer")
 public class Company {
@@ -42,6 +46,7 @@ public class Company {
 
     @Column(name = "founded", nullable = false)
     @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate founded;
 
     @Column(name = "industry", nullable = false)
@@ -121,38 +126,36 @@ public class Company {
         this.products = products;
     }
 
+    @JsonIgnore
     public Set<Customer> getCustomers() {
         return customers;
     }
 
-    public void addCustomer(Customer... customers) {
+    public void addCustomer(Customer customer) {
         if (this.customers == null) {
             this.customers = new HashSet<>();
         }
-        Collections.addAll(this.customers, customers);
+        this.customers.add(customer);
     }
 
-    public void removeCustomer(Customer... customers) {
-        for (Customer c : customers) {
-            this.customers.remove(c);
-        }
+    public void removeCustomer(Customer customer) {
+        this.customers.remove(customer);
     }
 
+    @JsonIgnore
     public Set<Employee> getEmployees() {
         return employees;
     }
 
-    public void addEmployee(Employee... employees) {
+    public void addEmployee(Employee employee) {
         if (this.employees == null) {
             this.employees = new HashSet<>();
         }
-        Collections.addAll(this.employees, employees);
+        this.employees.add(employee);
     }
 
-    public void removeEmployee(Employee... employees) {
-        for (Employee e : employees) {
-            this.employees.remove(e);
-        }
+    public void removeEmployee(Employee employee) {
+        this.employees.remove(employee);
     }
 
     public Employee findEmployeeById(Long employeeId) {

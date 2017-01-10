@@ -37,7 +37,9 @@ class DeveloperProjectManagerSpec extends Specification {
 
     void setup() {
         projectManager.addDeveloper(developer1, developer2)
-        company.addEmployee(projectManager, developer1, developer2)
+        company.addEmployee(projectManager)
+        company.addEmployee(developer2)
+        company.addEmployee(developer2)
 
         entityManager.persistAndFlush(company)
     }
