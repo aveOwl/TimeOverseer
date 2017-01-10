@@ -76,7 +76,8 @@ public class Developer extends Employee {
     @Override
     public String toString() {
         return "Developer{" +
-                "projectManager=" + projectManager.getFirstName() + " " + projectManager.getLastName() +
+                "projectManager=" + (projectManager == null ? null :
+                projectManager.getFirstName() + " " + projectManager.getLastName()) +
                 ", tasks=" + tasks +
                 "} " + super.toString();
     }

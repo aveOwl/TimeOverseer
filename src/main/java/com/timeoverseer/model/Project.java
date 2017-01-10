@@ -140,7 +140,8 @@ public class Project {
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", customer=" + customer.getFirstName() + " " + customer.getLastName() +
-                ", projectManager=" + projectManager.getFirstName() + " " + projectManager.getLastName() +
+                ", projectManager=" + (projectManager == null ? null :
+                projectManager.getFirstName() + " " + projectManager.getLastName()) +
                 ", sprints=" + sprints +
                 '}';
     }
