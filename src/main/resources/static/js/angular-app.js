@@ -48,7 +48,7 @@
         }
     };
 
-    var CompanyController = function ($scope, $resource, $routeParams) {4
+    var CompanyController = function ($scope, $resource, $routeParams) {
         $scope.company = $resource('/companies/:id').get({id: $routeParams.id});
 
         console.log($resource('/companies/:id').get({id: $routeParams.id}));
