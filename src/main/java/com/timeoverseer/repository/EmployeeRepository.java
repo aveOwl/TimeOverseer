@@ -1,20 +1,19 @@
-package com.timeoverseer.repository.nobean;
+package com.timeoverseer.repository;
 
 import com.timeoverseer.model.Company;
 import com.timeoverseer.model.Employee;
 import com.timeoverseer.model.enums.Qualification;
+import com.timeoverseer.repository.nobean.PersonRepository;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.NoRepositoryBean;
 
-@NoRepositoryBean
-public interface EmployeeRepository<T extends Employee> extends PersonRepository<Employee>,
+public interface EmployeeRepository extends PersonRepository<Employee>,
         CrudRepository<Employee, Long> {
 
-    T findByEmployer(Company employer);
+    Employee findByEmployer(Company employer);
 
-    T findByQualification(Qualification qualification);
+    Employee findByQualification(Qualification qualification);
 
-    Iterable<T> findAllByEmployer(Company employer);
+    Iterable<Employee> findAllByEmployer(Company employer);
 
-    Iterable<T> findAllByQualification(Qualification qualification);
+    Iterable<Employee> findAllByQualification(Qualification qualification);
 }
