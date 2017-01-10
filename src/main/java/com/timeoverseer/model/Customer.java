@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The <code>Customer</code> class represents a {@link Person} interested
@@ -84,7 +85,9 @@ public class Customer extends Person {
     public String toString() {
         return "Customer{" +
                 "businessInterests='" + businessInterests + '\'' +
-                ", companies=" + companies +
+                ", companies=" + companies.stream()
+                .map(Company::getName)
+                .collect(Collectors.toList()) +
                 ", projects=" + projects +
                 "} " + super.toString();
     }

@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -152,6 +153,13 @@ public class Company {
         for (Employee e : employees) {
             this.employees.remove(e);
         }
+    }
+
+    public Employee findEmployeeById(Long employeeId) {
+        return this.employees.stream()
+                .filter(e -> Objects.equals(e.getId(), employeeId))
+                .findFirst()
+                .orElseGet(null);
     }
 
     @Override

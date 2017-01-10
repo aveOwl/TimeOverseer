@@ -60,7 +60,7 @@ public class Employee extends Person {
     @Override
     public String toString() {
         return "Employee{" +
-                "employer=" + employer +
+                "employer=" + employer.getName() +
                 ", qualification=" + qualification +
                 "} " + super.toString();
     }

@@ -93,7 +93,7 @@ public class Sprint {
         return "Sprint{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", project=" + project +
+                ", project=" + project.getDescription() +
                 ", tasks=" + tasks +
                 '}';
     }
