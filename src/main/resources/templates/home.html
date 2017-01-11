@@ -22,13 +22,13 @@
                                ng-model="company.name"/>
                     </div>
                     <div class="form-group">
-                        <div class="input-group date" id="datepicker">
+                        <div class="input-group">
                             <label class="sr-only" for="founded">Company Name</label>
-                            <input name="founded" id="founded" placeholder="Date Founded" class="form-control"
-                                   type="text" data-format="MM/dd/yyyy HH:mm:ss PP" ng-model="company.founded"/>
-                            <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+                            <datepicker date-format="LLLL d, yyyy">
+                                <input name="founded" id="founded" placeholder="Date Founded"
+                                       class="form-control" type="text"
+                                       ng-model="company.founded"/>
+                            </datepicker>
                         </div>
                     </div>
                     <div class="form-group">

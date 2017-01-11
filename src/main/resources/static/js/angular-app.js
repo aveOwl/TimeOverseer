@@ -1,28 +1,37 @@
 (function () {
     // define module
-    var application = angular.module('overseer', ['ngRoute', 'ngResource']);
+    var application = angular.module('overseer', ['ui.router', 'ngResource', '720kb.datepicker']);
 
-    application.config(['$routeProvider',
-        function ($routeProvider) {
-            $routeProvider
-                .when('/', {
-                    templateUrl: '/templates/home.html',
+    application.config(['$stateProvider', '$urlRouterProvider',
+        function ($stateProvider, $urlRouterProvider) {
+            $urlRouterProvider.otherwise('/');
+
+            $stateProvider
+                .state('home', {
+                    url: "/",
+                    activeTab: 'home',
                     controller: HomeController,
-                    activeTab: 'home'
+                    views: {
+                        'front@': {
+                            templateUrl: '/templates/home.html'
+                        }
+                    }
                 })
-                .when('/companies/:id', {
-                    templateUrl: '/templates/company.html',
+                .state('companies', {
+                    url: "/companies/{company}",
+                    activeTab: 'company',
                     controller: CompanyController,
-                    activeTab: 'company'
-                })
-                .otherwise({
-                    redirectTo: '/'
+                    views: {
+                        'company@': {
+                            templateUrl: '/templates/company.html'
+                        }
+                    }
                 });
         }]);
 
-    var NavigationController = function ($scope, $route) {
-        $scope.$on("$routeChangeSuccess", function () {
-            $scope.activeTab = $route.current.activeTab;
+    var NavigationController = function ($scope, $state) {
+        $scope.$on("$stateChangeSuccess", function () {
+            $scope.activeTab = $state.current.activeTab;
         });
     };
 
@@ -42,20 +51,18 @@
                 data: $scope.company
             }).then(
                 function (response) {
-                    $window.location.href = '#/companies/' + response.data.id + "/#company";
+                    $window.location.href = '#/companies/' + response.data.id;
                 }
             )
         }
     };
 
-    var CompanyController = function ($scope, $resource, $routeParams) {
-        $scope.company = $resource('/companies/:id').get({id: $routeParams.id});
-
-        console.log($resource('/companies/:id').get({id: $routeParams.id}));
+    var CompanyController = function ($scope, $resource, $stateParams) {
+        $scope.company = $resource('/companies/:company').get({company: $stateParams.company});
     };
 
     // register controllers
-    application.controller('NavigationController', ["$scope", "$route", NavigationController]);
+    application.controller('NavigationController', ["$scope", "$state", NavigationController]);
     application.controller('HomeController', ["$scope", "$http", "$window", HomeController]);
-    application.controller('CompanyController', ["$scope", "$resource", "$routeParams", CompanyController]);
+    application.controller('CompanyController', ["$scope", "$resource", "$stateParams", CompanyController]);
 }());
