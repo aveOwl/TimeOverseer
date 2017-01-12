@@ -27,12 +27,12 @@
     <script type="text/javascript" th:src="@{/js/angular-app.js}"></script>
 </head>
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" ng-controller="NavigationController">
 
 <div th:replace="fragments/header :: header"></div>
 
 <!-- Intro Header -->
-<div class="intro">
+<div ng-show="showIntro" class="intro">
     <div class="intro-body">
         <div class="container">
             <div class="row">
@@ -45,8 +45,10 @@
     </div>
 </div>
 
-<div ui-view="front"></div>
+
+<div ui-view="home"></div>
 <div ui-view="company"></div>
+<div ui-view="customer"></div>
 
 <div th:replace="fragments/footer :: footer"></div>
 

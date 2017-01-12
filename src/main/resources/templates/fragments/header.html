@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 
-<div th:fragment="header" ng-controller="NavigationController">
+<div th:fragment="header">
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -29,6 +29,9 @@
                     <li ng-show="activeTab == 'home'">
                         <a class="page-scroll" href="#companies">Companies</a>
                     </li>
+                    <li ng-show="activeTab == 'home'">
+                        <a class="page-scroll" href="#customers">Customers</a>
+                    </li>
                     <!--Company-->
                     <li ng-show="activeTab == 'company'">
                         <a class="page-scroll" href="#company">Company</a>
@@ -38,6 +41,16 @@
                     </li>
                     <li ng-show="activeTab == 'company'">
                         <a class="page-scroll" href="#customers">Customers</a>
+                    </li>
+                    <!--Customer-->
+                    <li ng-show="activeTab == 'customer'">
+                        <a class="page-scroll" href="#customer">Customer</a>
+                    </li>
+                    <li ng-show="activeTab == 'customer'">
+                        <a class="page-scroll" href="#projects">Projects</a>
+                    </li>
+                    <li ng-show="activeTab == 'customer'">
+                        <a class="page-scroll" href="#companies">Companies</a>
                     </li>
                     <!--Footer-->
                     <li>

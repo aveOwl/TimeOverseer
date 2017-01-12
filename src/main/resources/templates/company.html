@@ -4,7 +4,7 @@
     <section id="company" class="content-section text-center">
         <div class="companies-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
-                <div ng-show="info">
+                <div ng-show="companyInfo">
                     <h3>Company info</h3>
                     <table class="table">
                         <tr>
@@ -28,11 +28,11 @@
                             <td>{{company.products}}</td>
                         </tr>
                     </table>
-                    <button class="btn btn-default col-lg-4" type="submit" ng-click="info = !info">Edit</button>
+                    <button class="btn btn-default col-lg-4" type="submit" ng-click="companyInfo = !companyInfo">Edit</button>
                 </div>
-                <div ng-show="!info">
+                <div ng-show="!companyInfo">
                     <h3>Company</h3>
-                    <form name="frm" class="form-horizontal" ng-submit="update()" method="post">
+                    <form name="company-form" class="form-horizontal" ng-submit="updateCompany()" method="post">
                         <div class="form-group">
                             <label class="col-lg-4 control-label" for="name">Company Name:</label>
                             <div class="col-lg-8">
