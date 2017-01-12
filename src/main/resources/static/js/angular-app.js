@@ -18,7 +18,7 @@
                     }
                 })
                 .state('companies', {
-                    url: "/companies/{company}",
+                    url: "/companies/{id}",
                     activeTab: 'company',
                     controller: CompanyController,
                     views: {
@@ -51,18 +51,47 @@
                 data: $scope.company
             }).then(
                 function (response) {
-                    $window.location.href = '#/companies/' + response.data.id;
+                    var host = 'http://localhost:9090';
+                    var link = response.data._links.self.href;
+                    var result = link.replace(host, '/#');
+                    $window.location.href = result;
                 }
             )
         }
     };
 
-    var CompanyController = function ($scope, $resource, $stateParams) {
-        $scope.company = $resource('/companies/:company').get({company: $stateParams.company});
+    var CompanyController = function ($scope, $resource, $stateParams, $http, $location, $state) {
+        $scope.info = true;
+
+        $resource('/companies/:id', {id: '@id'}).get({id: $stateParams.id})
+            .$promise
+            .then(function (company) {
+                $scope.company = company;
+
+                // UPDATE
+                $scope.update = function () {
+                    $http({
+                        method: 'PUT',
+                        url: $location.url(),
+                        data: $scope.company
+                    }).success(
+                        $scope.reloadRoute = function () {
+                            $state.reload();
+                        }
+                    )
+                };
+
+                var employees = company._links.employees.href;
+
+                $http.get(employees).then(function (response) {
+                    $scope.developers = response.data._embedded.developers;
+                    $scope.projectManagers = response.data._embedded.projectManagers;
+                });
+            });
     };
 
     // register controllers
     application.controller('NavigationController', ["$scope", "$state", NavigationController]);
     application.controller('HomeController', ["$scope", "$http", "$window", HomeController]);
-    application.controller('CompanyController', ["$scope", "$resource", "$stateParams", CompanyController]);
+    application.controller('CompanyController', ["$scope", "$resource", "$stateParams", "$http", "$location", "$state", CompanyController]);
 }());

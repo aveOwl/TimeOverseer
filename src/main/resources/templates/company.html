@@ -1,62 +1,90 @@
 <div ng-controller="CompanyController">
+
     <!--Company-->
     <section id="company" class="content-section text-center">
         <div class="companies-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
-                <h3>Company info</h3>
-                <form name="frm" class="form-horizontal" ng-submit="submit()" method="post">
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="name">Company Name:</label>
-                        <div class="col-lg-8">
-                            <input name="name" id="name" placeholder="Company Name" class="form-control" type="text"
-                                   ng-model="company.name"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="founded">Date Founded:</label>
-                        <div class="col-lg-8">
-                            <div class="input-group">
-                                <label class="sr-only" for="founded">Company Name</label>
-                                <datepicker date-format="LLLL d, yyyy">
-                                    <input name="founded" id="founded" placeholder="Date Founded"
-                                           class="form-control" type="text"
-                                           ng-model="company.founded"/>
-                                </datepicker>
+                <div ng-show="info">
+                    <h3>Company info</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Company Name:</th>
+                            <td><strong>{{company.name}}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Date Founded:</th>
+                            <td>{{company.founded}}</td>
+                        </tr>
+                        <tr>
+                            <th>Industry:</th>
+                            <td>{{company.industry}}</td>
+                        </tr>
+                        <tr>
+                            <th>Founders:</th>
+                            <td>{{company.founders}}</td>
+                        </tr>
+                        <tr>
+                            <th>Products:</th>
+                            <td>{{company.products}}</td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-default col-lg-4" type="submit" ng-click="info = !info">Edit</button>
+                </div>
+                <div ng-show="!info">
+                    <h3>Company</h3>
+                    <form name="frm" class="form-horizontal" ng-submit="update()" method="post">
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="name">Company Name:</label>
+                            <div class="col-lg-8">
+                                <input name="name" id="name" placeholder="Company Name" class="form-control" type="text"
+                                       ng-model="company.name"/>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="industry">Industry:</label>
-                        <div class="col-lg-8">
-                            <input name="industry" id="industry" placeholder="Industry" class="form-control"
-                                   type="text" ng-model="company.industry"/>
-                            <small class="form-text text-left">If company works in several industries separate
-                                each one with comma
-                            </small>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="founded">Date Founded:</label>
+                            <div class="col-lg-8">
+                                <div class="input-group">
+                                    <label class="sr-only" for="founded">Company Name</label>
+                                    <datepicker date-format="LLLL d, yyyy">
+                                        <input name="founded" id="founded" placeholder="Date Founded"
+                                               class="form-control" type="text"
+                                               ng-model="company.founded"/>
+                                    </datepicker>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="founders">Founders:</label>
-                        <div class="col-lg-8">
-                            <input name="founders" id="founders" placeholder="Founders" class="form-control"
-                                   ng-model="company.founders"/>
-                            <small class="form-text text-left">Separate each founder with comma</small>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="industry">Industry:</label>
+                            <div class="col-lg-8">
+                                <input name="industry" id="industry" placeholder="Industry" class="form-control"
+                                       type="text" ng-model="company.industry"/>
+                                <small class="form-text text-left">If company works in several industries separate
+                                    each one with comma
+                                </small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="products">Products:</label>
-                        <div class="col-lg-8">
-                            <input name="products" id="products" placeholder="Products" class="form-control" type="text"
-                                   ng-model="company.products"/>
-                            <small class="form-text text-left">Separate each product with comma</small>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="founders">Founders:</label>
+                            <div class="col-lg-8">
+                                <input name="founders" id="founders" placeholder="Founders" class="form-control"
+                                       ng-model="company.founders"/>
+                                <small class="form-text text-left">Separate each founder with comma</small>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-lg-8">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-7" type="submit">Update</button>
+                        <div class="form-group">
+                            <label class="col-lg-4 control-label" for="products">Products:</label>
+                            <div class="col-lg-8">
+                                <input name="products" id="products" placeholder="Products" class="form-control"
+                                       type="text"
+                                       ng-model="company.products"/>
+                                <small class="form-text text-left">Separate each product with comma</small>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                        <div class="col-lg-8 text-left">
+                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit" ng-click="reloadRoute()">Update</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
@@ -64,8 +92,32 @@
     <!--Employees-->
     <section id="employees" class="content-section text-center">
         <div class="companies-section container">
-            <div class="col-lg-8 col-lg-offset-2">
-
+            <div class="col-lg-8 col-lg-offset-2 text-left">
+                <h3>Employees</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Login</th>
+                        <th>Qualification</th>
+                        <th>Position</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="dev in developers">
+                        <td>{{dev.firstName}} {{dev.lastName}}</td>
+                        <td>{{dev.login}}</td>
+                        <td>{{dev.qualification}}</td>
+                        <td>Developer</td>
+                    </tr>
+                    <tr ng-repeat="pm in projectManagers">
+                        <td>{{pm.firstName}} {{pm.lastName}}</td>
+                        <td>{{pm.login}}</td>
+                        <td>{{pm.qualification}}</td>
+                        <td>Project Manager</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </section>
