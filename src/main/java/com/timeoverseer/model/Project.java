@@ -139,8 +139,9 @@ public class Project {
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", customer=" + customer +
-                ", projectManager=" + projectManager +
+                ", customer=" + customer.getFirstName() + " " + customer.getLastName() +
+                ", projectManager=" + (projectManager == null ? null :
+                projectManager.getFirstName() + " " + projectManager.getLastName()) +
                 ", sprints=" + sprints +
                 '}';
     }

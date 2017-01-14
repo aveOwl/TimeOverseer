@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * The <code>Task</code> class represents a single step to complete
@@ -153,8 +154,10 @@ public class Task {
                 ", qualification=" + qualification +
                 ", timeToComplete=" + timeToComplete +
                 ", timeInDevelopment=" + timeInDevelopment +
-                ", sprint=" + sprint +
-                ", developers=" + developers +
+                ", sprint=" + sprint.getName() +
+                ", developers=" + developers.stream()
+                .map(d -> d.getFirstName() + " " + d.getLastName())
+                .collect(Collectors.toList()) +
                 '}';
     }
 }

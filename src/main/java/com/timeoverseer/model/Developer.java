@@ -31,7 +31,7 @@ public class Developer extends Employee {
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "developer_task",
             joinColumns = {@JoinColumn(name = "developer_id")},
-            inverseJoinColumns ={@JoinColumn(name = "task_id")})
+            inverseJoinColumns = {@JoinColumn(name = "task_id")})
     private Set<Task> tasks;
 
     protected Developer() {
@@ -76,7 +76,8 @@ public class Developer extends Employee {
     @Override
     public String toString() {
         return "Developer{" +
-                "projectManager=" + projectManager +
+                "projectManager=" + (projectManager == null ? null :
+                projectManager.getFirstName() + " " + projectManager.getLastName()) +
                 ", tasks=" + tasks +
                 "} " + super.toString();
     }

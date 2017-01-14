@@ -3,9 +3,9 @@ package com.timeoverseer.repository;
 import com.timeoverseer.model.Customer;
 import com.timeoverseer.repository.nobean.PersonRepository;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@Repository
+@RepositoryRestResource(itemResourceRel = "customer", collectionResourceRel = "customers", path = "customers")
 public interface CustomerRepository extends PersonRepository<Customer>,
         CrudRepository<Customer, Long> {
 }

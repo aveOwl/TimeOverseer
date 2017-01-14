@@ -231,11 +231,25 @@ a:focus {
     background-size: cover;
     -o-background-size: cover;
 }
+.customers-section {
+    width: 100%;
+    padding: 50px 0;
+    color: white;
+    background: url(../img/company-bg.jpg) no-repeat center center scroll;
+    background-color: black;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
+}
 @media (min-width: 767px) {
     .content-section {
         padding-top: 150px;
     }
     .companies-section {
+        padding: 100px 0;
+    }
+    .customers-section {
         padding: 100px 0;
     }
 }
@@ -302,4 +316,8 @@ img::-moz-selection {
 }
 body {
     webkit-tap-highlight-color: rgba(255, 255, 255, 0.2);
+}
+
+.input-group {
+    width: 100%;
 }

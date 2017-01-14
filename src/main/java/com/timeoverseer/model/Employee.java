@@ -1,5 +1,6 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.timeoverseer.model.enums.Qualification;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
  * The <code>Employee</code> class represents a person working in a
  * certain {@link Company} owning certain {@link Qualification}.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY,isGetterVisibility = JsonAutoDetect.Visibility.ANY,getterVisibility = JsonAutoDetect.Visibility.ANY)
 @Entity
 @Table(name = "employee", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "emp_id", referencedColumnName = "id")
@@ -60,7 +62,7 @@ public class Employee extends Person {
     @Override
     public String toString() {
         return "Employee{" +
-                "employer=" + employer +
+                "employer=" + employer.getName() +
                 ", qualification=" + qualification +
                 "} " + super.toString();
     }
