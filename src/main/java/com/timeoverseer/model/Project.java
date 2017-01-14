@@ -1,5 +1,14 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.timeoverseer.util.LocalDateDeserializer;
+import com.timeoverseer.util.LocalDateSerializer;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +31,8 @@ import java.util.Set;
  * A <code>Project</code> has a Project Manager {@link Employee} assigned to it
  * and a set of sprints {@link Sprint}, required to complete it.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "project", schema = "overseer")
 public class Project {
@@ -36,20 +46,27 @@ public class Project {
     private String description;
 
     @Column(name = "start_date", nullable = false)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate startDate;
 
     @Column(name = "end_date", nullable = false)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate endDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
+    @JsonBackReference(value = "customerReference")
     private Customer customer;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_manager")
+    @JsonBackReference(value = "projectManagerReference")
     private ProjectManager projectManager;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
+    @JsonManagedReference
     private Set<Sprint> sprints;
 
     protected Project() {
@@ -119,30 +136,36 @@ public class Project {
         return sprints;
     }
 
-    public void addSprint(Sprint... sprints) {
+    public void addSprint(Sprint sprint) {
         if (this.sprints == null) {
             this.sprints = new HashSet<>();
         }
-        Collections.addAll(this.sprints, sprints);
+        this.sprints.add(sprint);
     }
 
-    public void removeSprint(Sprint... sprints) {
-        for (Sprint s : sprints) {
-            this.sprints.remove(s);
-        }
+    public void removeSprint(Sprint sprint) {
+        this.sprints.remove(sprint);
+    }
+
+    private String customerName() {
+        return this.customer.getFirstName() + " " + this.customer.getLastName();
+    }
+
+    private String projectManagerName() {
+        return this.projectManager == null ? null :
+                this.projectManager.getFirstName() + " " + this.projectManager.getLastName();
     }
 
     @Override
     public String toString() {
         return "Project{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", customer=" + customer.getFirstName() + " " + customer.getLastName() +
-                ", projectManager=" + (projectManager == null ? null :
-                projectManager.getFirstName() + " " + projectManager.getLastName()) +
-                ", sprints=" + sprints +
+                "id=" + this.id +
+                ", description='" + this.description +
+                ", startDate=" + this.startDate +
+                ", endDate=" + this.endDate +
+                ", customer=" + this.customerName() +
+                ", projectManager=" + this.projectManagerName() +
+                ", sprints=" + this.sprints +
                 '}';
     }
 }

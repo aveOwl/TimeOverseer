@@ -1,7 +1,8 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.timeoverseer.util.LocalDateDeserializer;
@@ -21,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -32,6 +32,7 @@ import java.util.Set;
  * customers {@link Customer}.
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "company", schema = "overseer")
 public class Company {
@@ -62,9 +63,11 @@ public class Company {
     @JoinTable(name = "company_customer",
             joinColumns = {@JoinColumn(name = "company_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "customer_id", nullable = false)})
+    @JsonManagedReference
     private Set<Customer> customers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employer", orphanRemoval = true)
+    @JsonManagedReference
     private Set<Employee> employees;
 
     protected Company() {
@@ -126,7 +129,6 @@ public class Company {
         this.products = products;
     }
 
-    @JsonIgnore
     public Set<Customer> getCustomers() {
         return customers;
     }
@@ -142,7 +144,6 @@ public class Company {
         this.customers.remove(customer);
     }
 
-    @JsonIgnore
     public Set<Employee> getEmployees() {
         return employees;
     }
@@ -158,24 +159,17 @@ public class Company {
         this.employees.remove(employee);
     }
 
-    public Employee findEmployeeById(Long employeeId) {
-        return this.employees.stream()
-                .filter(e -> Objects.equals(e.getId(), employeeId))
-                .findFirst()
-                .orElseGet(null);
-    }
-
     @Override
     public String toString() {
         return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", founded=" + founded +
-                ", industry='" + industry + '\'' +
-                ", founders='" + founders + '\'' +
-                ", products='" + products + '\'' +
-                ", customers=" + customers +
-                ", employees=" + employees +
+                "id=" + this.id +
+                ", name='" + this.name +
+                ", founded=" + this.founded +
+                ", industry='" + this.industry +
+                ", founders='" + this.founders +
+                ", products='" + this.products +
+                ", customers=" + this.customers +
+                ", employees=" + this.employees +
                 '}';
     }
 }

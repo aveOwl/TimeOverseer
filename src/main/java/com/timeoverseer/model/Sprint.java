@@ -1,5 +1,10 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +24,8 @@ import java.util.Set;
  * A <code>Sprint</code> itself consists of several tasks {@link Task},
  * required to complete it.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "sprint", schema = "overseer")
 public class Sprint {
@@ -34,9 +40,11 @@ public class Sprint {
 
     @ManyToOne
     @JoinColumn(name = "project_id", referencedColumnName = "id")
+    @JsonBackReference
     private Project project;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sprint", orphanRemoval = true)
+    @JsonManagedReference
     private Set<Task> tasks;
 
     protected Sprint() {
@@ -75,26 +83,24 @@ public class Sprint {
         return tasks;
     }
 
-    public void addTask(Task... tasks) {
+    public void addTask(Task task) {
         if (this.tasks == null) {
             this.tasks = new HashSet<>();
         }
-        Collections.addAll(this.tasks, tasks);
+        this.tasks.add(task);
     }
 
-    public void removeTask(Task... tasks) {
-        for (Task t : tasks) {
-            this.tasks.remove(t);
-        }
+    public void removeTask(Task task) {
+        this.tasks.remove(task);
     }
 
     @Override
     public String toString() {
         return "Sprint{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", project=" + project.getDescription() +
-                ", tasks=" + tasks +
+                "id=" + this.id +
+                ", name='" + this.name +
+                ", project=" + this.project.getDescription() +
+                ", tasks=" + this.tasks +
                 '}';
     }
 }

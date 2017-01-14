@@ -1,14 +1,12 @@
 package com.timeoverseer.repository;
 
-import com.timeoverseer.model.Customer;
 import com.timeoverseer.model.Project;
-import com.timeoverseer.model.ProjectManager;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@Repository
+import javax.transaction.Transactional;
+
+@Transactional
+@RepositoryRestResource
 public interface ProjectRepository extends CrudRepository<Project, Long> {
-    Project findByProjectManager(ProjectManager projectManager);
-
-    Project findByCustomer(Customer customer);
 }

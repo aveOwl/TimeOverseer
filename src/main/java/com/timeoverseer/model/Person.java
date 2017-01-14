@@ -1,5 +1,9 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +17,8 @@ import javax.persistence.Table;
  * The <code>Person</code> class represents common features for all
  * human entities, such as {@link Employee}, {@link Customer}, {@link Administrator}.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "person", schema = "overseer")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -77,6 +83,7 @@ public class Person {
         this.login = login;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }
@@ -88,11 +95,11 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
+                "id=" + this.id +
+                ", firstName='" + this.firstName +
+                ", lastName='" + this.lastName +
+                ", login='" + this.login +
+                ", password='" + this.password +
                 '}';
     }
 }

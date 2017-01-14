@@ -1,8 +1,12 @@
 package com.timeoverseer.repository;
 
-import org.springframework.stereotype.Repository;
+import com.timeoverseer.model.ProjectManager;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@Repository
-public interface ProjectManagerRepository extends EmployeeRepository {
+import javax.transaction.Transactional;
 
+@Transactional
+@RepositoryRestResource
+public interface ProjectManagerRepository extends CrudRepository<ProjectManager, Long> {
 }

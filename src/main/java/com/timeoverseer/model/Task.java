@@ -1,5 +1,8 @@
 package com.timeoverseer.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.timeoverseer.model.enums.Qualification;
 
 import javax.persistence.Column;
@@ -12,8 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -26,6 +29,8 @@ import java.util.stream.Collectors;
  * to an {@link Employee} or not. May contain several subtasks, required to complete
  * it and keeps track of employees {@link Employee} working on it.
  */
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "task", schema = "overseer")
 public class Task {
@@ -52,9 +57,11 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
+    @JsonBackReference(value = "sprintReference")
     private Sprint sprint;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
+    @JsonBackReference(value = "developersReference")
     private Set<Developer> developers;
 
     protected Task() {
@@ -132,32 +139,34 @@ public class Task {
         return developers;
     }
 
-    public void addDeveloper(Developer... developers) {
+    public void addDeveloper(Developer developer) {
         if (this.developers == null) {
             this.developers = new HashSet<>();
         }
-        Collections.addAll(this.developers, developers);
+        this.developers.add(developer);
     }
 
-    public void removeDeveloper(Developer... developers) {
-        for (Developer dev : developers) {
-            this.developers.remove(dev);
-        }
+    public void removeDeveloper(Developer developer) {
+        this.developers.remove(developer);
+    }
+
+    private List<String> developersName() {
+        return developers.stream()
+                .map(d -> d.getFirstName() + " " + d.getLastName())
+                .collect(Collectors.toList());
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", isAssigned=" + isAssigned +
-                ", qualification=" + qualification +
-                ", timeToComplete=" + timeToComplete +
-                ", timeInDevelopment=" + timeInDevelopment +
-                ", sprint=" + sprint.getName() +
-                ", developers=" + developers.stream()
-                .map(d -> d.getFirstName() + " " + d.getLastName())
-                .collect(Collectors.toList()) +
+                "id=" + this.id +
+                ", name='" + this.name +
+                ", isAssigned=" + this.isAssigned +
+                ", qualification=" + this.qualification +
+                ", timeToComplete=" + this.timeToComplete +
+                ", timeInDevelopment=" + this.timeInDevelopment +
+                ", sprint=" + this.sprint.getName() +
+                ", developers=" + this.developersName() +
                 '}';
     }
 }
