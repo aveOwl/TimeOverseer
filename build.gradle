@@ -44,7 +44,6 @@ dependencies {
     compile "org.codehaus.groovy:groovy-all:$groovyVersion"
 
     //    web-layer
-    compile "org.springframework.boot:spring-boot-starter-thymeleaf"
     compile "org.springframework.boot:spring-boot-devtools"
     compile "org.webjars.bower:angular:$angularVersion"
     compile "org.webjars.bower:bootstrap:$bootstrapVersion"

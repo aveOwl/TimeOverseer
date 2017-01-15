@@ -1,0 +1,72 @@
+<!--COMPANY NAME-->
+<div class="form-group">
+    <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="name">Company Name:</label>
+    <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
+        <input id="name"
+               name="name"
+               type="text"
+               placeholder="Company Name"
+               class="form-control"
+               ng-model="company.name"/>
+    </div>
+</div>
+<!--COMPANY FOUNDED-->
+<div class="form-group">
+    <div class="input-group">
+        <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="founded">Company
+            Founded:</label>
+        <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
+
+            <datepicker date-format="LLLL d, yyyy">
+                <input id="founded"
+                       name="founded"
+                       type="text"
+                       placeholder="Date Founded"
+                       class="form-control"
+                       ng-model="company.founded"/>
+            </datepicker>
+        </div>
+    </div>
+</div>
+<!--COMPANY INDUSTRY-->
+<div class="form-group">
+    <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="industry">Industry:</label>
+    <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
+        <input id="industry"
+               name="industry"
+               type="text"
+               placeholder="Industry"
+               class="form-control"
+               ng-model="company.industry"/>
+        <small class="form-text text-left">If company works in several industries separate
+            each one with comma
+        </small>
+    </div>
+</div>
+<!--COMPANY FOUNDERS-->
+<div class="form-group">
+    <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="founders">Founders:</label>
+    <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
+        <input id="founders"
+               name="founders"
+               type="text"
+               placeholder="Founders"
+               class="form-control"
+               ng-model="company.founders"/>
+        <small class="form-text text-left">Separate each founder with comma</small>
+    </div>
+</div>
+<!--COMPANY PRODUCTS-->
+<div class="form-group">
+    <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="products">Products:</label>
+    <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
+
+        <input id="products"
+               name="products"
+               type="text"
+               placeholder="Products"
+               class="form-control"
+               ng-model="company.products"/>
+        <small class="form-text text-left">Separate each product with comma</small>
+    </div>
+</div>

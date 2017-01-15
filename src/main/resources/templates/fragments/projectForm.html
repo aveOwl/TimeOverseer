@@ -1,0 +1,44 @@
+<!--PROJECT DESCRIPTION-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="description">Description:</label>
+    <div class="col-lg-8">
+        <input id="description"
+               name="description"
+               type="text"
+               placeholder="Description"
+               class="form-control"
+               ng-model="project.description"/>
+    </div>
+</div>
+<!--PROJECT START DATE-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="startDate">Start Date:</label>
+    <div class="col-lg-8">
+        <div class="input-group">
+            <datepicker date-format="LLLL d, yyyy">
+                <input id="startDate"
+                       name="startDate"
+                       type="text"
+                       placeholder="Start Date"
+                       class="form-control"
+                       ng-model="project.startDate"/>
+            </datepicker>
+        </div>
+    </div>
+</div>
+<!--PROJECT END DATE-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="endDate">End Date:</label>
+    <div class="col-lg-8">
+        <div class="input-group">
+            <datepicker date-format="LLLL d, yyyy">
+                <input id="endDate"
+                       name="endDate"
+                       type="text"
+                       placeholder="End Date"
+                       class="form-control"
+                       ng-model="project.endDate"/>
+            </datepicker>
+        </div>
+    </div>
+</div>

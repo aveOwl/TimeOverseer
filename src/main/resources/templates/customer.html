@@ -1,9 +1,9 @@
 <div ng-controller="CustomerController">
-
     <!--Customer-->
     <section id="customer" class="content-section text-center">
         <div class="companies-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
+                <!--SHOW CUSTOMER-->
                 <div ng-show="customerInfo">
                     <h3>Customer info</h3>
                     <table class="table">
@@ -20,52 +20,15 @@
                             <td>{{customer.businessInterests}}</td>
                         </tr>
                     </table>
-                    <button class="btn btn-default col-lg-4" type="submit" ng-click="customerInfo = !customerInfo">Edit
-                    </button>
+                    <button class="btn btn-default col-lg-4" ng-click="customerInfo = !customerInfo">Edit</button>
                 </div>
+                <!--UPDATE CUSTOMER-->
                 <div ng-show="!customerInfo">
                     <h3>Customer</h3>
                     <form name="customer-form" class="form-horizontal" ng-submit="updateCustomer()" method="post">
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label" for="firstName">First Name:</label>
-                            <div class="col-lg-8">
-                                <input name="firstName" id="firstName" placeholder="First Name" class="form-control"
-                                       type="text"
-                                       ng-model="customer.firstName"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label" for="lastName">Last Name:</label>
-                            <div class="col-lg-8">
-                                <input name="lastName" id="lastName" placeholder="Last Name" class="form-control"
-                                       type="text"
-                                       ng-model="customer.lastName"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label" for="login">Login:</label>
-                            <div class="col-lg-8">
-                                <input name="login" id="login" placeholder="Login" class="form-control" type="text"
-                                       ng-model="customer.login"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label" for="password">Industry</label>
-                            <div class="col-lg-8">
-                                <input name="password" id="password" placeholder="Password" class="form-control"
-                                       type="password"
-                                       ng-model="customer.password"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-lg-4 control-label" for="businessInterests">Business Interests:</label>
-                            <div class="col-lg-8">
-                                <input name="businessInterests" id="businessInterests" placeholder="Business Interests"
-                                       class="form-control" type="text"
-                                       ng-model="customer.businessInterests"/>
-                                <small class="form-text text-left">Separate each interest with comma</small>
-                            </div>
-                        </div>
+
+                        <div ng-include="'/templates/fragments/customerForm.html'"></div>
+
                         <div class="col-lg-8 text-left">
                             <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
                                     ng-click="reloadRoute()">Update

@@ -1,0 +1,62 @@
+<!--CUSTOMER FIRST NAME-->
+<div class="form-group">
+    <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="firstName">First Name:</label>
+    <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
+        <input id="firstName"
+               name="firstName"
+               type="text"
+               placeholder="First Name"
+               class="form-control"
+               ng-model="customer.firstName"/>
+    </div>
+</div>
+<!--CUSTOMER LAST NAME-->
+<div class="form-group">
+    <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="lastName">Last Name:</label>
+    <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
+        <input id="lastName"
+               name="lastName"
+               type="text"
+               placeholder="Last Name"
+               class="form-control"
+               ng-model="customer.lastName"/>
+    </div>
+</div>
+<!--CUSTOMER LOGIN-->
+<div class="form-group">
+    <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="login">Login:</label>
+    <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
+        <input id="login"
+               name="login"
+               type="text"
+               placeholder="Login"
+               class="form-control"
+               ng-model="customer.login"/>
+    </div>
+</div>
+<!--CUSTOMER PASSWORD-->
+<div class="form-group">
+    <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="password">Password:</label>
+    <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
+        <input id="password"
+               name="password"
+               type="password"
+               placeholder="Password"
+               class="form-control"
+               ng-model="customer.password"/>
+    </div>
+</div>
+<!--CUSTOMER BUSINESS INTERESTS-->
+<div class="form-group">
+    <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="businessInterests">Business
+        Interests:</label>
+    <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
+        <input id="businessInterests"
+               name="businessInterests"
+               type="text"
+               placeholder="Business Interests"
+               class="form-control"
+               ng-model="customer.businessInterests"/>
+        <small class="form-text text-left">Separate each interest with comma</small>
+    </div>
+</div>
