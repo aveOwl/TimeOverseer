@@ -2,7 +2,6 @@ package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.timeoverseer.model.enums.Qualification;
 
 import javax.persistence.CascadeType;
@@ -30,11 +29,9 @@ public class ProjectManager extends Employee {
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    @JsonManagedReference(value = "projectReference")
     private Project project;
 
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "projectManager")
-    @JsonManagedReference(value = "developersReference")
     private Set<Developer> developers;
 
     public ProjectManager() {

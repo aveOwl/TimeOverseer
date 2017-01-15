@@ -1,8 +1,9 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.timeoverseer.model.enums.Qualification;
 
 import javax.persistence.Column;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "task", schema = "overseer")
 public class Task {
@@ -57,11 +59,9 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "sprint_id")
-    @JsonBackReference(value = "sprintReference")
     private Sprint sprint;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "tasks")
-    @JsonBackReference(value = "developersReference")
     private Set<Developer> developers;
 
     protected Task() {

@@ -1,8 +1,9 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.timeoverseer.util.LocalDateDeserializer;
@@ -33,6 +34,7 @@ import java.util.Set;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "company", schema = "overseer")
 public class Company {
@@ -63,11 +65,9 @@ public class Company {
     @JoinTable(name = "company_customer",
             joinColumns = {@JoinColumn(name = "company_id", nullable = false)},
             inverseJoinColumns = {@JoinColumn(name = "customer_id", nullable = false)})
-    @JsonManagedReference
     private Set<Customer> customers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employer", orphanRemoval = true)
-    @JsonManagedReference
     private Set<Employee> employees;
 
     protected Company() {

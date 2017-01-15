@@ -1,9 +1,7 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.timeoverseer.model.enums.Qualification;
 
 import javax.persistence.CascadeType;
@@ -31,14 +29,12 @@ public class Developer extends Employee {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "project_manager")
-    @JsonBackReference
     private ProjectManager projectManager;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "developer_task",
             joinColumns = {@JoinColumn(name = "developer_id")},
             inverseJoinColumns = {@JoinColumn(name = "task_id")})
-    @JsonManagedReference
     private Set<Task> tasks;
 
     protected Developer() {

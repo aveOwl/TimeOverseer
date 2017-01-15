@@ -1,9 +1,7 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,11 +31,9 @@ public class Customer extends Person {
     private String businessInterests;
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "customers")
-    @JsonBackReference
     private Set<Company> companies;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer", orphanRemoval = true)
-    @JsonManagedReference
     private Set<Project> projects;
 
     protected Customer() {

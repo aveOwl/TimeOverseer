@@ -1,7 +1,6 @@
 package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.timeoverseer.model.enums.Qualification;
 
@@ -30,7 +29,6 @@ public class Employee extends Person {
 
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    @JsonBackReference
     private Company employer;
 
     @Column(name = "qualification", nullable = false)
