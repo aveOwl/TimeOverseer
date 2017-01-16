@@ -8,14 +8,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.timeoverseer.util.LocalDateDeserializer;
 import com.timeoverseer.util.LocalDateSerializer;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -34,14 +37,14 @@ import java.util.Set;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false, of = {"description", "startDate", "endDate"})
+@ToString(callSuper = true, exclude = {"customer", "projectManager"})
 @Entity
 @Table(name = "project", schema = "overseer")
-public class Project {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+public class Project extends AbstractEntity {
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -67,9 +70,6 @@ public class Project {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private Set<Sprint> sprints;
 
-    protected Project() {
-    }
-
     public Project(String description,
                    LocalDate startDate,
                    LocalDate endDate,
@@ -82,58 +82,6 @@ public class Project {
         this.projectManager = projectManager;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(LocalDate startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public ProjectManager getProjectManager() {
-        return projectManager;
-    }
-
-    public void setProjectManager(ProjectManager projectManager) {
-        this.projectManager = projectManager;
-    }
-
-    public Set<Sprint> getSprints() {
-        return sprints;
-    }
-
     public void addSprint(Sprint sprint) {
         if (this.sprints == null) {
             this.sprints = new HashSet<>();
@@ -143,27 +91,5 @@ public class Project {
 
     public void removeSprint(Sprint sprint) {
         this.sprints.remove(sprint);
-    }
-
-    private String customerName() {
-        return this.customer.getFirstName() + " " + this.customer.getLastName();
-    }
-
-    private String projectManagerName() {
-        return this.projectManager == null ? null :
-                this.projectManager.getFirstName() + " " + this.projectManager.getLastName();
-    }
-
-    @Override
-    public String toString() {
-        return "Project{" +
-                "id=" + this.id +
-                ", description='" + this.description +
-                ", startDate=" + this.startDate +
-                ", endDate=" + this.endDate +
-                ", customer=" + this.customerName() +
-                ", projectManager=" + this.projectManagerName() +
-                ", sprints=" + this.sprints +
-                '}';
     }
 }

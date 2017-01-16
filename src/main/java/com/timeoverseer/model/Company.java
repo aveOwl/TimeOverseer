@@ -8,14 +8,17 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.timeoverseer.util.LocalDateDeserializer;
 import com.timeoverseer.util.LocalDateSerializer;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -35,14 +38,14 @@ import java.util.Set;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = false, exclude = {"customers", "employees"})
+@ToString(callSuper = true)
 @Entity
 @Table(name = "company", schema = "overseer")
-public class Company {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", unique = true, nullable = false)
-    private Long id;
+public class Company extends AbstractEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -70,67 +73,12 @@ public class Company {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "employer", orphanRemoval = true)
     private Set<Employee> employees;
 
-    protected Company() {
-    }
-
     public Company(String name, LocalDate founded, String industry, String founders, String products) {
         this.name = name;
         this.founded = founded;
         this.industry = industry;
         this.founders = founders;
         this.products = products;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalDate getFounded() {
-        return founded;
-    }
-
-    public void setFounded(LocalDate founded) {
-        this.founded = founded;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public String getFounders() {
-        return founders;
-    }
-
-    public void setFounders(String founders) {
-        this.founders = founders;
-    }
-
-    public String getProducts() {
-        return products;
-    }
-
-    public void setProducts(String products) {
-        this.products = products;
-    }
-
-    public Set<Customer> getCustomers() {
-        return customers;
     }
 
     public void addCustomer(Customer customer) {
@@ -157,19 +105,5 @@ public class Company {
 
     public void removeEmployee(Employee employee) {
         this.employees.remove(employee);
-    }
-
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + this.id +
-                ", name='" + this.name +
-                ", founded=" + this.founded +
-                ", industry='" + this.industry +
-                ", founders='" + this.founders +
-                ", products='" + this.products +
-                ", customers=" + this.customers +
-                ", employees=" + this.employees +
-                '}';
     }
 }

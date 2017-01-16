@@ -3,6 +3,12 @@ package com.timeoverseer.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.timeoverseer.model.enums.Qualification;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +27,11 @@ import javax.persistence.Table;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, of = "qualification")
+@ToString(callSuper = true, exclude = "employer")
 @Entity
 @Table(name = "employee", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "emp_id", referencedColumnName = "id")
@@ -34,9 +45,6 @@ public class Employee extends Person {
     @Column(name = "qualification", nullable = false)
     private Qualification qualification;
 
-    protected Employee() {
-    }
-
     public Employee(String firstName,
                     String lastName,
                     String login,
@@ -45,29 +53,5 @@ public class Employee extends Person {
         super(firstName, lastName, login, password);
         this.employer = employer;
         this.qualification = qualification;
-    }
-
-    public Company getEmployer() {
-        return employer;
-    }
-
-    public void setEmployer(Company employer) {
-        this.employer = employer;
-    }
-
-    public Qualification getQualification() {
-        return qualification;
-    }
-
-    public void setQualification(Qualification qualification) {
-        this.qualification = qualification;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "employer=" + this.employer.getName() +
-                ", qualification=" + this.qualification +
-                "} " + super.toString();
     }
 }

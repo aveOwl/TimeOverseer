@@ -3,6 +3,12 @@ package com.timeoverseer.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.timeoverseer.model.enums.Qualification;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,6 +28,11 @@ import java.util.Set;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, of = "tasks")
+@ToString(callSuper = true, exclude = "projectManager")
 @Entity
 @Table(name = "developer", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "dev_id", referencedColumnName = "emp_id")
@@ -37,9 +48,6 @@ public class Developer extends Employee {
             inverseJoinColumns = {@JoinColumn(name = "task_id")})
     private Set<Task> tasks;
 
-    protected Developer() {
-    }
-
     public Developer(String firstName,
                      String lastName,
                      String login,
@@ -51,18 +59,6 @@ public class Developer extends Employee {
         this.projectManager = projectManager;
     }
 
-    public ProjectManager getProjectManager() {
-        return projectManager;
-    }
-
-    public void setProjectManager(ProjectManager projectManager) {
-        this.projectManager = projectManager;
-    }
-
-    public Set<Task> getTasks() {
-        return tasks;
-    }
-
     public void addTask(Task task) {
         if (this.tasks == null) {
             this.tasks = new HashSet<>();
@@ -72,18 +68,5 @@ public class Developer extends Employee {
 
     public void removeTask(Task task) {
         this.tasks.remove(task);
-    }
-
-    private String projectManagerName() {
-        return projectManager == null ? null :
-                projectManager.getFirstName() + " " + projectManager.getLastName();
-    }
-
-    @Override
-    public String toString() {
-        return "Developer{" +
-                "projectManager=" + this.projectManagerName() +
-                ", tasks=" + this.tasks +
-                "} " + super.toString();
     }
 }

@@ -2,6 +2,12 @@ package com.timeoverseer.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,9 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * The <code>Customer</code> class represents a {@link Person} interested
@@ -22,6 +26,11 @@ import java.util.stream.Collectors;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true, of = "businessInterests")
+@ToString(callSuper = true, exclude = "companies")
 @Entity
 @Table(name = "customer", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "cust_id", referencedColumnName = "id")
@@ -36,24 +45,9 @@ public class Customer extends Person {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "customer", orphanRemoval = true)
     private Set<Project> projects;
 
-    protected Customer() {
-    }
-
     public Customer(String firstName, String lastName, String login, String password, String businessInterests) {
         super(firstName, lastName, login, password);
         this.businessInterests = businessInterests;
-    }
-
-    public String getBusinessInterests() {
-        return businessInterests;
-    }
-
-    public void setBusinessInterests(String businessInterests) {
-        this.businessInterests = businessInterests;
-    }
-
-    public Set<Company> getCompanies() {
-        return companies;
     }
 
     public void addCompany(Company company) {
@@ -67,10 +61,6 @@ public class Customer extends Person {
         this.companies.remove(company);
     }
 
-    public Set<Project> getProjects() {
-        return projects;
-    }
-
     public void addProject(Project project) {
         if (this.projects == null) {
             this.projects = new HashSet<>();
@@ -80,20 +70,5 @@ public class Customer extends Person {
 
     public void removeProject(Project project) {
         this.projects.remove(project);
-    }
-
-    private List<String> companiesName() {
-        return this.companies.stream()
-                .map(Company::getName)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "businessInterests='" + this.businessInterests +
-                ", companies=" + this.companiesName() +
-                ", projects=" + this.projects +
-                "} " + super.toString();
     }
 }

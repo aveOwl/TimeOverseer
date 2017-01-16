@@ -3,6 +3,12 @@ package com.timeoverseer.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.timeoverseer.model.enums.Qualification;
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,6 +28,11 @@ import java.util.Set;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
 @Entity
 @Table(name = "project_manager", schema = "overseer")
 @PrimaryKeyJoinColumn(name = "pm_id", referencedColumnName = "emp_id")
@@ -34,9 +45,6 @@ public class ProjectManager extends Employee {
     @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY, mappedBy = "projectManager")
     private Set<Developer> developers;
 
-    public ProjectManager() {
-    }
-
     public ProjectManager(String firstName,
                           String lastName,
                           String login,
@@ -48,18 +56,6 @@ public class ProjectManager extends Employee {
         this.project = project;
     }
 
-    public Project getProject() {
-        return project;
-    }
-
-    public void setProject(Project project) {
-        this.project = project;
-    }
-
-    public Set<Developer> getDevelopers() {
-        return developers;
-    }
-
     public void addDeveloper(Developer developer) {
         if (this.developers == null) {
             this.developers = new HashSet<>();
@@ -69,13 +65,5 @@ public class ProjectManager extends Employee {
 
     public void removeDeveloper(Developer developer) {
         this.developers.remove(developer);
-    }
-
-    @Override
-    public String toString() {
-        return "ProjectManager{" +
-                "project=" + this.project +
-                ", developers=" + this.developers +
-                "} " + super.toString();
     }
 }
