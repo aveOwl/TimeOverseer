@@ -36,7 +36,8 @@ class DeveloperProjectManagerSpec extends Specification {
     def developer2 = ["Katy", "Starr", "Wildow", "glass122", company, JUNIOR, projectManager] as Developer
 
     void setup() {
-        projectManager.addDeveloper(developer1, developer2)
+        projectManager.addDeveloper(developer1)
+        projectManager.addDeveloper(developer2)
         company.addEmployee(projectManager)
         company.addEmployee(developer2)
         company.addEmployee(developer2)
@@ -61,7 +62,7 @@ class DeveloperProjectManagerSpec extends Specification {
 
     def "should not remove project manager when developer removed"() {
         when:
-        projectManagerRepository.delete(developer1)
+        developerRepository.delete(developer1)
 
         then:
         projectManagerRepository.findByLogin("Ross") != null

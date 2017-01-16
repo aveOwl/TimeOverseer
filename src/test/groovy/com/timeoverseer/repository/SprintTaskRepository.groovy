@@ -42,7 +42,8 @@ class SprintTaskRepository extends Specification {
         project.addSprint(sprint)
         sprint.project = project
 
-        sprint.addTask(task1, task2)
+        sprint.addTask(task1)
+        sprint.addTask(task2)
         task1.sprint = sprint
         task2.sprint = sprint
 
@@ -57,7 +58,8 @@ class SprintTaskRepository extends Specification {
 
     def "should delete task if sprint removed"() {
         given:
-        sprint.removeTask(task1, task2)
+        sprint.removeTask(task1)
+        sprint.removeTask(task2)
         task1.sprint == null
         task2.sprint == null
 

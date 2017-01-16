@@ -40,7 +40,8 @@ class TaskRepositorySpec extends Specification {
         project.addSprint(sprint)
         sprint.project = project
 
-        sprint.addTask(task1, task2)
+        sprint.addTask(task1)
+        sprint.addTask(task2)
 
         entityManager.persistAndFlush(customer)
     }
