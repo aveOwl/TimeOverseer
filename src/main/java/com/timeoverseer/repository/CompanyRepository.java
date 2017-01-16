@@ -9,4 +9,6 @@ import javax.transaction.Transactional;
 @Transactional
 @RepositoryRestResource
 public interface CompanyRepository extends CrudRepository<Company, Long> {
+
+    Company findByName(String name);
 }

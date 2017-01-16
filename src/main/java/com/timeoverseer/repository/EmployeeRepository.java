@@ -1,14 +1,12 @@
 package com.timeoverseer.repository;
 
 import com.timeoverseer.model.Employee;
-import com.timeoverseer.repository.nobean.PersonRepository;
-import org.springframework.data.repository.CrudRepository;
+import com.timeoverseer.repository.base.EmployeeBaseRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import javax.transaction.Transactional;
 
 @Transactional
 @RepositoryRestResource
-public interface EmployeeRepository extends PersonRepository<Employee>,
-        CrudRepository<Employee, Long> {
+public interface EmployeeRepository extends EmployeeBaseRepository<Employee> {
 }

@@ -1,9 +1,14 @@
 package com.timeoverseer.repository;
 
 import com.timeoverseer.model.Administrator;
-import com.timeoverseer.repository.nobean.PersonRepository;
-import org.springframework.stereotype.Repository;
+import com.timeoverseer.repository.base.PersonBaseRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-@Repository
-public interface AdministratorRepository extends PersonRepository<Administrator> {
+import javax.transaction.Transactional;
+
+@Transactional
+@RepositoryRestResource
+public interface AdministratorRepository extends PersonBaseRepository<Administrator>,
+        CrudRepository<Administrator, Long> {
 }
