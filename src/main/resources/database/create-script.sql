@@ -84,6 +84,7 @@ CREATE TABLE overseer.project (
   id              SERIAL PRIMARY KEY,
   project_manager INT          NULL,
   customer_id     INT          NOT NULL,
+  name            VARCHAR(100) NOT NULL,
   description     VARCHAR(500) NOT NULL,
   start_date      DATE         NOT NULL,
   end_date        DATE         NOT NULL

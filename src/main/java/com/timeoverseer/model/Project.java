@@ -36,15 +36,18 @@ import java.util.Set;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY, isGetterVisibility = JsonAutoDetect.Visibility.ANY, getterVisibility = JsonAutoDetect.Visibility.ANY)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
-@EqualsAndHashCode(callSuper = false, of = {"description", "startDate", "endDate"})
+@EqualsAndHashCode(callSuper = false, exclude = {"customer", "projectManager", "sprints"})
 @ToString(callSuper = true, exclude = {"customer", "projectManager"})
 @Entity
 @Table(name = "project", schema = "overseer")
 public class Project extends AbstractEntity {
+
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Column(name = "description", nullable = false)
     private String description;
@@ -70,11 +73,13 @@ public class Project extends AbstractEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "project", orphanRemoval = true)
     private Set<Sprint> sprints;
 
-    public Project(String description,
+    public Project(String name,
+                   String description,
                    LocalDate startDate,
                    LocalDate endDate,
                    Customer customer,
                    ProjectManager projectManager) {
+        this.name = name;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;

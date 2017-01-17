@@ -31,7 +31,7 @@ class ProjectProjectManagerSpec extends Specification {
     def projectManager = ["Jake", "Main", "Ross", "glanes", company, SENIOR, null] as ProjectManager
 
     def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
+    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
 
     void setup() {
         company.addCustomer(customer)
@@ -65,7 +65,7 @@ class ProjectProjectManagerSpec extends Specification {
         def savedProject = projectRepository.findByCustomer(customer)
 
         then:
-        savedProject.description.contains("Apple")
+        savedProject.description.contains("Generation")
     }
 
     def "should not delete project when project manager removed"() {

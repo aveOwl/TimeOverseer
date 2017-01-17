@@ -29,7 +29,7 @@ class DeveloperTaskSpec extends Specification {
     def developer = ["Rob", "Lowe", "Sake", "enuss", company, TRAINEE, null] as Developer
 
     def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
+    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
     def sprint = ["First Phase", project] as Sprint
 
     def task = ["First Task", false, MIDDLE, 20L, sprint] as Task

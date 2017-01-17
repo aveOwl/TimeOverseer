@@ -24,7 +24,7 @@ class SprintRepositorySpec extends Specification {
     TestEntityManager entityManager
 
     def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
+    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
     def sprint = ["First Phase", project] as Sprint
 
     void setup() {
