@@ -220,18 +220,7 @@ a:focus {
 .content-section {
     padding-top: 100px;
 }
-.companies-section {
-    width: 100%;
-    padding: 50px 0;
-    color: white;
-    background: url(../img/company-bg.jpg) no-repeat center center scroll;
-    background-color: black;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    background-size: cover;
-    -o-background-size: cover;
-}
-.customers-section {
+.main-section {
     width: 100%;
     padding: 50px 0;
     color: white;
@@ -246,10 +235,7 @@ a:focus {
     .content-section {
         padding-top: 150px;
     }
-    .companies-section {
-        padding: 100px 0;
-    }
-    .customers-section {
+    .main-section {
         padding: 100px 0;
     }
 }

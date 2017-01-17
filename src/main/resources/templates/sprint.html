@@ -1,0 +1,55 @@
+<div ng-controller="SprintController">
+    <!--Company-->
+    <section id="sprint" class="content-section text-center">
+        <div class="main-section container">
+            <div class="col-lg-4 col-lg-offset-2 text-left">
+                <!--SHOW SPRINT-->
+                <div ng-show="sprintInfo">
+                    <h3>Sprint info</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Name:</th>
+                            <td><strong>{{sprint.name}}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Project:</th>
+                            <td><a class="top-link" ui-sref="projects({id: project.id})">{{project.name}}</a></td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-default col-lg-4" ng-click="projectInfo = !projectInfo">Edit</button>
+                </div>
+                <!--EDIT SPRINT-->
+                <div ng-hide="sprintInfo">
+                    <h3>Project</h3>
+                    <form class="form-horizontal" ng-submit="updateSprint()">
+
+                        <div ng-include="'/templates/fragments/sprintForm.html'"></div>
+
+                        <div class="col-lg-8 text-left">
+                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
+                                    ng-click="sprintInfo = true">Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Tasks-->
+    <section id="tasks" class="content-section text-center">
+        <div class="main-section container">
+            <div class="col-lg-8 col-lg-offset-2 text-left">
+                <!--SHOW Projects-->
+                <div ng-show="tasksInfo">
+                    <h3>Tasks</h3>
+                    <div ng-show="tasks.length == 0">
+                        <h6>Currently no tasks assigned</h6>
+                    </div>
+
+                    <button class="btn btn-default col-lg-2" ng-click="tasksInfo = !tasksInfo">Add</button>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

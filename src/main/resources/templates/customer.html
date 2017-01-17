@@ -1,7 +1,7 @@
 <div ng-controller="CustomerController">
     <!--Customer-->
     <section id="customer" class="content-section text-center">
-        <div class="companies-section container">
+        <div class="main-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
                 <!--SHOW CUSTOMER-->
                 <div ng-show="customerInfo">
@@ -42,12 +42,15 @@
 
     <!--Projects-->
     <section id="projects" class="content-section text-center">
-        <div class="companies-section container">
+        <div class="main-section container">
             <div class="col-lg-8 col-lg-offset-2 text-left">
                 <!--SHOW Projects-->
                 <div ng-show="projectsInfo">
                     <h3>Projects</h3>
-                    <table class="table">
+                    <div ng-show="projects.length == 0">
+                        <h6>No projects on the record</h6>
+                    </div>
+                    <table class="table" ng-hide="projects.length == 0">
                         <thead>
                         <tr>
                             <th>Name</th>
@@ -58,7 +61,7 @@
                         </thead>
                         <tbody>
                         <tr ng-repeat="p in projects">
-                            <td><a class="top-link" ng-href="{{p._links.self.href}}">{{p.name}}</a></td>
+                            <td><a class="top-link" ui-sref="projects({id: p.id})">{{p.name}}</a></td>
                             <td>{{p.description}}</td>
                             <td>{{p.startDate}}</td>
                             <td>{{p.endDate}}</td>
@@ -67,18 +70,20 @@
                     </table>
                     <button class="btn btn-default col-lg-2" ng-click="projectsInfo = !projectsInfo">Add</button>
                 </div>
+            </div>
+            <div class="col-lg-4 col-lg-offset-2 text-left">
                 <!--ADD PROJECT-->
                 <div ng-hide="projectsInfo">
-                    <h3>Project</h3>
+                    <h3>New Project</h3>
                     <form class="form-horizontal" ng-submit="addProject()">
 
                         <div ng-include="'/templates/fragments/projectForm.html'"></div>
 
-                        <div class="col-lg-8 col-lg-offset-2">
-                            <button class="btn btn-default col-lg-6" type="submit"
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
                                     ng-click="projectsInfo = true">Submit
                             </button>
-                            <button class="btn btn-default col-lg-6" type="button"
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                     ng-click="projectsInfo = true">Cancel
                             </button>
                         </div>
@@ -90,9 +95,16 @@
 
     <!--Companies-->
     <section id="companies" class="content-section text-left">
-        <div class="companies-section container">
+        <div class="main-section container">
             <div class="col-lg-8 col-lg-offset-2">
-                <h3>Companies</h3>
+                <div ng-show="companiesInfo">
+                    <h3>Companies</h3>
+                    <div ng-show="companies.length == 0">
+                        <h6>No companies on the record</h6>
+                    </div>
+
+                    <button class="btn btn-default col-lg-2" ng-click="companiesInfo = !companiesInfo">Search</button>
+                </div>
             </div>
         </div>
     </section>

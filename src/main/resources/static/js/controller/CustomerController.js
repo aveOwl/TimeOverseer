@@ -10,6 +10,7 @@
     // define controller
     var CustomerController = function ($scope, $resource, $stateParams, $http, $location) {
         $scope.customerInfo = true;
+        $scope.companiesInfo = true;
         $scope.projectsInfo = true;
 
         $resource('/customers/:id', {id: '@id'}).get({id: $stateParams.id})
@@ -25,8 +26,9 @@
                     });
                 };
 
-                var getProjects = customer._links.projects.href;
-                $http.get(getProjects).then(function (response) {
+                // PROJECTS
+                var projectsLink = customer._links.projects.href;
+                $http.get(projectsLink).then(function (response) {
                     $scope.projects = response.data._embedded.projects;
 
                     $scope.project = {
@@ -47,6 +49,12 @@
                         });
                     };
                 });
+
+                // COMPANIES
+                var companiesLink = customer._links.companies.href;
+                $http.get(companiesLink).then(function (response) {
+                    $scope.companies = response.data._embedded.companies;
+                })
             });
     };
 

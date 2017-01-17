@@ -23,9 +23,11 @@
     <script src="/static/js/app.js"></script>
     <script src="/static/js/route.js"></script>
     <script src="/static/js/controller/HomeController.js"></script>
-    <script src="/static/js/controller/NavigationContorller.js"></script>
+    <script src="/static/js/controller/NavigationController.js"></script>
     <script src="/static/js/controller/CompanyController.js"></script>
     <script src="/static/js/controller/CustomerController.js"></script>
+    <script src="/static/js/controller/ProjectController.js"></script>
+    <script src="/static/js/controller/SprintController.js"></script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" ng-controller="NavigationController">
@@ -78,6 +80,20 @@
                 <li ng-show="activeTab == 'customer'">
                     <a class="page-scroll" href="#companies">Companies</a>
                 </li>
+                <!--Project-->
+                <li ng-show="activeTab == 'project'">
+                    <a class="page-scroll" href="#project">Project</a>
+                </li>
+                <li ng-show="activeTab == 'project'">
+                    <a class="page-scroll" href="#sprints">Sprints</a>
+                </li>
+                <!--Sprint-->
+                <li ng-show="activeTab == 'sprint'">
+                    <a class="page-scroll" href="#sprint">Sprint</a>
+                </li>
+                <li ng-show="activeTab == 'sprint'">
+                    <a class="page-scroll" href="#tasks">Tasks</a>
+                </li>
                 <!--Footer-->
                 <li>
                     <a class="page-scroll" href="#contact">Contact</a>
@@ -106,6 +122,8 @@
 <div ui-view="home"></div>
 <div ui-view="company"></div>
 <div ui-view="customer"></div>
+<div ui-view="project"></div>
+<div ui-view="sprint"></div>
 
 <div ng-include="'/templates/fragments/footer.html'"></div>
 

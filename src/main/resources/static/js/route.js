@@ -39,6 +39,26 @@
                         templateUrl: '/templates/customer.html'
                     }
                 }
+            })
+            .state('projects', {
+                url: "/projects/{id}",
+                activeTab: 'project',
+                controller: 'ProjectController',
+                views: {
+                    'project@': {
+                        templateUrl: '/templates/project.html'
+                    }
+                }
+            })
+            .state('sprints', {
+                url: "/sprints/{id}",
+                activeTab: 'sprint',
+                controller: 'SprintController',
+                views: {
+                    'sprint@': {
+                        templateUrl: '/templates/sprint.html'
+                    }
+                }
             });
     };
 
