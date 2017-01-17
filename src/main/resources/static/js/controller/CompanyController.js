@@ -8,7 +8,7 @@
     var app = angular.module('overseer');
 
     // define controller
-    var CompanyController = function ($scope, $resource, $stateParams, $http, $location, $state) {
+    var CompanyController = function ($scope, $resource, $stateParams, $http, $location) {
         $scope.companyInfo = true;
 
         $resource('/companies/:id', {id: '@id'}).get({id: $stateParams.id})
@@ -21,11 +21,7 @@
                         method: 'PUT',
                         url: $location.url(),
                         data: $scope.company
-                    }).success(
-                        $scope.reloadRoute = function () {
-                            $state.reload();
-                        }
-                    )
+                    });
                 };
 
                 var employees = company._links.employees.href;
@@ -38,5 +34,5 @@
     };
 
     // register controller
-    app.controller('CompanyController', ['$scope', '$resource', '$stateParams', '$http', '$location', '$state', CompanyController])
+    app.controller('CompanyController', ['$scope', '$resource', '$stateParams', '$http', '$location', CompanyController])
 }());

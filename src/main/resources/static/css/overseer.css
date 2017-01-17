@@ -321,3 +321,13 @@ body {
 .input-group {
     width: 100%;
 }
+
+.top-link {
+    text-decoration: underline;
+    color: white;
+}
+
+.top-link:hover {
+    text-decoration: underline;
+    color: white;
+}

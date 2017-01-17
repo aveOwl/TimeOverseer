@@ -23,15 +23,15 @@
                     <button class="btn btn-default col-lg-4" ng-click="customerInfo = !customerInfo">Edit</button>
                 </div>
                 <!--UPDATE CUSTOMER-->
-                <div ng-show="!customerInfo">
+                <div ng-hide="customerInfo">
                     <h3>Customer</h3>
-                    <form name="customer-form" class="form-horizontal" ng-submit="updateCustomer()" method="post">
+                    <form class="form-horizontal" ng-submit="updateCustomer()">
 
                         <div ng-include="'/templates/fragments/customerForm.html'"></div>
 
                         <div class="col-lg-8 text-left">
                             <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="reloadRoute()">Update
+                                    ng-click="customerInfo = true">Update
                             </button>
                         </div>
                     </form>
@@ -44,7 +44,46 @@
     <section id="projects" class="content-section text-center">
         <div class="companies-section container">
             <div class="col-lg-8 col-lg-offset-2 text-left">
-                <h3>Projects</h3>
+                <!--SHOW Projects-->
+                <div ng-show="projectsInfo">
+                    <h3>Projects</h3>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="p in projects">
+                            <td><a class="top-link" ng-href="{{p._links.self.href}}">{{p.name}}</a></td>
+                            <td>{{p.description}}</td>
+                            <td>{{p.startDate}}</td>
+                            <td>{{p.endDate}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-default col-lg-2" ng-click="projectsInfo = !projectsInfo">Add</button>
+                </div>
+                <!--ADD PROJECT-->
+                <div ng-hide="projectsInfo">
+                    <h3>Project</h3>
+                    <form class="form-horizontal" ng-submit="addProject()">
+
+                        <div ng-include="'/templates/fragments/projectForm.html'"></div>
+
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <button class="btn btn-default col-lg-6" type="submit"
+                                    ng-click="projectsInfo = true">Submit
+                            </button>
+                            <button class="btn btn-default col-lg-6" type="button"
+                                    ng-click="projectsInfo = true">Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
