@@ -1,5 +1,6 @@
 package com.timeoverseer.config;
 
+import com.timeoverseer.model.Company;
 import com.timeoverseer.model.Customer;
 import com.timeoverseer.model.Project;
 import com.timeoverseer.model.Sprint;
@@ -12,6 +13,6 @@ public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
 
     @Override
     public void configureRepositoryRestConfiguration(RepositoryRestConfiguration config) {
-        config.exposeIdsFor(Project.class, Customer.class, Sprint.class);
+        config.exposeIdsFor(Project.class, Customer.class, Sprint.class, Company.class);
     }
 }

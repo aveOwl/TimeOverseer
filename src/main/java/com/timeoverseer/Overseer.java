@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class Overseer extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
-        SpringApplication.run(Overseer.class, args);
+        SpringApplication.run(Overseer.class);
     }
 
     @Override

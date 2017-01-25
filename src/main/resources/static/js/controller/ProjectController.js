@@ -8,61 +8,68 @@
     var app = angular.module('overseer');
 
     // define controller
-    var ProjectController = function ($scope, $resource, $stateParams, $http, $location) {
+    var ProjectController = function ($scope, $resource, $stateParams, ProjectService, SprintService) {
         $scope.projectInfo = true;
         $scope.sprintsInfo = true;
 
-        $resource('/projects/:id', {id: '@id'}).get({id: $stateParams.id})
-            .$promise
-            .then(function (project) {
+        var projectId = $stateParams.id;
+
+        ProjectService.get({id: projectId}).$promise
+            .then(function success(project) {
                 $scope.project = project;
 
                 $scope.updateProject = function () {
-                    $http({
-                        method: 'PUT',
-                        url: $location.url(),
-                        data: $scope.project
-                    });
+                    ProjectService.update($scope.project);
                 };
 
                 // CUSTOMER
-                var customerLink = project._links.customer.href;
-                $http.get(customerLink).then(function (response) {
-                    $scope.customer = response.data;
-                    $scope.customerName = $scope.customer.firstName + " " + $scope.customer.lastName;
-                });
+                var Customer = $resource(project._links.customer.href);
+                Customer.get().$promise
+                    .then(function (customer) {
+                        $scope.customer = customer;
+                        $scope.customerName = customer.firstName + " " + customer.lastName;
+                    }, function error(response) {
+                        if (response.status == 404)
+                            console.log("Failed to fetch customer for project: " + $scope.project.name);
+                    });
 
                 // MANAGER
-                var managerLink = project._links.projectManager.href;
-                $http.get(managerLink).then(function success(response) {
-                    $scope.manager = response.data;
-                }, function error() {
-                    $scope.manager = "Not Assigned Yet";
-                });
+                var Manager = $resource(project._links.projectManager.href);
+                Manager.get().$promise
+                    .then(function success(manager) {
+                        $scope.manager = manager;
+                    }, function error(response) {
+                        if (response.status == 404) {
+                            $scope.manager = "Not Assigned Yet";
+                            console.log("No manager is assigned to project: " + $scope.project.name);
+                        }
+                    });
 
                 // SPRINTS
-                var sprintsLink = project._links.sprints.href;
-                $http.get(sprintsLink).then(function (response) {
-                    $scope.sprints = response.data._embedded.sprints;
+                var Sprints = $resource(project._links.sprints.href);
+                Sprints.get().$promise
+                    .then(function (sprints) {
+                        $scope.sprints = sprints._embedded.sprints;
 
-                    $scope.sprint = {
-                        name: $scope.name,
-                        project: project._links.self.href
-                    };
+                        $scope.sprint = {
+                            name: $scope.name,
+                            project: project._links.self.href
+                        };
 
-                    $scope.addSprint = function () {
-                        $scope.sprints.push($scope.sprint);
-
-                        $http({
-                            method: 'POST',
-                            url: '/sprints',
-                            data: $scope.sprint
-                        })
-                    }
-                });
+                        $scope.addSprint = function () {
+                            $scope.sprints.push($scope.sprint);
+                            SprintService.save($scope.sprint);
+                        }
+                    }, function error(response) {
+                        if (response.status == 404)
+                            console.log("Failed to fetch sprints for project: " + $scope.project.name);
+                    });
+            }, function error(response) {
+                if (response.status == 404)
+                    console.log("Failed to fetch project by id: " + projectId);
             });
     };
 
     // register controller
-    app.controller('ProjectController', ['$scope', '$resource', '$stateParams', '$http', '$location', ProjectController])
+    app.controller('ProjectController', ['$scope', '$resource', '$stateParams', 'ProjectService', 'SprintService', ProjectController])
 }());

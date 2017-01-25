@@ -53,39 +53,52 @@
     <section id="employees" class="content-section text-center">
         <div class="main-section container">
             <div class="col-lg-8 col-lg-offset-2 text-left">
-                <h3>Employees</h3>
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Login</th>
-                        <th>Qualification</th>
-                        <th>Position</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="dev in developers">
-                        <td>{{dev.firstName}} {{dev.lastName}}</td>
-                        <td>{{dev.login}}</td>
-                        <td>{{dev.qualification}}</td>
-                        <td>Developer</td>
-                    </tr>
-                    <tr ng-repeat="pm in projectManagers">
-                        <td>{{pm.firstName}} {{pm.lastName}}</td>
-                        <td>{{pm.login}}</td>
-                        <td>{{pm.qualification}}</td>
-                        <td>Project Manager</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div ng-show="employeesInfo">
+                    <h3>Employees</h3>
+                    <div ng-show="noEmployees">
+                        <h6>No employees on the record</h6>
+                    </div>
+                    <table class="table" ng-hide="noEmployees">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Login</th>
+                            <th>Qualification</th>
+                            <th>Position</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="dev in developers">
+                            <td>{{dev.firstName}} {{dev.lastName}}</td>
+                            <td>{{dev.login}}</td>
+                            <td>{{dev.qualification}}</td>
+                            <td>Developer</td>
+                        </tr>
+                        <tr ng-repeat="pm in projectManagers">
+                            <td>{{pm.firstName}} {{pm.lastName}}</td>
+                            <td>{{pm.login}}</td>
+                            <td>{{pm.qualification}}</td>
+                            <td>Project Manager</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </section>
 
     <!--Customers-->
-    <section id="customers" class="content-section text-center">
+    <section id="customers" class="content-section text-left">
         <div class="main-section container">
             <div class="col-lg-8 col-lg-offset-2">
+                <div ng-show="customersInfo">
+                    <h3>Customers</h3>
+                    <div ng-show="customers.length == 0">
+                        <h6>No customers on the record</h6>
+                    </div>
+
+                    <button class="btn btn-default col-lg-2" ng-click="customersInfo = !customersInfo">Search</button>
+                </div>
 
             </div>
         </div>

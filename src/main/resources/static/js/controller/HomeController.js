@@ -8,7 +8,7 @@
     var app = angular.module('overseer');
 
     // define controller
-    var HomeController = function ($scope, $http, $window) {
+    var HomeController = function ($scope, $window, CompanyService, CustomerService) {
         $scope.company = {
             name: $scope.name,
             founded: $scope.founded,
@@ -26,39 +26,22 @@
         };
 
         $scope.submitCompany = function () {
-            $http({
-                method: 'POST',
-                url: '/companies',
-                data: $scope.company
-            }).then(
-                function (response) {
-                    $window.location.href = redirect(response);
-                }
-            )
+            CompanyService.save($scope.company, function success(company) {
+                $window.location.href = "/#/companies/" + company.id;
+            }, function error(response) {
+                console.log(response);
+            });
         };
 
         $scope.submitCustomer = function () {
-            $http({
-                method: 'POST',
-                url: '/customers',
-                data: $scope.customer
-            }).then(
-                function (response) {
-                    $window.location.href = redirect(response);
-                }
-            )
+            CustomerService.save($scope.customer, function success(customer) {
+                $window.location.href = "/#/customers/" + customer.id;
+            }, function error(response) {
+                console.log(response);
+            });
         };
-
-        /**
-         * Redirects to created resource.
-         */
-        var redirect = function (response) {
-            var host = 'http://localhost:9090';
-            var link = response.data._links.self.href;
-            return link.replace(host, '/#');
-        }
     };
 
     // register controller
-    app.controller('HomeController', ['$scope', '$http', '$window', HomeController]);
+    app.controller('HomeController', ['$scope', '$window', 'CompanyService', 'CustomerService', HomeController]);
 }());
