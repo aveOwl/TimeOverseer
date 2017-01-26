@@ -16,5 +16,6 @@
     };
 
     // register controller
-    app.controller('NavigationController', ["$scope", "$state", NavigationController]);
+    app.controller('NavigationController',
+        ["$scope", "$state", NavigationController]);
 }());

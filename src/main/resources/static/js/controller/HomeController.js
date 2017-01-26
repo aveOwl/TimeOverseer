@@ -8,7 +8,7 @@
     var app = angular.module('overseer');
 
     // define controller
-    var HomeController = function ($scope, $window, CompanyService, CustomerService) {
+    var HomeController = function ($scope, $window, $log, CompanyService, CustomerService) {
         $scope.company = {
             name: $scope.name,
             founded: $scope.founded,
@@ -28,20 +28,23 @@
         $scope.submitCompany = function () {
             CompanyService.save($scope.company, function success(company) {
                 $window.location.href = "/#/companies/" + company.id;
+                $log.debug("Saved company", $scope.company);
             }, function error(response) {
-                console.log(response);
+                $log.error("Failed to save company", response);
             });
         };
 
         $scope.submitCustomer = function () {
             CustomerService.save($scope.customer, function success(customer) {
                 $window.location.href = "/#/customers/" + customer.id;
+                $log.debug("Saved customer", $scope.customer);
             }, function error(response) {
-                console.log(response);
+                $log.error("Failed to save customer", response);
             });
         };
     };
 
     // register controller
-    app.controller('HomeController', ['$scope', '$window', 'CompanyService', 'CustomerService', HomeController]);
+    app.controller('HomeController',
+        ['$scope', '$window', '$log', 'CompanyService', 'CustomerService', HomeController]);
 }());

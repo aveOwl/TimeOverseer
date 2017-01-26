@@ -1,9 +1,9 @@
 <div ng-controller="SprintController">
-    <!--Company-->
+    <!--Sprint-->
     <section id="sprint" class="content-section text-center">
         <div class="main-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
-                <!--SHOW SPRINT-->
+                <!--Show Sprint-->
                 <div ng-show="sprintInfo">
                     <h3>Sprint info</h3>
                     <table class="table">
@@ -16,9 +16,9 @@
                             <td><a class="top-link" ui-sref="projects({id: project.id})">{{project.name}}</a></td>
                         </tr>
                     </table>
-                    <button class="btn btn-default col-lg-4" ng-click="projectInfo = !projectInfo">Edit</button>
+                    <button class="btn btn-default col-lg-4" ng-click="sprintInfo = !sprintInfo">Edit</button>
                 </div>
-                <!--EDIT SPRINT-->
+                <!--Edit Sprint-->
                 <div ng-hide="sprintInfo">
                     <h3>Project</h3>
                     <form class="form-horizontal" ng-submit="updateSprint()">
@@ -37,18 +37,51 @@
     </section>
 
     <!--Tasks-->
-    <section id="tasks" class="content-section text-center">
+    <section id="sprint-tasks" class="content-section text-center">
         <div class="main-section container">
-            <div class="col-lg-8 col-lg-offset-2 text-left">
-                <!--SHOW Projects-->
-                <div ng-show="tasksInfo">
-                    <h3>Tasks</h3>
-                    <div ng-show="tasks.length == 0">
-                        <h6>Currently no tasks assigned</h6>
-                    </div>
-
-                    <button class="btn btn-default col-lg-2" ng-click="tasksInfo = !tasksInfo">Add</button>
+            <!--Show Tasks-->
+            <div class="col-lg-8 col-lg-offset-2 text-left" ng-show="tasksInfo">
+                <h3>Tasks</h3>
+                <div ng-show="tasks.length == 0">
+                    <h6>Currently no tasks on the record</h6>
                 </div>
+                <table class="table" ng-hide="tasks.length == 0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Confirmed</th>
+                        <th>Required Qualification</th>
+                        <th>Time to complete</th>
+                        <th>Time in development</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="t in tasks">
+                        <td><a class="top-link" ui-sref="tasks({id: t.id})">{{t.name}}</a></td>
+                        <td>{{t.assigned}}</td>
+                        <td>{{t.qualification}}</td>
+                        <td>{{t.timeToComplete}}</td>
+                        <td>{{t.timeInDevelopment}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-default col-lg-2" ng-click="tasksInfo = !tasksInfo">Add</button>
+            </div>
+            <!--Add Task-->
+            <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="tasksInfo">
+                <h3>New Task</h3>
+                <form class="form-horizontal" ng-submit="addTask()">
+
+                    <div ng-include="'/templates/fragments/taskForm.html'"></div>
+
+                    <div class="btn-toolbar">
+                        <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                ng-click="tasksInfo = true">Submit
+                        </button>
+                        <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                ng-click="tasksInfo = true">Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>

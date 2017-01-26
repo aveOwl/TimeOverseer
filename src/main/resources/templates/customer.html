@@ -3,7 +3,7 @@
     <section id="customer" class="content-section text-center">
         <div class="main-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
-                <!--SHOW CUSTOMER-->
+                <!--Show Customer-->
                 <div ng-show="customerInfo">
                     <h3>Customer info</h3>
                     <table class="table">
@@ -22,7 +22,7 @@
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="customerInfo = !customerInfo">Edit</button>
                 </div>
-                <!--UPDATE CUSTOMER-->
+                <!--Update Customer-->
                 <div ng-hide="customerInfo">
                     <h3>Customer</h3>
                     <form class="form-horizontal" ng-submit="updateCustomer()">
@@ -41,60 +41,56 @@
     </section>
 
     <!--Projects-->
-    <section id="projects" class="content-section text-center">
+    <section id="customer-projects" class="content-section text-center">
         <div class="main-section container">
-            <div class="col-lg-8 col-lg-offset-2 text-left">
-                <!--SHOW Projects-->
-                <div ng-show="projectsInfo">
-                    <h3>Projects</h3>
-                    <div ng-show="projects.length == 0">
-                        <h6>No projects on the record</h6>
-                    </div>
-                    <table class="table" ng-hide="projects.length == 0">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Start Date</th>
-                            <th>End Date</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="p in projects">
-                            <td><a class="top-link" ui-sref="projects({id: p.id})">{{p.name}}</a></td>
-                            <td>{{p.description}}</td>
-                            <td>{{p.startDate}}</td>
-                            <td>{{p.endDate}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-default col-lg-2" ng-click="projectsInfo = !projectsInfo">Add</button>
+            <!--Show Projects-->
+            <div class="col-lg-8 col-lg-offset-2 text-left" ng-show="projectsInfo">
+                <h3>Projects</h3>
+                <div ng-show="projects.length == 0">
+                    <h6>No projects on the record</h6>
                 </div>
+                <table class="table" ng-hide="projects.length == 0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="p in projects">
+                        <td><a class="top-link" ui-sref="projects({id: p.id})">{{p.name}}</a></td>
+                        <td>{{p.description}}</td>
+                        <td>{{p.startDate}}</td>
+                        <td>{{p.endDate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-default col-lg-2" ng-click="projectsInfo = !projectsInfo">Add</button>
             </div>
-            <div class="col-lg-4 col-lg-offset-2 text-left">
-                <!--ADD PROJECT-->
-                <div ng-hide="projectsInfo">
-                    <h3>New Project</h3>
-                    <form class="form-horizontal" ng-submit="addProject()">
+            <!--Add Project-->
+            <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="projectsInfo">
+                <h3>New Project</h3>
+                <form class="form-horizontal" ng-submit="addProject()">
 
-                        <div ng-include="'/templates/fragments/projectForm.html'"></div>
+                    <div ng-include="'/templates/fragments/projectForm.html'"></div>
 
-                        <div class="btn-toolbar">
-                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                    ng-click="projectsInfo = true">Submit
-                            </button>
-                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                    ng-click="projectsInfo = true">Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="btn-toolbar">
+                        <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                ng-click="projectsInfo = true">Submit
+                        </button>
+                        <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                ng-click="projectsInfo = true">Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
 
     <!--Companies-->
-    <section id="companies" class="content-section text-left">
+    <section id="customer-companies" class="content-section text-left">
         <div class="main-section container">
             <div class="col-lg-8 col-lg-offset-2">
                 <div ng-show="companiesInfo">

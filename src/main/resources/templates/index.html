@@ -29,11 +29,17 @@
     <script src="/static/js/controller/CustomerController.js"></script>
     <script src="/static/js/controller/ProjectController.js"></script>
     <script src="/static/js/controller/SprintController.js"></script>
+    <script src="/static/js/controller/DeveloperController.js"></script>
+    <script src="/static/js/controller/ProjectManagerController.js"></script>
+    <script src="/static/js/controller/TaskController.js"></script>
     <!--Services-->
     <script src="/static/js/service/CompanyService.js"></script>
     <script src="/static/js/service/CustomerService.js"></script>
     <script src="/static/js/service/ProjectService.js"></script>
     <script src="/static/js/service/SprintService.js"></script>
+    <script src="/static/js/service/DeveloperService.js"></script>
+    <script src="/static/js/service/ProjectManagerService.js"></script>
+    <script src="/static/js/service/TaskService.js"></script>
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top" ng-controller="NavigationController">
@@ -71,34 +77,55 @@
                     <a class="page-scroll" href="#company">Company</a>
                 </li>
                 <li ng-show="activeTab == 'company'">
-                    <a class="page-scroll" href="#employees">Employees</a>
+                    <a class="page-scroll" href="#company-employees">Employees</a>
                 </li>
                 <li ng-show="activeTab == 'company'">
-                    <a class="page-scroll" href="#customers">Customers</a>
+                    <a class="page-scroll" href="#company-customers">Customers</a>
                 </li>
                 <!--Customer-->
                 <li ng-show="activeTab == 'customer'">
                     <a class="page-scroll" href="#customer">Customer</a>
                 </li>
                 <li ng-show="activeTab == 'customer'">
-                    <a class="page-scroll" href="#projects">Projects</a>
+                    <a class="page-scroll" href="#customer-projects">Projects</a>
                 </li>
                 <li ng-show="activeTab == 'customer'">
-                    <a class="page-scroll" href="#companies">Companies</a>
+                    <a class="page-scroll" href="#customer-companies">Companies</a>
                 </li>
                 <!--Project-->
                 <li ng-show="activeTab == 'project'">
                     <a class="page-scroll" href="#project">Project</a>
                 </li>
                 <li ng-show="activeTab == 'project'">
-                    <a class="page-scroll" href="#sprints">Sprints</a>
+                    <a class="page-scroll" href="#project-sprints">Sprints</a>
                 </li>
                 <!--Sprint-->
                 <li ng-show="activeTab == 'sprint'">
                     <a class="page-scroll" href="#sprint">Sprint</a>
                 </li>
                 <li ng-show="activeTab == 'sprint'">
-                    <a class="page-scroll" href="#tasks">Tasks</a>
+                    <a class="page-scroll" href="#sprint-tasks">Tasks</a>
+                </li>
+                <!--Developer-->
+                <li ng-show="activeTab == 'developer'">
+                    <a class="page-scroll" href="#developer">Developer</a>
+                </li>
+                <li ng-show="activeTab == 'developer'">
+                    <a class="page-scroll" href="#dev-tasks">Tasks</a>
+                </li>
+                <!--Project Manager-->
+                <li ng-show="activeTab == 'projectManager'">
+                    <a class="page-scroll" href="#projectManager">Project Manager</a>
+                </li>
+                <li ng-show="activeTab == 'projectManager'">
+                    <a class="page-scroll" href="#pm-developers">Developers</a>
+                </li>
+                <!--Task-->
+                <li ng-show="activeTab == 'task'">
+                    <a class="page-scroll" href="#task">Task</a>
+                </li>
+                <li ng-show="activeTab == 'task'">
+                    <a class="page-scroll" href="#task-developers">Developers</a>
                 </li>
                 <!--Footer-->
                 <li>
@@ -130,6 +157,9 @@
 <div ui-view="customer"></div>
 <div ui-view="project"></div>
 <div ui-view="sprint"></div>
+<div ui-view="developer"></div>
+<div ui-view="projectManager"></div>
+<div ui-view="task"></div>
 
 <div ng-include="'/templates/fragments/footer.html'"></div>
 

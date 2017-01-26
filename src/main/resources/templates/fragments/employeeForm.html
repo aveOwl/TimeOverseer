@@ -1,0 +1,74 @@
+<!--EMPLOYEE FIRST NAME-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="firstName">First Name:</label>
+    <div class="col-lg-8">
+        <input id="firstName"
+               name="firstName"
+               type="text"
+               placeholder="First Name"
+               class="form-control"
+               ng-model="employee.firstName"/>
+    </div>
+</div>
+<!--EMPLOYEE LAST NAME-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="lastName">Last Name:</label>
+    <div class="col-lg-8">
+        <input id="lastName"
+               name="lastName"
+               type="text"
+               placeholder="Last Name"
+               class="form-control"
+               ng-model="employee.lastName"/>
+    </div>
+</div>
+<!--EMPLOYEE LOGIN-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="login">Login:</label>
+    <div class="col-lg-8">
+        <input id="login"
+               name="login"
+               type="text"
+               placeholder="Login"
+               class="form-control"
+               ng-model="employee.login"/>
+    </div>
+</div>
+<!--EMPLOYEE PASSWORD-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="password">Password:</label>
+    <div class="col-lg-8">
+        <input id="password"
+               name="password"
+               type="password"
+               placeholder="Password"
+               class="form-control"
+               ng-model="employee.password"/>
+    </div>
+</div>
+<!--EMPLOYEE QUALIFICATION-->
+<div class="form-group">
+    <label class="col-lg-4 control-label">Qualification:</label>
+    <div class="col-lg-8">
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                     ng-model="employee.qualification" value="TRAINEE">Trainee</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                    ng-model="employee.qualification" value="JUNIOR">Junior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                    ng-model="employee.qualification" value="MIDDLE">Middle</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                    ng-model="employee.qualification" value="SENIOR">Senior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                    ng-model="employee.qualification" value="ARCHITECT">Architect</label>
+    </div>
+</div>
+<!--EMPLOYEE POSITION-->
+<div class="form-group" ng-show="activeTab == 'company'">
+    <label class="col-lg-4 control-label">Position:</label>
+    <div class="col-lg-8">
+        <label class="radio col-lg-8"><input type="radio" name="position"
+                                             ng-model="employee.position" value="Developer">Developer</label>
+        <label class="radio col-lg-8"><input type="radio" name="position"
+                                             ng-model="employee.position" value="ProjectManager">Project Manager</label>
+    </div>
+</div>

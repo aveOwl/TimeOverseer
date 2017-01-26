@@ -1,0 +1,60 @@
+<!--TASK NAME-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="name">Name:</label>
+    <div class="col-lg-8">
+        <input id="name"
+               name="name"
+               type="text"
+               class="form-control"
+               ng-model="task.name"/>
+    </div>
+</div>
+<!--TASK ASSIGNED-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="assigned">Assigned:</label>
+    <div class="col-lg-8">
+        <input id="assigned"
+               name="assigned"
+               type="checkbox"
+               class="form-control"
+               ng-model="task.assigned"/>
+    </div>
+</div>
+<!--TASK QUALIFICATION-->
+<div class="form-group">
+    <label class="col-lg-4 control-label">Qualification:</label>
+    <div class="col-lg-8">
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                             ng-model="task.qualification" value="TRAINEE">Trainee</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                             ng-model="task.qualification" value="JUNIOR">Junior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                             ng-model="task.qualification" value="MIDDLE">Middle</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                             ng-model="task.qualification" value="SENIOR">Senior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification"
+                                             ng-model="task.qualification" value="ARCHITECT">Architect</label>
+    </div>
+</div>
+<!--TASK TIME TO COMPLETE-->
+<div class="form-group">
+    <label class="col-lg-4 control-label" for="timeToComplete">Time To Complete:</label>
+    <div class="col-lg-8">
+        <input id="timeToComplete"
+               name="timeToComplete"
+               type="number"
+               class="form-control"
+               ng-model="task.timeToComplete"/>
+    </div>
+</div>
+<!--TASK TIME IN DEVELOPMENT-->
+<div class="form-group" ng-show="activeTab == 'developer'">
+    <label class="col-lg-4 control-label" for="timeInDevelopment">Time In Development:</label>
+    <div class="col-lg-8">
+        <input id="timeInDevelopment"
+               name="timeInDevelopment"
+               type="number"
+               class="form-control"
+               ng-model="task.timeInDevelopment"/>
+    </div>
+</div>

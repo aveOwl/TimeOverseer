@@ -59,6 +59,36 @@
                         templateUrl: '/templates/sprint.html'
                     }
                 }
+            })
+            .state('developers', {
+                url: "/developers/{id}",
+                activeTab: 'developer',
+                controller: 'DeveloperController',
+                views: {
+                    'developer@': {
+                        templateUrl: '/templates/developer.html'
+                    }
+                }
+            })
+            .state('projectManagers', {
+                url: "/projectManagers/{id}",
+                activeTab: 'projectManager',
+                controller: 'ProjectManagerController',
+                views: {
+                    'projectManager@': {
+                        templateUrl: '/templates/projectManager.html'
+                    }
+                }
+            })
+            .state('tasks', {
+                url: "/tasks/{id}",
+                activeTab: 'task',
+                controller: 'TaskController',
+                views: {
+                    'task@': {
+                        templateUrl: '/templates/task.html'
+                    }
+                }
             });
     };
 

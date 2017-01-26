@@ -1,0 +1,84 @@
+<div ng-controller="DeveloperController">
+
+    <!--Developer-->
+    <section id="developer" class="content-section text-center">
+        <div class="main-section container">
+            <div class="col-lg-4 col-lg-offset-2 text-left">
+                <!--Show Developer-->
+                <div ng-show="developerInfo">
+                    <h3>Developer info</h3>
+                    <table class="table">
+                        <tr>
+                            <th>Name:</th>
+                            <td><strong>{{employee.firstName}} {{employee.lastName}}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Login:</th>
+                            <td>{{employee.login}}</td>
+                        </tr>
+                        <tr>
+                            <th>Qualification:</th>
+                            <td>{{employee.qualification}}</td>
+                        </tr>
+                        <tr>
+                            <th>Company:</th>
+                            <td><a class="top-link" ui-sref="companies({id: company.id})">{{company.name}}</a></td>
+                        </tr>
+                        <tr>
+                            <th>Manager:</th>
+                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})">{{manager.firstName}}
+                                {{manager.lastName}}</a></td>
+                            <td ng-hide="manager">Not Assigned Yet</td>
+                        </tr>
+                    </table>
+                    <button class="btn btn-default col-lg-4" ng-click="developerInfo = !developerInfo">Edit</button>
+                </div>
+                <!--Edit Developer-->
+                <div ng-show="!developerInfo">
+                    <h3>Developer</h3>
+                    <form class="form-horizontal" ng-submit="updateDeveloper()">
+
+                        <div ng-include="'/templates/fragments/employeeForm.html'"></div>
+
+                        <div class="col-lg-8 text-left">
+                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
+                                    ng-click="developerInfo = true">Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--Tasks-->
+    <section id="dev-tasks" class="content-section text-center">
+        <div class="main-section container">
+            <div class="col-lg-8 col-lg-offset-2 text-left">
+                <h3>Tasks</h3>
+                <div ng-show="tasks.length == 0">
+                    <h6>Currently no tasks assigned</h6>
+                </div>
+                <table class="table" ng-hide="tasks.length == 0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Confirmed</th>
+                        <th>Required Qualification</th>
+                        <th>Time to complete</th>
+                        <th>Time in development</th>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="t in tasks">
+                        <td><a class="top-link" ui-sref="tasks({id: t.id})">{{t.name}}</a></td>
+                        <td>{{t.isAssigned}}</td>
+                        <td>{{t.qualification}}</td>
+                        <td>{{t.timeToComplete}}</td>
+                        <td>{{t.timeInDevelopment}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>

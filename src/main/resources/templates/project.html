@@ -1,9 +1,9 @@
 <div ng-controller="ProjectController">
-    <!--Company-->
+    <!--Project-->
     <section id="project" class="content-section text-center">
         <div class="main-section container">
             <div class="col-lg-4 col-lg-offset-2 text-left">
-                <!--SHOW PROJECT-->
+                <!--Show Project-->
                 <div ng-show="projectInfo">
                     <h3>Project info</h3>
                     <table class="table">
@@ -25,16 +25,19 @@
                         </tr>
                         <tr>
                             <th>Customer:</th>
-                            <td><a class="top-link" ui-sref="customers({id: customer.id})">{{customerName}}</a></td>
+                            <td><a class="top-link" ui-sref="customers({id: customer.id})">{{customer.firstName}}
+                                {{customer.lastName}}</a></td>
                         </tr>
                         <tr>
                             <th>Manager:</th>
-                            <td>{{manager}}</td>
+                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})">{{manager.firstName}}
+                                {{manager.lastName}}</a></td>
+                            <td ng-hide="manager">Not Assigned Yet</td>
                         </tr>
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="projectInfo = !projectInfo">Edit</button>
                 </div>
-                <!--EDIT PROJECT-->
+                <!--Edit Project-->
                 <div ng-hide="projectInfo">
                     <h3>Project</h3>
                     <form class="form-horizontal" ng-submit="updateProject()">
@@ -53,49 +56,45 @@
     </section>
 
     <!--Sprints-->
-    <section id="sprints" class="content-section text-center">
+    <section id="project-sprints" class="content-section text-center">
         <div class="main-section container">
-            <div class="col-lg-8 col-lg-offset-2 text-left">
-                <!--SHOW SPRINTS-->
-                <div ng-show="sprintsInfo">
-                    <h3>Sprints</h3>
-                    <div ng-show="sprints.length == 0">
-                        <h6>Currently no sprints assigned</h6>
-                    </div>
-
-                    <table class="table" ng-hide="sprints.length == 0">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="s in sprints">
-                            <td><a class="top-link" ui-sref="sprints({id: s.id})">{{s.name}}</a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <button class="btn btn-default col-lg-2" ng-click="sprintsInfo = !sprintsInfo">Add</button>
+            <!--Show Sprints-->
+            <div class="col-lg-8 col-lg-offset-2 text-left" ng-show="sprintsInfo">
+                <h3>Sprints</h3>
+                <div ng-show="sprints.length == 0">
+                    <h6>Currently no sprints assigned</h6>
                 </div>
+
+                <table class="table" ng-hide="sprints.length == 0">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="s in sprints">
+                        <td><a class="top-link" ui-sref="sprints({id: s.id})">{{s.name}}</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-default col-lg-2" ng-click="sprintsInfo = !sprintsInfo">Add</button>
             </div>
-            <div class="col-lg-4 col-lg-offset-2 text-left">
-                <!--ADD SPRINT-->
-                <div ng-hide="sprintsInfo">
-                    <h3>New Sprint</h3>
-                    <form class="form-horizontal" ng-submit="addSprint()">
+            <!--Add Sprint-->
+            <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="sprintsInfo">
+                <h3>Sprint</h3>
+                <form class="form-horizontal" ng-submit="addSprint()">
 
-                        <div ng-include="'/templates/fragments/sprintForm.html'"></div>
+                    <div ng-include="'/templates/fragments/sprintForm.html'"></div>
 
-                        <div class="btn-toolbar">
-                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                    ng-click="sprintsInfo = true">Submit
-                            </button>
-                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                    ng-click="sprintsInfo = true">Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                    <div class="btn-toolbar">
+                        <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                ng-click="sprintsInfo = true">Submit
+                        </button>
+                        <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                ng-click="sprintsInfo = true">Cancel
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
