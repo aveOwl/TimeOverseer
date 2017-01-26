@@ -13,6 +13,8 @@ import lombok.ToString;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -43,6 +45,7 @@ public class Employee extends Person {
     private Company employer;
 
     @Column(name = "qualification", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Qualification qualification;
 
     public Employee(String firstName,

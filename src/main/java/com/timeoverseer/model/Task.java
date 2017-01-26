@@ -14,6 +14,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -50,6 +52,7 @@ public class Task extends AbstractEntity {
     private boolean isAssigned;
 
     @Column(name = "qualification", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Qualification qualification;
 
     @Column(name = "time_to_complete")
