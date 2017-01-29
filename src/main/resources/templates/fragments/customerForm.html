@@ -1,5 +1,5 @@
 <!--CUSTOMER FIRST NAME-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': customer_form.firstName.$dirty && customer_form.firstName.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="firstName">First Name:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="firstName"
@@ -7,11 +7,13 @@
                type="text"
                placeholder="First Name"
                class="form-control"
-               ng-model="customer.firstName"/>
+               ng-model="$parent.customer.firstName"
+               required/>
+        <span ng-show="customer_form.firstName.$dirty && customer_form.firstName.$error.required" class="help-block">First Name is required</span>
     </div>
 </div>
 <!--CUSTOMER LAST NAME-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': customer_form.lastName.$dirty && customer_form.lastName.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="lastName">Last Name:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="lastName"
@@ -19,11 +21,13 @@
                type="text"
                placeholder="Last Name"
                class="form-control"
-               ng-model="customer.lastName"/>
+               ng-model="$parent.customer.lastName"
+               required/>
+        <span ng-show="customer_form.lastName.$dirty && customer_form.lastName.$error.required" class="help-block">Last Name is required</span>
     </div>
 </div>
 <!--CUSTOMER LOGIN-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': customer_form.login.$dirty && customer_form.login.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="login">Login:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="login"
@@ -31,11 +35,13 @@
                type="text"
                placeholder="Login"
                class="form-control"
-               ng-model="customer.login"/>
+               ng-model="$parent.customer.login"
+               required/>
+        <span ng-show="customer_form.login.$dirty && customer_form.login.$error.required" class="help-block">Login is required</span>
     </div>
 </div>
 <!--CUSTOMER PASSWORD-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': customer_form.password.$dirty && customer_form.password.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="password">Password:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="password"
@@ -43,11 +49,13 @@
                type="password"
                placeholder="Password"
                class="form-control"
-               ng-model="customer.password"/>
+               ng-model="$parent.customer.password"
+               required/>
+        <span ng-show="customer_form.password.$dirty && customer_form.password.$error.required" class="help-block">Password is required</span>
     </div>
 </div>
 <!--CUSTOMER BUSINESS INTERESTS-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': customer_form.businessInterests.$dirty && customer_form.businessInterests.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="businessInterests">Business
         Interests:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
@@ -56,7 +64,9 @@
                type="text"
                placeholder="Business Interests"
                class="form-control"
-               ng-model="customer.businessInterests"/>
+               ng-model="$parent.customer.businessInterests"
+               required/>
         <small class="form-text text-left">Separate each interest with comma</small>
+        <span ng-show="customer_form.businessInterests.$dirty && customer_form.businessInterests.$error.required" class="help-block">Business Interests is required</span>
     </div>
 </div>

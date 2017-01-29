@@ -35,18 +35,21 @@
                             <td ng-hide="manager">Not Assigned Yet</td>
                         </tr>
                     </table>
-                    <button class="btn btn-default col-lg-4" ng-click="projectInfo = !projectInfo">Edit</button>
+                    <button class="btn btn-default col-lg-4" ng-click="projectInfo = false">Edit</button>
                 </div>
                 <!--Edit Project-->
                 <div ng-hide="projectInfo">
                     <h3>Project</h3>
-                    <form class="form-horizontal" ng-submit="updateProject()">
+                    <form name="project_form" class="form-horizontal" ng-submit="updateProject()">
 
                         <div ng-include="'/templates/fragments/projectForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="projectsInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="projectInfo = true" ng-disabled="project_form.$invalid || dateError">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="projectInfo = true">Cancel
                             </button>
                         </div>
                     </form>
@@ -77,18 +80,18 @@
                     </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-default col-lg-2" ng-click="sprintsInfo = !sprintsInfo">Add</button>
+                <button class="btn btn-default col-lg-2" ng-click="sprintsInfo = false">Add</button>
             </div>
             <!--Add Sprint-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="sprintsInfo">
                 <h3>Sprint</h3>
-                <form class="form-horizontal" ng-submit="addSprint()">
+                <form name="sprint_form" class="form-horizontal" ng-submit="addSprint()">
 
                     <div ng-include="'/templates/fragments/sprintForm.html'"></div>
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="sprintsInfo = true">Submit
+                                ng-click="sprintsInfo = true" ng-disabled="sprint_form.$invalid">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="sprintsInfo = true">Cancel

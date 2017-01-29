@@ -1,5 +1,5 @@
 <!--SPRINT NAME-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': sprint_form.name.$dirty && sprint_form.name.$error.required}">
     <label class="col-lg-4 control-label" for="name">Name:</label>
     <div class="col-lg-8">
         <input id="name"
@@ -7,6 +7,8 @@
                type="text"
                placeholder="Name"
                class="form-control"
-               ng-model="sprint.name"/>
+               ng-model="$parent.sprint.name"
+               required/>
+        <span ng-show="sprint_form.name.$dirty && sprint_form.name.$error.required" class="help-block">Name is required</span>
     </div>
 </div>

@@ -1,5 +1,5 @@
 <!--COMPANY NAME-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': company_form.name.$dirty && company_form.name.$error.required}">
     <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="name">Company Name:</label>
     <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
         <input id="name"
@@ -7,29 +7,33 @@
                type="text"
                placeholder="Company Name"
                class="form-control"
-               ng-model="company.name"/>
+               ng-model="$parent.company.name"
+               required/>
+        <span ng-show="company_form.name.$dirty && company_form.name.$error.required" class="help-block">Name is required</span>
     </div>
 </div>
 <!--COMPANY FOUNDED-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': company_form.founded.$dirty && company_form.founded.$error.required}">
     <div class="input-group">
         <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="founded">Company
             Founded:</label>
         <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
-
             <datepicker date-format="LLLL d, yyyy">
                 <input id="founded"
                        name="founded"
                        type="text"
                        placeholder="Date Founded"
                        class="form-control"
-                       ng-model="company.founded"/>
+                       ng-model="$parent.company.founded"
+                       required/>
             </datepicker>
         </div>
+        <span ng-show="company_form.founded.$dirty && company_form.founded.$error.required" class="help-block">Date is required</span>
+        <span ng-show="company_form.founded.$dirty && company_form.founded.$error.date" class="help-block">Not valid date format</span>
     </div>
 </div>
 <!--COMPANY INDUSTRY-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': company_form.industry.$dirty && company_form.industry.$error.required}">
     <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="industry">Industry:</label>
     <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
         <input id="industry"
@@ -37,14 +41,16 @@
                type="text"
                placeholder="Industry"
                class="form-control"
-               ng-model="company.industry"/>
+               ng-model="$parent.company.industry"
+               required/>
         <small class="form-text text-left">If company works in several industries separate
             each one with comma
         </small>
+        <span ng-show="company_form.industry.$dirty && company_form.industry.$error.required" class="help-block">Industry is required</span>
     </div>
 </div>
 <!--COMPANY FOUNDERS-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': company_form.founders.$dirty && company_form.founders.$error.required}">
     <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="founders">Founders:</label>
     <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
         <input id="founders"
@@ -52,12 +58,14 @@
                type="text"
                placeholder="Founders"
                class="form-control"
-               ng-model="company.founders"/>
+               ng-model="$parent.company.founders"
+               required/>
         <small class="form-text text-left">Separate each founder with comma</small>
+        <span ng-show="company_form.founders.$dirty && company_form.founders.$error.required" class="help-block">At least one founder is required</span>
     </div>
 </div>
 <!--COMPANY PRODUCTS-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': company_form.products.$dirty && company_form.products.$error.required}">
     <label ng-class="activeTab == 'company' ? 'col-lg-4 control-label' : 'sr-only'" for="products">Products:</label>
     <div ng-class="activeTab == 'company' ? 'col-lg-8' : ''">
 
@@ -66,7 +74,9 @@
                type="text"
                placeholder="Products"
                class="form-control"
-               ng-model="company.products"/>
+               ng-model="$parent.company.products"
+               required/>
         <small class="form-text text-left">Separate each product with comma</small>
+        <span ng-show="company_form.products.$dirty && company_form.products.$error.required" class="help-block">Products is required</span>
     </div>
 </div>

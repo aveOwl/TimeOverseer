@@ -37,13 +37,16 @@
                 <!--Edit Project Manager-->
                 <div ng-show="!projectManagerInfo">
                     <h3>Project Manager</h3>
-                    <form class="form-horizontal" ng-submit="updateProjectManager()">
+                    <form name="employee_form" class="form-horizontal" ng-submit="updateProjectManager()">
 
                         <div ng-include="'/templates/fragments/employeeForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="projectManagerInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="projectManagerInfo = true" ng-disabled="employee_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="projectManagerInfo = true">Cancel
                             </button>
                         </div>
                     </form>

@@ -21,13 +21,16 @@
                 <!--Edit Sprint-->
                 <div ng-hide="sprintInfo">
                     <h3>Project</h3>
-                    <form class="form-horizontal" ng-submit="updateSprint()">
+                    <form name="sprint_form" class="form-horizontal" ng-submit="updateSprint()">
 
                         <div ng-include="'/templates/fragments/sprintForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="sprintInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="sprintInfo = true" ng-disabled="sprint_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="sprintInfo = true">Cancel
                             </button>
                         </div>
                     </form>
@@ -60,7 +63,8 @@
                         <td>{{t.assigned}}</td>
                         <td>{{t.qualification}}</td>
                         <td>{{t.timeToComplete}}</td>
-                        <td>{{t.timeInDevelopment}}</td>
+                        <td ng-if="!t.timeInDevelopment">Not in development yet</td>
+                        <td ng-if="t.timeInDevelopment">{{t.timeInDevelopment}}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -69,13 +73,13 @@
             <!--Add Task-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="tasksInfo">
                 <h3>New Task</h3>
-                <form class="form-horizontal" ng-submit="addTask()">
+                <form name="task_form" class="form-horizontal" ng-submit="addTask()">
 
                     <div ng-include="'/templates/fragments/taskForm.html'"></div>
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="tasksInfo = true">Submit
+                                ng-click="tasksInfo = true" ng-disabled="task_form.$invalid">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="tasksInfo = true">Cancel

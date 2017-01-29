@@ -25,13 +25,16 @@
                 <!--Update Customer-->
                 <div ng-hide="customerInfo">
                     <h3>Customer</h3>
-                    <form class="form-horizontal" ng-submit="updateCustomer()">
+                    <form name="customer_form" class="form-horizontal" ng-submit="updateCustomer()" role="form">
 
                         <div ng-include="'/templates/fragments/customerForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="customerInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="customerInfo = true" ng-disabled="customer_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="customerInfo = true">Cancel
                             </button>
                         </div>
                     </form>
@@ -72,13 +75,13 @@
             <!--Add Project-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="projectsInfo">
                 <h3>New Project</h3>
-                <form class="form-horizontal" ng-submit="addProject()">
+                <form name="project_form" class="form-horizontal" ng-submit="addProject()">
 
                     <div ng-include="'/templates/fragments/projectForm.html'"></div>
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="projectsInfo = true">Submit
+                                ng-click="projectsInfo = true" ng-disabled="project_form.$invalid || dateError">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="projectsInfo = true">Cancel

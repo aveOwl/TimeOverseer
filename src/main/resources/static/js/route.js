@@ -7,11 +7,12 @@
     var app = angular.module('overseer');
 
     var RouteConfiguration = function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.when('/', '/overseer')
+            .otherwise('/overseer');
 
         $stateProvider
             .state('home', {
-                url: "/",
+                url: "/overseer",
                 activeTab: 'home',
                 controller: 'HomeController',
                 views: {
@@ -21,7 +22,12 @@
                 }
             })
             .state('companies', {
-                url: "/companies/{id}",
+                url: "/overseer/companies/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#company")
+                    })
+                },
                 activeTab: 'company',
                 controller: 'CompanyController',
                 views: {
@@ -31,7 +37,12 @@
                 }
             })
             .state('customers', {
-                url: "/customers/{id}",
+                url: "/overseer/customers/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#customer")
+                    })
+                },
                 activeTab: 'customer',
                 controller: 'CustomerController',
                 views: {
@@ -41,7 +52,12 @@
                 }
             })
             .state('projects', {
-                url: "/projects/{id}",
+                url: "/overseer/projects/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#project")
+                    })
+                },
                 activeTab: 'project',
                 controller: 'ProjectController',
                 views: {
@@ -51,7 +67,12 @@
                 }
             })
             .state('sprints', {
-                url: "/sprints/{id}",
+                url: "/overseer/sprints/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#sprint")
+                    })
+                },
                 activeTab: 'sprint',
                 controller: 'SprintController',
                 views: {
@@ -61,7 +82,12 @@
                 }
             })
             .state('developers', {
-                url: "/developers/{id}",
+                url: "/overseer/developers/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#developer")
+                    })
+                },
                 activeTab: 'developer',
                 controller: 'DeveloperController',
                 views: {
@@ -71,7 +97,12 @@
                 }
             })
             .state('projectManagers', {
-                url: "/projectManagers/{id}",
+                url: "/overseer/projectManagers/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#projectManager")
+                    })
+                },
                 activeTab: 'projectManager',
                 controller: 'ProjectManagerController',
                 views: {
@@ -81,7 +112,12 @@
                 }
             })
             .state('tasks', {
-                url: "/tasks/{id}",
+                url: "/overseer/tasks/{id}",
+                onEnter: function () {
+                    $('html, body').animate({
+                        scrollTop: $("#task")
+                    })
+                },
                 activeTab: 'task',
                 controller: 'TaskController',
                 views: {

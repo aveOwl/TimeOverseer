@@ -31,16 +31,19 @@
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="companyInfo = !companyInfo">Edit</button>
                 </div>
-                <!--Edit Company-->
+                <!--Update Company-->
                 <div ng-show="!companyInfo">
                     <h3>Company</h3>
-                    <form class="form-horizontal" ng-submit="updateCompany()">
+                    <form name="company_form" class="form-horizontal" ng-submit="updateCompany()" role="form">
 
                         <div ng-include="'/templates/fragments/companyForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="companyInfo = true">Update
+                        <div class="btn-toolbar" role="toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="companyInfo = true" ng-disabled="company_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="companyInfo = true">Cancel
                             </button>
                         </div>
                     </form>
@@ -89,13 +92,13 @@
             <!--Add Employee-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="employeesInfo">
                 <h3>Employee</h3>
-                <form class="form-horizontal" ng-submit="addEmployee()">
+                <form name="employee_form" class="form-horizontal" ng-submit="addEmployee()">
 
                     <div ng-include="'/templates/fragments/employeeForm.html'"></div>
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="employeesInfo = true">Submit
+                                ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="employeesInfo = true">Cancel

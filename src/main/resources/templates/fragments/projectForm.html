@@ -1,5 +1,5 @@
 <!--PROJECT NAME-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': project_form.name.$dirty && project_form.name.$error.required}">
     <label class="col-lg-4 control-label" for="name">Name:</label>
     <div class="col-lg-8">
         <input id="name"
@@ -7,11 +7,14 @@
                type="text"
                placeholder="Name"
                class="form-control"
-               ng-model="project.name"/>
+               ng-model="$parent.project.name"
+               required/>
+        <span ng-show="project_form.name.$dirty && project_form.name.$error.required" class="help-block">Name is required</span>
     </div>
 </div>
 <!--PROJECT DESCRIPTION-->
-<div class="form-group">
+<div class="form-group"
+     ng-class="{'has-error': project_form.description.$dirty && project_form.description.$error.required}">
     <label class="col-lg-4 control-label" for="description">Description:</label>
     <div class="col-lg-8">
         <input id="description"
@@ -19,38 +22,51 @@
                type="text"
                placeholder="Description"
                class="form-control"
-               ng-model="project.description"/>
+               ng-model="$parent.project.description"
+               required/>
+        <span ng-show="project_form.description.$dirty && project_form.description.$error.required" class="help-block">Description is required</span>
     </div>
 </div>
-<!--PROJECT START DATE-->
-<div class="form-group">
-    <label class="col-lg-4 control-label" for="startDate">Start Date:</label>
-    <div class="col-lg-8">
-        <div class="input-group">
-            <datepicker date-format="LLLL d, yyyy">
-                <input id="startDate"
-                       name="startDate"
-                       type="text"
-                       placeholder="Start Date"
-                       class="form-control"
-                       ng-model="project.startDate"/>
-            </datepicker>
+<div ng-controller="DateController">
+    <!--PROJECT START DATE-->
+    <div class="form-group"
+         ng-class="{'has-error': project_form.startDate.$dirty && project_form.startDate.$error.required}">
+        <label class="col-lg-4 control-label" for="startDate">Start Date:</label>
+        <div class="col-lg-8">
+            <div class="input-group">
+                <datepicker date-format="LLLL d, yyyy">
+                    <input id="startDate"
+                           name="startDate"
+                           type="text"
+                           placeholder="Start Date"
+                           class="form-control"
+                           ng-model="$parent.project.startDate"
+                           ng-change="checkDates(project.startDate, project.endDate)"
+                           required/>
+                </datepicker>
+            </div>
+            <span ng-show="project_form.startDate.$dirty && project_form.startDate.$error.required" class="help-block">StartDate is required</span>
         </div>
     </div>
-</div>
-<!--PROJECT END DATE-->
-<div class="form-group">
-    <label class="col-lg-4 control-label" for="endDate">End Date:</label>
-    <div class="col-lg-8">
-        <div class="input-group">
-            <datepicker date-format="LLLL d, yyyy">
-                <input id="endDate"
-                       name="endDate"
-                       type="text"
-                       placeholder="End Date"
-                       class="form-control"
-                       ng-model="project.endDate"/>
-            </datepicker>
+    <!--PROJECT END DATE-->
+    <div class="form-group"
+         ng-class="{'has-error': project_form.endDate.$dirty && project_form.endDate.$error.required || dateError}">
+        <label class="col-lg-4 control-label" for="endDate">End Date:</label>
+        <div class="col-lg-8">
+            <div class="input-group">
+                <datepicker date-format="LLLL d, yyyy">
+                    <input id="endDate"
+                           name="endDate"
+                           type="text"
+                           placeholder="End Date"
+                           class="form-control"
+                           ng-model="$parent.project.endDate"
+                           ng-change="checkDates(project.startDate, project.endDate)"
+                           required/>
+                </datepicker>
+            </div>
+            <span ng-show="project_form.endDate.$dirty && project_form.endDate.$error.required" class="help-block">EndDate is required</span>
+            <span ng-show="project_form.endDate.$dirty && dateError" class="help-block">EndDate must be after StartDate</span>
         </div>
     </div>
 </div>

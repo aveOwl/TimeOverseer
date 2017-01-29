@@ -9,35 +9,19 @@
 
     // define controller
     var HomeController = function ($scope, $window, $log, CompanyService, CustomerService) {
-        $scope.company = {
-            name: $scope.name,
-            founded: $scope.founded,
-            industry: $scope.industry,
-            founders: $scope.founders,
-            products: $scope.products
-        };
-
-        $scope.customer = {
-            firstName: $scope.firstName,
-            lastName: $scope.lastName,
-            login: $scope.login,
-            password: $scope.password,
-            businessInterests: $scope.businessInterests
-        };
-
-        $scope.submitCompany = function () {
-            CompanyService.save($scope.company, function success(company) {
-                $window.location.href = "/#/companies/" + company.id;
-                $log.debug("Saved company", $scope.company);
+        $scope.submitCompany = function (company) {
+            CompanyService.save(company, function success(createdCompany) {
+                $window.location.href = "/#/companies/" + createdCompany.id;
+                $log.debug("Saved company", createdCompany);
             }, function error(response) {
                 $log.error("Failed to save company", response);
             });
         };
 
-        $scope.submitCustomer = function () {
-            CustomerService.save($scope.customer, function success(customer) {
-                $window.location.href = "/#/customers/" + customer.id;
-                $log.debug("Saved customer", $scope.customer);
+        $scope.submitCustomer = function (customer) {
+            CustomerService.save($scope.customer, function success(createdCustomer) {
+                $window.location.href = "/#/customers/" + createdCustomer.id;
+                $log.debug("Saved customer", createdCustomer);
             }, function error(response) {
                 $log.error("Failed to save customer", response);
             });

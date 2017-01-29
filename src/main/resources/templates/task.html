@@ -13,19 +13,20 @@
                         </tr>
                         <tr>
                             <th>Assigned:</th>
-                            <td><strong>{{task.isAssigned}}</strong></td>
+                            <td>{{task.isAssigned}}</td>
                         </tr>
                         <tr>
                             <th>Required Qualification:</th>
-                            <td><strong>{{task.qualification}}</strong></td>
+                            <td>{{task.qualification}}</td>
                         </tr>
                         <tr>
                             <th>Time To Complete:</th>
-                            <td><strong>{{task.timeToComplete}}</strong></td>
+                            <td>{{task.timeToComplete}}</td>
                         </tr>
                         <tr>
                             <th>Time In Development:</th>
-                            <td><strong>{{task.timeInDevelopment}}</strong></td>
+                            <td ng-if="task.timeInDevelopment">{{task.timeInDevelopment}}</td>
+                            <td ng-if="!task.timeInDevelopment">Not in development yet</td>
                         </tr>
                         <tr>
                             <th>Sprint:</th>
@@ -37,13 +38,16 @@
                 <!--Edit Task-->
                 <div ng-hide="taskInfo">
                     <h3>Task</h3>
-                    <form class="form-horizontal" ng-submit="updateTask()">
+                    <form name="task_form" class="form-horizontal" ng-submit="updateTask()">
 
                         <div ng-include="'/templates/fragments/taskForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="taskInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="taskInfo = true" ng-disabled="task_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="taskInfo = true">Cancel
                             </button>
                         </div>
                     </form>

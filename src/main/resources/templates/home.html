@@ -14,13 +14,13 @@
     <!-- Companies Section -->
     <section id="companies" class="content-section text-center">
         <div class="main-section container">
-            <form ng-submit="submitCompany()">
-                <h3>Register Company</h3>
+            <h3>Register Company</h3>
+            <form name="company_form" ng-submit="submitCompany(company)" role="form">
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div ng-include="'/templates/fragments/companyForm.html'"></div>
 
-                    <button class="btn btn-default col-lg-12" type="submit">Submit</button>
+                    <button class="btn btn-default col-lg-12" type="submit" ng-disabled="company_form.$invalid">Submit</button>
                 </div>
             </form>
         </div>
@@ -29,13 +29,13 @@
     <!-- Customers Section -->
     <section id="customers" class="content-section text-center">
         <div class="main-section container">
-            <form ng-submit="submitCustomer()">
-                <h3>Register Customer</h3>
+            <h3>Register Customer</h3>
+            <form name="customer_form" ng-submit="submitCustomer(customer)" role="form">
                 <div class="col-lg-8 col-lg-offset-2">
 
                     <div ng-include="'/templates/fragments/customerForm.html'"></div>
 
-                    <button class="btn btn-default col-lg-12" type="submit">Submit</button>
+                    <button class="btn btn-default col-lg-12" type="submit" ng-disabled="customer_form.$invalid">Submit</button>
                 </div>
             </form>
         </div>

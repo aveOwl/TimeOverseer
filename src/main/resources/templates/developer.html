@@ -36,13 +36,16 @@
                 <!--Edit Developer-->
                 <div ng-show="!developerInfo">
                     <h3>Developer</h3>
-                    <form class="form-horizontal" ng-submit="updateDeveloper()">
+                    <form name="employee_form" class="form-horizontal" ng-submit="updateDeveloper()">
 
                         <div ng-include="'/templates/fragments/employeeForm.html'"></div>
 
-                        <div class="col-lg-8 text-left">
-                            <button class="btn btn-default col-lg-8 col-lg-offset-11" type="submit"
-                                    ng-click="developerInfo = true">Update
+                        <div class="btn-toolbar">
+                            <button class="btn navbar-btn btn-default col-lg-4" type="submit"
+                                    ng-click="developerInfo = true" ng-disabled="employee_form.$invalid">Submit
+                            </button>
+                            <button class="btn navbar-btn btn-default col-lg-4" type="button"
+                                    ng-click="developerInfo = true">Cancel
                             </button>
                         </div>
                     </form>

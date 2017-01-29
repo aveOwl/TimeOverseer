@@ -1,5 +1,6 @@
 <!--EMPLOYEE FIRST NAME-->
-<div class="form-group">
+<div class="form-group"
+     ng-class="{'has-error': employee_form.firstName.$dirty && employee_form.firstName.$error.required}">
     <label class="col-lg-4 control-label" for="firstName">First Name:</label>
     <div class="col-lg-8">
         <input id="firstName"
@@ -7,11 +8,14 @@
                type="text"
                placeholder="First Name"
                class="form-control"
-               ng-model="employee.firstName"/>
+               ng-model="$parent.employee.firstName"
+               required/>
+        <span ng-show="employee_form.firstName.$dirty && employee_form.firstName.$error.required" class="help-block">FirstName is required</span>
     </div>
 </div>
 <!--EMPLOYEE LAST NAME-->
-<div class="form-group">
+<div class="form-group"
+     ng-class="{'has-error': employee_form.lastName.$dirty && employee_form.lastName.$error.required}">
     <label class="col-lg-4 control-label" for="lastName">Last Name:</label>
     <div class="col-lg-8">
         <input id="lastName"
@@ -19,11 +23,13 @@
                type="text"
                placeholder="Last Name"
                class="form-control"
-               ng-model="employee.lastName"/>
+               ng-model="$parent.employee.lastName"
+               required/>
+        <span ng-show="employee_form.lastName.$dirty && employee_form.lastName.$error.required" class="help-block">LastName is required</span>
     </div>
 </div>
 <!--EMPLOYEE LOGIN-->
-<div class="form-group">
+<div class="form-group" ng-class="{'has-error': employee_form.login.$dirty && employee_form.login.$error.required}">
     <label class="col-lg-4 control-label" for="login">Login:</label>
     <div class="col-lg-8">
         <input id="login"
@@ -31,11 +37,14 @@
                type="text"
                placeholder="Login"
                class="form-control"
-               ng-model="employee.login"/>
+               ng-model="$parent.employee.login"
+               required/>
+        <span ng-show="employee_form.login.$dirty && employee_form.login.$error.required" class="help-block">Login is required</span>
     </div>
 </div>
 <!--EMPLOYEE PASSWORD-->
-<div class="form-group">
+<div class="form-group"
+     ng-class="{'has-error': employee_form.password.$dirty && employee_form.password.$error.required}">
     <label class="col-lg-4 control-label" for="password">Password:</label>
     <div class="col-lg-8">
         <input id="password"
@@ -43,32 +52,53 @@
                type="password"
                placeholder="Password"
                class="form-control"
-               ng-model="employee.password"/>
+               ng-model="$parent.employee.password"
+               required/>
+        <span ng-show="employee_form.password.$dirty && employee_form.password.$error.required" class="help-block">Password is required</span>
     </div>
 </div>
 <!--EMPLOYEE QUALIFICATION-->
-<div class="form-group">
+<div class="form-group"
+     ng-class="{'has-error': employee_form.qualification.$dirty && employee_form.qualification.$error.required}">
     <label class="col-lg-4 control-label">Qualification:</label>
     <div class="col-lg-8">
-        <label class="radio col-lg-4"><input type="radio" name="qualification"
-                                     ng-model="employee.qualification" value="TRAINEE">Trainee</label>
-        <label class="radio col-lg-4"><input type="radio" name="qualification"
-                                    ng-model="employee.qualification" value="JUNIOR">Junior</label>
-        <label class="radio col-lg-4"><input type="radio" name="qualification"
-                                    ng-model="employee.qualification" value="MIDDLE">Middle</label>
-        <label class="radio col-lg-4"><input type="radio" name="qualification"
-                                    ng-model="employee.qualification" value="SENIOR">Senior</label>
-        <label class="radio col-lg-4"><input type="radio" name="qualification"
-                                    ng-model="employee.qualification" value="ARCHITECT">Architect</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification" required
+                                             ng-model="$parent.employee.qualification" value="TRAINEE">Trainee</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification" required
+                                             ng-model="$parent.employee.qualification" value="JUNIOR"
+        >Junior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification" required
+                                             ng-model="$parent.employee.qualification" value="MIDDLE"
+        >Middle</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification" required
+                                             ng-model="$parent.employee.qualification" value="SENIOR"
+        >Senior</label>
+        <label class="radio col-lg-4"><input type="radio" name="qualification" required
+                                             ng-model="$parent.employee.qualification"
+                                             value="ARCHITECT">Architect</label>
+        <span ng-show="employee_form.qualification.$dirty && employee_form.qualification.$error.required"
+              class="help-block">Qualification is required</span>
     </div>
 </div>
 <!--EMPLOYEE POSITION-->
-<div class="form-group" ng-show="activeTab == 'company'">
+<div class="form-group" ng-show="activeTab == 'company'"
+     ng-class="{'has-error': employee_form.position.$dirty && employee_form.position.$error.required}">
     <label class="col-lg-4 control-label">Position:</label>
     <div class="col-lg-8">
-        <label class="radio col-lg-8"><input type="radio" name="position"
-                                             ng-model="employee.position" value="Developer">Developer</label>
-        <label class="radio col-lg-8"><input type="radio" name="position"
-                                             ng-model="employee.position" value="ProjectManager">Project Manager</label>
+        <label class="radio col-lg-8">
+            <input type="radio"
+                   name="position"
+                   ng-model="$parent.employee.position"
+                   value="Developer"
+                   ng-required="activeTab == 'company'">
+            Developer</label>
+        <label class="radio col-lg-8">
+            <input type="radio"
+                   name="position"
+                   ng-model="employee.position"
+                   value="ProjectManager"
+                   ng-required="activeTab == 'company'">
+            ProjectManager</label>
+        <span ng-show="employee_form.position.$dirty && employee_form.position.$error.required" class="help-block">Position is required</span>
     </div>
 </div>
