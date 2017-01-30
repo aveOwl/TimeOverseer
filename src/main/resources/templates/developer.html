@@ -10,24 +10,25 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{employee.firstName}} {{employee.lastName}}</strong></td>
+                            <td><strong ng-bind="employee.firstName + ' ' + employee.lastName"></strong></td>
                         </tr>
                         <tr>
                             <th>Login:</th>
-                            <td>{{employee.login}}</td>
+                            <td ng-bind="employee.login"></td>
                         </tr>
                         <tr>
                             <th>Qualification:</th>
-                            <td>{{employee.qualification}}</td>
+                            <td ng-bind="employee.qualification"></td>
                         </tr>
                         <tr>
                             <th>Company:</th>
-                            <td><a class="top-link" ui-sref="companies({id: company.id})">{{company.name}}</a></td>
+                            <td><a class="top-link" ui-sref="companies({id: company.id})" ng-bind="company.name"></a>
+                            </td>
                         </tr>
                         <tr>
                             <th>Manager:</th>
-                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})">{{manager.firstName}}
-                                {{manager.lastName}}</a></td>
+                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})"
+                                                     ng-bind="managerName"></a></td>
                             <td ng-hide="manager">Not Assigned Yet</td>
                         </tr>
                     </table>
@@ -73,11 +74,11 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="t in tasks">
-                        <td><a class="top-link" ui-sref="tasks({id: t.id})">{{t.name}}</a></td>
-                        <td>{{t.isAssigned}}</td>
-                        <td>{{t.qualification}}</td>
-                        <td>{{t.timeToComplete}}</td>
-                        <td>{{t.timeInDevelopment}}</td>
+                        <td><a class="top-link" ui-sref="tasks({id: t.id})" ng-bind="t.name">{{t.name}}</a></td>
+                        <td ng-bind="t.isAssigned"></td>
+                        <td ng-bind="t.qualification"></td>
+                        <td ng-bind="t.timeToComplete"></td>
+                        <td ng-bind="t.timeInDevelopment"></td>
                     </tr>
                     </tbody>
                 </table>

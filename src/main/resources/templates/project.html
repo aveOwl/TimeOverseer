@@ -9,29 +9,29 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{project.name}}</strong></td>
+                            <td><strong ng-bind="project.name"></strong></td>
                         </tr>
                         <tr>
                             <th>Description:</th>
-                            <td>{{project.description}}</td>
+                            <td ng-bind="project.description"></td>
                         </tr>
                         <tr>
                             <th>Start Date:</th>
-                            <td>{{project.startDate}}</td>
+                            <td ng-bind="project.startDate"></td>
                         </tr>
                         <tr>
                             <th>End Date:</th>
-                            <td>{{project.endDate}}</td>
+                            <td ng-bind="project.endDate"></td>
                         </tr>
                         <tr>
                             <th>Customer:</th>
-                            <td><a class="top-link" ui-sref="customers({id: customer.id})">{{customer.firstName}}
-                                {{customer.lastName}}</a></td>
+                            <td><a class="top-link" ui-sref="customers({id: customer.id})"
+                                   ng-bind="customerName"></a></td>
                         </tr>
                         <tr>
                             <th>Manager:</th>
-                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})">{{manager.firstName}}
-                                {{manager.lastName}}</a></td>
+                            <td ng-show="manager"><a class="top-link" ui-sref="projectManagers({id: manger.id})"
+                                                     ng-bind="managerName"></a></td>
                             <td ng-hide="manager">Not Assigned Yet</td>
                         </tr>
                     </table>
@@ -46,7 +46,8 @@
 
                         <div class="btn-toolbar">
                             <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                    ng-click="projectInfo = true" ng-disabled="project_form.$invalid || dateError">Submit
+                                    ng-click="projectInfo = true" ng-disabled="project_form.$invalid || dateError">
+                                Submit
                             </button>
                             <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                     ng-click="projectInfo = true">Cancel
@@ -76,7 +77,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="s in sprints">
-                        <td><a class="top-link" ui-sref="sprints({id: s.id})">{{s.name}}</a></td>
+                        <td><a class="top-link" ui-sref="sprints({id: s.id})" ng-bind="s.name"></a></td>
                     </tr>
                     </tbody>
                 </table>

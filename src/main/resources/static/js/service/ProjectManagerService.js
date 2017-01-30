@@ -4,17 +4,33 @@
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .factory('ProjectManagerService', ProjectManagerService);
 
-    // define service
-    var ProjectManagerService = function ($resource) {
-        return $resource('/projectManagers/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+    ProjectManagerService.$inject = ['$resource'];
+    function ProjectManagerService($resource) {
+        var projectManagerService = {};
 
-    // register service
-    app.factory('ProjectManagerService', ['$resource', ProjectManagerService])
+        // Basic CRUD operations
+        projectManagerService.perform = function () {
+            return $resource('/projectManagers/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
+
+        projectManagerService.getCompany = function (projectManager) {
+            return $resource(projectManager._links.employer.href).get();
+        };
+
+        projectManagerService.getProject = function (projectManager) {
+            return $resource(projectManager._links.project.href).get();
+        };
+
+        projectManagerService.getDevelopers = function (projectManager) {
+            return $resource(projectManager._links.developers.href).get();
+        };
+
+        return projectManagerService;
+    }
 }());

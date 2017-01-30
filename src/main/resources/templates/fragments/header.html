@@ -1,0 +1,95 @@
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                Menu <i class="fa fa-bars"></i>
+            </button>
+            <a class="navbar-brand page-scroll" href="#page-top">
+                <i class="fa fa-play-circle"></i> <span class="light">Time</span> Overseer
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+            <ul class="nav navbar-nav">
+                <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <!--Home-->
+                <li ng-show="activeTab == 'home'">
+                    <a class="page-scroll" href="#about">About</a>
+                </li>
+                <li ng-show="activeTab == 'home'">
+                    <a class="page-scroll" href="#companies">Companies</a>
+                </li>
+                <li ng-show="activeTab == 'home'">
+                    <a class="page-scroll" href="#customers">Customers</a>
+                </li>
+                <!--Company-->
+                <li ng-show="activeTab == 'company'">
+                    <a class="page-scroll" href="#company">Company</a>
+                </li>
+                <li ng-show="activeTab == 'company'">
+                    <a class="page-scroll" href="#company-employees">Employees</a>
+                </li>
+                <li ng-show="activeTab == 'company'">
+                    <a class="page-scroll" href="#company-customers">Customers</a>
+                </li>
+                <!--Customer-->
+                <li ng-show="activeTab == 'customer'">
+                    <a class="page-scroll" href="#customer">Customer</a>
+                </li>
+                <li ng-show="activeTab == 'customer'">
+                    <a class="page-scroll" href="#customer-projects">Projects</a>
+                </li>
+                <li ng-show="activeTab == 'customer'">
+                    <a class="page-scroll" href="#customer-companies">Companies</a>
+                </li>
+                <!--Project-->
+                <li ng-show="activeTab == 'project'">
+                    <a class="page-scroll" href="#project">Project</a>
+                </li>
+                <li ng-show="activeTab == 'project'">
+                    <a class="page-scroll" href="#project-sprints">Sprints</a>
+                </li>
+                <!--Sprint-->
+                <li ng-show="activeTab == 'sprint'">
+                    <a class="page-scroll" href="#sprint">Sprint</a>
+                </li>
+                <li ng-show="activeTab == 'sprint'">
+                    <a class="page-scroll" href="#sprint-tasks">Tasks</a>
+                </li>
+                <!--Developer-->
+                <li ng-show="activeTab == 'developer'">
+                    <a class="page-scroll" href="#developer">Developer</a>
+                </li>
+                <li ng-show="activeTab == 'developer'">
+                    <a class="page-scroll" href="#dev-tasks">Tasks</a>
+                </li>
+                <!--Project Manager-->
+                <li ng-show="activeTab == 'projectManager'">
+                    <a class="page-scroll" href="#projectManager">Project Manager</a>
+                </li>
+                <li ng-show="activeTab == 'projectManager'">
+                    <a class="page-scroll" href="#pm-developers">Developers</a>
+                </li>
+                <!--Task-->
+                <li ng-show="activeTab == 'task'">
+                    <a class="page-scroll" href="#task">Task</a>
+                </li>
+                <li ng-show="activeTab == 'task'">
+                    <a class="page-scroll" href="#task-developers">Developers</a>
+                </li>
+                <!--Footer-->
+                <li>
+                    <a class="page-scroll" href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<script src="/static/js/effects.js"></script>

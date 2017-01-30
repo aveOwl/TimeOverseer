@@ -9,28 +9,28 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{task.name}}</strong></td>
+                            <td><strong ng-bind="task.name"></strong></td>
                         </tr>
                         <tr>
                             <th>Assigned:</th>
-                            <td>{{task.isAssigned}}</td>
+                            <td ng-bind="task.isAssigned"></td>
                         </tr>
                         <tr>
                             <th>Required Qualification:</th>
-                            <td>{{task.qualification | lowercase}}</td>
+                            <td ng-bind="task.qualification | lowercase"></td>
                         </tr>
                         <tr>
                             <th>Time To Complete:</th>
-                            <td>{{task.timeToComplete}}</td>
+                            <td ng-bind="task.timeToComplete"></td>
                         </tr>
                         <tr>
                             <th>Time In Development:</th>
-                            <td ng-if="task.timeInDevelopment">{{task.timeInDevelopment}}</td>
+                            <td ng-if="task.timeInDevelopment" ng-bind="task.timeInDevelopment"></td>
                             <td ng-if="!task.timeInDevelopment">Not in development yet</td>
                         </tr>
                         <tr>
                             <th>Sprint:</th>
-                            <td><a class="top-link" ui-sref="sprints({id: sprint.id})">{{sprint.name}}</a></td>
+                            <td><a class="top-link" ui-sref="sprints({id: sprint.id})" ng-bind="sprint.name"></a></td>
                         </tr>
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="taskInfo = !taskInfo">Edit</button>
@@ -74,10 +74,10 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="dev in developers">
-                        <td><a class="top-link" ui-sref="developers({id: dev.id})">{{dev.firstName}}
-                            {{dev.lastName}}</a></td>
-                        <td>{{dev.login}}</td>
-                        <td>{{dev.qualification}}</td>
+                        <td><a class="top-link" ui-sref="developers({id: dev.id})"
+                               ng-bind="dev.firstName + ' ' + dev.lastName"></a></td>
+                        <td ng-bind="dev.login"></td>
+                        <td ng-bind="dev.qualification"></td>
                     </tr>
                     </tbody>
                 </table>

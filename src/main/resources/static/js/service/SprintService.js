@@ -4,17 +4,29 @@
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .factory('SprintService', SprintService);
 
-    // define service
-    var SprintService = function ($resource) {
-        return $resource('/sprints/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+    SprintService.$inject = ['$resource'];
+    function SprintService($resource) {
+        var sprintService = {};
 
-    // register service
-    app.factory('SprintService', ['$resource', SprintService])
+        // Basic CRUD operations
+        sprintService.perform = function () {
+            return $resource('/sprints/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
+
+        sprintService.getProject = function (sprint) {
+            return $resource(sprint._links.project.href).get();
+        };
+
+        sprintService.getTasks = function (sprint) {
+            return $resource(sprint._links.tasks.href).get();
+        };
+
+        return sprintService;
+    }
 }());

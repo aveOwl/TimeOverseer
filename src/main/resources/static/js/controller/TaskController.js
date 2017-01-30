@@ -1,57 +1,79 @@
 /**
- * Task controller
+ * Task Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('TaskController', TaskController);
 
-    // define controller
-    var TaskController = function ($scope, $resource, $stateParams, $log, TaskService) {
-        $scope.taskInfo = true;
-
+    TaskController.$inject = ['$scope', '$stateParams', '$log', 'TaskService'];
+    function TaskController($scope, $stateParams, $log, TaskService) {
         var taskId = $stateParams.id;
 
-        TaskService.get({id: taskId}).$promise
-            .then(function success(task) {
-                $scope.task = task;
-                $log.debug("Fetched task", $scope.task);
+        $scope.taskInfo = true;
+        $scope.updateTask = updateTask;
 
-                $scope.updateTask = function () {
-                    TaskService.update({id: taskId}, $scope.task).$promise
-                        .then(function success(task) {
-                            $log.debug("Successfully updated task", task);
-                        }, function error(response) {
-                            $log.error("Failed to update task", response);
-                        });
-                };
+        getTask();
 
-                // SPRINT
-                var Sprint = $resource(task._links.sprint.href);
-                Sprint.get().$promise
-                    .then(function success(sprint) {
-                        $scope.sprint = sprint;
-                        $log.debug("Fetched sprint for task", $scope.sprint);
-                    }, function error(response) {
-                        $log.error("Failed to fetch sprint for task", response);
-                    });
+        /**
+         * Retrieves task by id from route.
+         */
+        function getTask() {
+            TaskService.perform().get({id: taskId}).$promise
+                .then(function (task) {
+                    $scope.task = task;
+                    $log.debug("Fetched task", $scope.task);
 
-                // DEVELOPERS
-                var Developers = $resource(task._links.developers.href);
-                Developers.get().$promise
-                    .then(function success(developers) {
-                        $scope.developers = developers._embedded.developers;
-                        $log.debug("Fetched developers for task", $scope.developers);
-                    }, function error(response) {
-                        $log.error("Failed to fetch developers for task", response);
-                    });
-            }, function error(response) {
-                $log.error("Failed to fetch task by id", response);
-            });
-    };
+                    getSprint(task);
+                    getDevelopers(task);
 
-    // register controller
-    app.controller('TaskController',
-        ['$scope', '$resource', '$stateParams', '$log', 'TaskService', TaskController])
+                }, function error(response) {
+                    $log.error("Failed to fetch task by id", response);
+                });
+        }
+
+        /**
+         * Performs full update on task entity.
+         */
+        function updateTask() {
+            TaskService.perform().update({id: taskId}, $scope.task).$promise
+                .then(function (task) {
+                    $log.debug("Successfully updated task", task);
+
+                }, function (error) {
+                    $log.error("Failed to update task", error);
+                });
+        }
+
+        /**
+         * Retrieves sprint associated with provided task.
+         * @param task
+         */
+        function getSprint(task) {
+            TaskService.getSprint(task).$promise
+                .then(function (sprint) {
+                    $scope.sprint = sprint;
+                    $log.debug("Fetched sprint for task", sprint);
+
+                }, function (error) {
+                    $log.error("Failed to fetch sprint for task", error);
+                });
+        }
+
+        /**
+         * Retrieves set of developers associated with provided task.
+         * @param task
+         */
+        function getDevelopers(task) {
+            TaskService.getDevelopers(task).$promise
+                .then(function (response) {
+                    $scope.developers = response._embedded.developers;
+                    $log.debug("Fetched developers for task", $scope.developers);
+
+                }, function (error) {
+                    $log.error("Failed to fetch developers for task", error);
+                });
+        }
+    }
 }());

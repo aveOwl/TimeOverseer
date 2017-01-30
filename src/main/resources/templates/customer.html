@@ -9,15 +9,15 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{customer.firstName}} {{customer.lastName}}</strong></td>
+                            <td><strong ng-bind="customerName"></strong></td>
                         </tr>
                         <tr>
                             <th>Login:</th>
-                            <td>{{customer.login}}</td>
+                            <td ng-bind="customer.login"></td>
                         </tr>
                         <tr>
                             <th>Business Interests:</th>
-                            <td>{{customer.businessInterests}}</td>
+                            <td ng-bind="customer.businessInterests"></td>
                         </tr>
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="customerInfo = !customerInfo">Edit</button>
@@ -63,10 +63,10 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="p in projects">
-                        <td><a class="top-link" ui-sref="projects({id: p.id})">{{p.name}}</a></td>
-                        <td>{{p.description}}</td>
-                        <td>{{p.startDate}}</td>
-                        <td>{{p.endDate}}</td>
+                        <td><a class="top-link" ui-sref="projects({id: p.id})" ng-bind="p.name"></a></td>
+                        <td ng-bind="p.description"></td>
+                        <td ng-bind="p.startDate"></td>
+                        <td ng-bind="p.endDate"></td>
                     </tr>
                     </tbody>
                 </table>

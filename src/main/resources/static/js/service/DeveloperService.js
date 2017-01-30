@@ -1,20 +1,36 @@
 /**
- * Developer Service
+ * Developer Service.
  */
 (function () {
     'use strict';
+    
+    angular.module('overseer')
+        .factory('DeveloperService', DeveloperService);
 
-    // fetch app
-    var app = angular.module('overseer');
+    DeveloperService.$inject = ['$resource'];
+    function DeveloperService($resource) {
+        var developerService = {};
 
-    // define service
-    var DeveloperService = function ($resource) {
-        return $resource('/developers/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+        // Basic CRUD operations
+        developerService.perform = function () {
+            return $resource('/developers/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
 
-    // register service
-    app.factory('DeveloperService', ['$resource', DeveloperService])
+        developerService.getCompany = function (developer) {
+            return $resource(developer._links.employer.href).get();
+        };
+
+        developerService.getManager = function (developer) {
+            return $resource(developer._links.projectManager.href).get();
+        };
+
+        developerService.getTasks = function (developer) {
+            return $resource(developer._links.tasks.href).get();
+        };
+
+        return developerService;
+    }
 }());

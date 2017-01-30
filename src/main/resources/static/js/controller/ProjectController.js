@@ -1,82 +1,118 @@
 /**
- * Project controller
+ * Project Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('ProjectController', ProjectController);
 
-    // define controller
-    var ProjectController = function ($scope, $resource, $stateParams, $log, ProjectService, SprintService) {
-        $scope.projectInfo = true;
-        $scope.sprintsInfo = true;
-
+    ProjectController.$inject = ['$scope', '$stateParams', '$log', 'ProjectService', 'SprintService'];
+    function ProjectController($scope, $stateParams, $log, ProjectService, SprintService) {
         var projectId = $stateParams.id;
 
-        ProjectService.get({id: projectId}).$promise
-            .then(function success(project) {
-                $scope.project = project;
-                $log.debug("Fetched project", $scope.project);
+        $scope.projectInfo = true;
+        $scope.sprintsInfo = true;
+        $scope.updateProject = updateProject;
+        $scope.addSprint = addSprint;
 
-                $scope.updateProject = function () {
-                    ProjectService.update({id: projectId}, $scope.project).$promise
-                        .then(function success(project) {
-                            $log.debug("Successfully updated project", $scope.project);
-                        }, function error(response) {
-                            $log.error("Failed to update project", response);
-                        });
-                };
+        getProject();
 
-                // CUSTOMER
-                var Customer = $resource(project._links.customer.href);
-                Customer.get().$promise
-                    .then(function (customer) {
-                        $scope.customer = customer;
-                        $log.debug("Fetched customer", $scope.customer);
-                    }, function error(response) {
-                        $log.error("Failed to fetch customer for project", response);
-                    });
+        /**
+         * Retrieves project by id from route.
+         */
+        function getProject() {
+            ProjectService.perform().get({id: projectId}).$promise
+                .then(function (project) {
+                    $scope.project = project;
+                    $log.debug("Fetched project", project);
 
-                // MANAGER
-                var Manager = $resource(project._links.projectManager.href);
-                Manager.get().$promise
-                    .then(function success(manager) {
-                        $scope.manager = manager;
-                        $log.debug("Fetched manager", manager)
-                    }, function error() {
-                        $log.warn("No manager is assigned to project", $scope.project);
-                    });
+                    getCustomer(project);
+                    getManager(project);
+                    getSprints(project);
 
-                // SPRINTS
-                var Sprints = $resource(project._links.sprints.href);
-                Sprints.get().$promise
-                    .then(function (sprints) {
-                        $scope.sprints = sprints._embedded.sprints;
-                        $log.debug("Fetched sprints", $scope.sprints);
+                }, function (error) {
+                    $log.error("Failed to fetch project by id", error);
+                });
+        }
 
-                        $scope.sprint = {
-                            name: $scope.name,
-                            project: project._links.self.href
-                        };
+        /**
+         * Performs full update on project entity.
+         */
+        function updateProject() {
+            ProjectService.perform().update({id: projectId}, $scope.project).$promise
+                .then(function (project) {
+                    $log.debug("Successfully updated project", project);
 
-                        $scope.addSprint = function () {
-                            SprintService.save($scope.sprint).$promise
-                                .then(function success(sprint) {
-                                    $scope.sprints.push(sprint);
-                                    $log.debug("Saving sprint for project", sprint);
-                                }, function error(response) {
-                                    $log.error("Failed to add sprint to project", response);
-                                });
-                        }
-                    }, function error(response) {
-                        $log.error("Failed to fetch sprints for project", response);
-                    });
-            }, function error(response) {
-                $log.error("Failed to fetch project by id", response);
-            });
-    };
+                }, function (error) {
+                    $log.error("Failed to update project", error);
+                });
+        }
 
-    // register controller
-    app.controller('ProjectController', ['$scope', '$resource', '$stateParams', '$log', 'ProjectService', 'SprintService', ProjectController])
+        /**
+         * Retrieves customer associated with provided project.
+         * @param project
+         */
+        function getCustomer(project) {
+            ProjectService.getCustomer(project).$promise
+                .then(function (customer) {
+                    $scope.customer = customer;
+                    $scope.customerName = customer.firstName + " " + customer.lastName;
+                    $log.debug("Fetched customer", customer);
+
+                }, function (error) {
+                    $log.error("Failed to fetch customer for project", error);
+                });
+        }
+
+        /**
+         * Retrieves projectManager associated with provided project.
+         * @param project
+         */
+        function getManager(project) {
+            ProjectService.getManager(project).$promise
+                .then(function (manager) {
+                    $scope.manager = manager;
+                    $scope.managerName = manager.firstName + " " + manager.lastName;
+                    $log.debug("Fetched manager", manager);
+
+                }, function (error) {
+                    $log.warn("No manager is assigned to project", error);
+                });
+        }
+
+        /**
+         * Retrieves set of sprints associated with provided project.
+         * @param project
+         */
+        function getSprints(project) {
+            ProjectService.getSprints(project).$promise
+                .then(function (response) {
+                    $scope.sprints = response._embedded.sprints;
+                    $log.debug("Fetched sprints", $scope.sprints);
+
+                    $scope.sprint = {
+                        name: $scope.name,
+                        project: project._links.self.href
+                    };
+
+                }, function (error) {
+                    $log.error("Failed to fetch sprints for project", error);
+                });
+        }
+
+        /**
+         * Adds sprint to project.
+         */
+        function addSprint() {
+            SprintService.perform().save($scope.sprint).$promise
+                .then(function (sprint) {
+                    $scope.sprints.push(sprint);
+                    $log.debug("Saving sprint for project", sprint);
+
+                }, function (error) {
+                    $log.error("Failed to add sprint to project", error);
+                });
+        }
+    }
 }());

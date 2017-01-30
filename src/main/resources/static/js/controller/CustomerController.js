@@ -1,79 +1,106 @@
 /**
- * Customer controller
+ * Customer Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('CustomerController', CustomerController);
 
-    // define controller
-    var CustomerController = function ($scope, $stateParams, $resource, $log, CustomerService, ProjectService) {
+    CustomerController.$inject = ['$scope', '$stateParams', '$log', 'CustomerService', 'ProjectService'];
+    function CustomerController($scope, $stateParams, $log, CustomerService, ProjectService) {
+        var custId = $stateParams.id; // id from route
+
         $scope.customerInfo = true;
         $scope.companiesInfo = true;
         $scope.projectsInfo = true;
+        $scope.updateCustomer = updateCustomer;
+        $scope.addProject = addProject;
 
-        var custId = $stateParams.id; // id from route
+        getCustomer();
 
-        CustomerService.get({id: custId}).$promise
-            .then(function success(customer) {
-                $scope.customer = customer;
-                $log.debug("Fetched customer", customer);
+        /**
+         * Retrieves customer by id from route.
+         */
+        function getCustomer() {
+            CustomerService.perform().get({id: custId}).$promise
+                .then(function (customer) {
+                    $scope.customer = customer;
+                    $scope.customerName = customer.firstName + " " + customer.lastName;
+                    $log.debug("Fetched customer", customer);
 
-                $scope.updateCustomer = function () {
-                    CustomerService.update({id: custId}, $scope.customer).$promise
-                        .then(function success(customer) {
-                            $log.debug("Successfully updated customer: " + customer);
-                        }, function error(response) {
-                            $log.error("Failed to update customer", response);
-                        });
-                };
+                    getProjects(customer);
+                    getCompanies(customer);
 
-                // PROJECTS
-                var Projects = $resource(customer._links.projects.href);
-                Projects.get().$promise
-                    .then(function success(response) {
-                        $scope.projects = response._embedded.projects;
-                        $log.debug("Fetched projects for customer", $scope.projects);
+                }, function (error) {
+                    $log.error("Failed to fetch customer by id", error);
+                });
+        }
 
-                        $scope.project = {
-                            name: $scope.name,
-                            description: $scope.description,
-                            startDate: $scope.startDate,
-                            endDate: $scope.endDate,
-                            customer: customer._links.self.href
-                        };
+        /**
+         * Performs full update on customer entity.
+         */
+        function updateCustomer() {
+            CustomerService.perform().update({id: custId}, $scope.customer).$promise
+                .then(function (customer) {
+                    $log.debug("Successfully updated customer", customer);
+                    $scope.customerName = customer.firstName + " " + customer.lastName;
 
-                        $scope.addProject = function () {
-                            ProjectService.save($scope.project).$promise
-                                .then(function success(project) {
-                                    $scope.projects.push(project);
-                                    $log.debug("Saved project for customer", project);
-                                }, function error(response) {
-                                    $log.error("Failed to add project for customer", response);
-                                });
-                        };
-                    }, function error(response) {
-                        $log.error("Failed to fetch projects for customer", response);
-                    });
+                }, function (error) {
+                    $log.error("Failed to update customer", error);
+                });
+        }
 
-                // COMPANIES
-                var Companies = $resource(customer._links.companies.href);
-                Companies.get().$promise
-                    .then(function success(response) {
-                        $scope.companies = response._embedded.companies;
-                        $log.debug("Fetched companies for customer", $scope.companies);
+        /**
+         * Retrieves projects associated with provided customer.
+         * @param customer
+         */
+        function getProjects(customer) {
+            CustomerService.getProjects(customer).$promise
+                .then(function (response) {
+                    $scope.projects = response._embedded.projects;
+                    $log.debug("Fetched projects for customer", $scope.projects);
 
-                        // TODO companies for customer
-                    }, function error(response) {
-                        $log.error("Failed to fetch companies for customer", response);
-                    });
-            }, function error(response) {
-                $log.error("Failed to fetch customer by id", response);
-            });
-    };
+                    $scope.project = {
+                        name: $scope.name,
+                        description: $scope.description,
+                        startDate: $scope.startDate,
+                        endDate: $scope.endDate,
+                        customer: customer._links.self.href
+                    };
 
-    // register controller
-    app.controller('CustomerController',
-        ['$scope', '$stateParams', '$resource', '$log', 'CustomerService', 'ProjectService', CustomerController])
+                }, function (error) {
+                    $log.error("Failed to fetch projects for customer", error);
+                });
+        }
+
+        /**
+         * Retrieves companies associated with provided customer.
+         * @param customer
+         */
+        function getCompanies(customer) {
+            CustomerService.getCompanies(customer).$promise
+                .then(function (response) {
+                    $scope.companies = response._embedded.companies;
+                    $log.debug("Fetched companies for customer", $scope.companies);
+
+                }, function (error) {
+                    $log.error("Failed to fetch companies for customer", error);
+                });
+        }
+
+        /**
+         * Adds project to company.
+         */
+        function addProject() {
+            ProjectService.perform().save($scope.project).$promise
+                .then(function (project) {
+                    $scope.projects.push(project);
+                    $log.debug("Saving project for customer", project);
+
+                }, function (error) {
+                    $log.error("Failed to add project for customer", error);
+                });
+        }
+    }
 }());

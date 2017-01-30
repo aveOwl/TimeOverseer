@@ -1,20 +1,36 @@
 /**
- * Project Service
+ * Project Service.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .factory('ProjectService', ProjectService);
 
-    // define service
-    var ProjectService = function ($resource) {
-        return $resource('/projects/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+    ProjectService.$inject = ['$resource'];
+    function ProjectService($resource) {
+        var projectService = {};
 
-    // register service
-    app.factory('ProjectService', ['$resource', ProjectService])
+        // Basic CRUD operations
+        projectService.perform = function () {
+            return $resource('/projects/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
+
+        projectService.getCustomer = function (project) {
+            return $resource(project._links.customer.href).get();
+        };
+
+        projectService.getManager = function (project) {
+            return $resource(project._links.projectManager.href).get();
+        };
+
+        projectService.getSprints = function (project) {
+            return $resource(project._links.sprints.href).get();
+        };
+
+        return projectService;
+    }
 }());

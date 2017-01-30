@@ -10,23 +10,25 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{employee.firstName}} {{employee.lastName}}</strong></td>
+                            <td><strong ng-bind="employee.firstName + ' ' + employee.lastName"></strong></td>
                         </tr>
                         <tr>
                             <th>Login:</th>
-                            <td>{{employee.login}}</td>
+                            <td ng-bind="employee.login"></td>
                         </tr>
                         <tr>
                             <th>Qualification:</th>
-                            <td>{{employee.qualification}}</td>
+                            <td ng-bind="employee.qualification"></td>
                         </tr>
                         <tr>
                             <th>Company:</th>
-                            <td><a class="top-link" ui-sref="companies({id: company.id})">{{company.name}}</a></td>
+                            <td><a class="top-link" ui-sref="companies({id: company.id})" ng-bind="company.name"></a>
+                            </td>
                         </tr>
                         <tr>
                             <th>Project:</th>
-                            <td ng-show="project"><a class="top-link" ui-sref="projects({id: project.id})">{{project.name}}</a>
+                            <td ng-show="project"><a class="top-link" ui-sref="projects({id: project.id})"
+                                                     ng-bind="project.name"></a>
                             </td>
                             <td ng-hide="project">Not Assigned Yet</td>
                         </tr>
@@ -73,10 +75,10 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="dev in developers">
-                        <td><a class="top-link" ui-sref="developers({id: dev.id})">{{dev.firstName}}
-                            {{dev.lastName}}</a></td>
-                        <td>{{dev.login}}</td>
-                        <td>{{dev.qualification}}</td>
+                        <td><a class="top-link" ui-sref="developers({id: dev.id})"
+                               ng-bind="dev.firstName + ' ' + dev.lastName"></a></td>
+                        <td ng-bind="dev.login"></td>
+                        <td ng-bind="dev.qualification"></td>
                     </tr>
                     </tbody>
                 </table>

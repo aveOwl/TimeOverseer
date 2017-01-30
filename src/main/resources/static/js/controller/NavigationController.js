@@ -1,21 +1,17 @@
 /**
- * Navigation Controller
+ * Navigation Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('NavigationController', NavigationController);
 
-    // define controller
-    var NavigationController = function ($scope, $state) {
+    NavigationController.$inject = ['$scope', '$state'];
+    function NavigationController($scope, $state) {
         $scope.$on("$stateChangeSuccess", function () {
             $scope.activeTab = $state.current.activeTab;
             $scope.showIntro = $scope.activeTab == 'home';
         });
-    };
-
-    // register controller
-    app.controller('NavigationController',
-        ["$scope", "$state", NavigationController]);
+    }
 }());

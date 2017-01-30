@@ -1,69 +1,95 @@
 /**
- * ProjectManager controller
+ * ProjectManager Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('ProjectManagerController', ProjectManagerController);
 
-    // define controller
-    var ProjectManagerController = function ($scope, $stateParams, $resource, $log, ProjectManagerService) {
+    ProjectManagerController.$inject = ['$scope', '$stateParams', '$log', 'ProjectManagerService'];
+    function ProjectManagerController($scope, $stateParams, $log, ProjectManagerService) {
+        var pmId = $stateParams.id;
+
         $scope.projectManagerInfo = true;
+        $scope.updateProjectManager = updateProjectManager;
 
-        var pmId = $stateParams.id; // id from route
+        getProjectManager();
 
-        ProjectManagerService.get({id: pmId}).$promise
-            .then(function success(projectManager) {
-                $scope.employee = projectManager;
+        /**
+         * Retrieves projectManager by id from route.
+         */
+        function getProjectManager() {
+            ProjectManagerService.perform().get({id: pmId}).$promise
+                .then(function (projectManager) {
+                    $scope.employee = projectManager;
+                    $log.debug("Fetched projectManager", projectManager);
 
-                $scope.updateProjectManager = function () {
-                    ProjectManagerService.update({id: pmId}, $scope.employee).$promise
-                        .then(function success(projectManager) {
-                            $log.debug("Successfully updated projectManager", projectManager);
-                        }, function error(response) {
-                            $log.error("Failed to update projectManager", response);
-                        });
-                };
+                    getCompany(projectManager);
+                    getProject(projectManager);
+                    getDevelopers(projectManager);
 
-                // Company
-                var Company = $resource(projectManager._links.employer.href);
-                Company.get().$promise
-                    .then(function success(company) {
-                        $scope.company = company;
-                        $log.debug("Fetched company for projectManager", company);
-                    }, function error(response) {
-                        $log.error("Failed to fetch company for projectManager", response)
-                    });
+                }, function (error) {
+                    $log.error("Failed to fetch projectManager by id", error);
+                });
+        }
 
-                // Project
-                var Project = $resource(projectManager._links.project.href);
-                Project.get().$promise
-                    .then(function success(project) {
-                        $scope.project = project;
-                        $log.debug("Fetched project for projectManager", project);
+        /**
+         * Performs full update on projectManager entity.
+         */
+        function updateProjectManager() {
+            ProjectManagerService.perform().update({id: pmId}, $scope.employee).$promise
+                .then(function (projectManager) {
+                    $log.debug("Successfully updated projectManager", projectManager);
 
-                    }, function error(response) {
-                        $log.warn("No project is assigned to projectManager", response);
-                    });
+                }, function (error) {
+                    $log.error("Failed to update projectManager", error);
+                });
+        }
 
-                // Developers
-                var Developers = $resource(projectManager._links.developers.href);
-                Developers.get().$promise
-                    .then(function success(response) {
-                        $scope.developers = response._embedded.developers;
-                        $log.debug("Fetched developers for projectManager", $scope.developers);
+        /**
+         * Retrieves company associated with provided projectManager.
+         * @param projectManager
+         */
+        function getCompany(projectManager) {
+            ProjectManagerService.getCompany(projectManager).$promise
+                .then(function (company) {
+                    $scope.company = company;
+                    $log.debug("Fetched company for projectManager", company);
 
-                    }, function error(response) {
-                        $log.error("Failed to fetch developers for projectManager", response);
-                    });
+                }, function (error) {
+                    $log.error("Failed to fetch company for projectManager", error)
+                });
+        }
 
-            }, function error(response) {
-                $log.error("Failed to fetch projectManager by id", response);
-            });
-    };
+        /**
+         * Retrieves project associated with provided projectManager.
+         * @param projectManager
+         */
+        function getProject(projectManager) {
+            ProjectManagerService.getProject(projectManager).$promise
+                .then(function (project) {
+                    $scope.project = project;
+                    $log.debug("Fetched project for projectManager", project);
 
-    // register controller
-    app.controller('ProjectManagerController',
-        ['$scope', '$stateParams', '$resource', '$log', 'ProjectManagerService', ProjectManagerController])
+                }, function (error) {
+                    $log.warn("No project is assigned to projectManager", error);
+                });
+        }
+
+        /**
+         * Retrieves set of developers associated with provided projectManager.
+         * @param projectManager
+         */
+        function getDevelopers(projectManager) {
+            ProjectManagerService.getDevelopers(projectManager).$promise
+                .then(function (response) {
+                    $scope.developers = response._embedded.developers;
+                    $log.debug("Fetched developers for projectManager", $scope.developers);
+
+                }, function (error) {
+                    $log.error("Failed to fetch developers for projectManager", error);
+                });
+        }
+    }
 }());

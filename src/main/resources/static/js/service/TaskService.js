@@ -1,20 +1,32 @@
 /**
- * Task Service
+ * Task Service.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .factory('TaskService', TaskService);
 
-    // define service
-    var TaskService = function ($resource) {
-        return $resource('/tasks/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+    TaskService.$inject = ['$resource'];
+    function TaskService($resource) {
+        var taskService = {};
 
-    // register service
-    app.factory('TaskService', ['$resource', TaskService])
+        // Basic CRUD operations
+        taskService.perform = function () {
+            return $resource('/tasks/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
+
+        taskService.getSprint = function (task) {
+            return $resource(task._links.sprint.href).get();
+        };
+
+        taskService.getDevelopers = function (task) {
+            return $resource(task._links.developers.href).get();
+        };
+
+        return taskService;
+    }
 }());

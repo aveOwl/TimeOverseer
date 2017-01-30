@@ -9,11 +9,12 @@
                     <table class="table">
                         <tr>
                             <th>Name:</th>
-                            <td><strong>{{sprint.name}}</strong></td>
+                            <td><strong ng-bind="sprint.name"></strong></td>
                         </tr>
                         <tr>
                             <th>Project:</th>
-                            <td><a class="top-link" ui-sref="projects({id: project.id})">{{project.name}}</a></td>
+                            <td><a class="top-link" ui-sref="projects({id: project.id})" ng-bind="project.name"></a>
+                            </td>
                         </tr>
                     </table>
                     <button class="btn btn-default col-lg-4" ng-click="sprintInfo = !sprintInfo">Edit</button>
@@ -59,12 +60,12 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="t in tasks">
-                        <td><a class="top-link" ui-sref="tasks({id: t.id})">{{t.name}}</a></td>
-                        <td>{{t.assigned}}</td>
-                        <td>{{t.qualification | lowercase}}</td>
-                        <td>{{t.timeToComplete}}</td>
+                        <td><a class="top-link" ui-sref="tasks({id: t.id})" ng-bind="t.name"></a></td>
+                        <td ng-bind="t.assigned"></td>
+                        <td ng-bind="t.qualification | lowercase"></td>
+                        <td ng-bind="t.timeToComplete"></td>
                         <td ng-if="!t.timeInDevelopment">Not in development yet</td>
-                        <td ng-if="t.timeInDevelopment">{{t.timeInDevelopment}}</td>
+                        <td ng-if="t.timeInDevelopment" ng-bind="t.timeInDevelopment"></td>
                     </tr>
                     </tbody>
                 </table>

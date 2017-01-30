@@ -1,20 +1,32 @@
 /**
- * Customer Service
+ * Customer Service.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .factory('CustomerService', CustomerService);
 
-    // define service
-    var CustomerService = function ($resource) {
-        return $resource('/customers/:id', null,
-            {
-                'update': {method: 'PUT'}
-            });
-    };
+    CustomerService.$inject = ['$resource'];
+    function CustomerService($resource) {
+        var customerService = {};
 
-    // register service
-    app.factory('CustomerService', ['$resource', CustomerService])
+        // Basic CRUD operations
+        customerService.perform = function () {
+            return $resource('/customers/:id', null,
+                {
+                    'update': {method: 'PUT'}
+                });
+        };
+
+        customerService.getProjects = function (customer) {
+            return $resource(customer._links.projects.href).get();
+        };
+
+        customerService.getCompanies = function (customer) {
+            return $resource(customer._links.companies.href).get();
+        };
+
+        return customerService;
+    }
 }());
