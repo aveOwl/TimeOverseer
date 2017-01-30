@@ -25,7 +25,7 @@
 </div>
 <!--TASK QUALIFICATION-->
 <div class="form-group" ng-class="{'has-error': task_form.qualification.$dirty && task_form.qualification.$error.required}">
-    <label class="col-lg-4 control-label">Qualification:</label>
+    <label class="col-lg-4 control-label">Required Qualification:</label>
     <div class="col-lg-8">
         <label class="radio col-lg-4"><input type="radio" name="qualification" required
                                              ng-model="$parent.task.qualification" value="TRAINEE">Trainee</label>
@@ -51,6 +51,7 @@
                class="form-control"
                ng-model="$parent.task.timeToComplete"
                required/>
+        <small class="form-text text-left">Approximate time to complete the task in hours</small>
         <span ng-show="task_form.timeToComplete.$dirty && task_form.timeToComplete.$error.required"
               class="help-block">Time To Complete is required</span>
     </div>
@@ -66,6 +67,7 @@
                class="form-control"
                ng-model="$parent.task.timeInDevelopment"
                ng-required="activeTab == 'developer'"/>
+        <small class="form-text text-left">Time under development in hours</small>
         <span ng-show="task_form.timeInDevelopment.$dirty && task_form.timeInDevelopment.$error.required"
               class="help-block">Time In Development is required</span>
     </div>

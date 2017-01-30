@@ -75,14 +75,14 @@
                         <td><a class="top-link" ui-sref="developers({id: dev.id})">{{dev.firstName}}
                             {{dev.lastName}}</a></td>
                         <td>{{dev.login}}</td>
-                        <td>{{dev.qualification}}</td>
+                        <td>{{dev.qualification | lowercase}}</td>
                         <td>Developer</td>
                     </tr>
                     <tr ng-repeat="pm in projectManagers">
                         <td><a class="top-link" ui-sref="projectManagers({id: pm.id})">{{pm.firstName}}
                             {{pm.lastName}}</a></td>
                         <td>{{pm.login}}</td>
-                        <td>{{pm.qualification}}</td>
+                        <td>{{pm.qualification | lowercase}}</td>
                         <td>Project Manager</td>
                     </tr>
                     </tbody>

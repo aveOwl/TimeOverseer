@@ -61,7 +61,7 @@
                     <tr ng-repeat="t in tasks">
                         <td><a class="top-link" ui-sref="tasks({id: t.id})">{{t.name}}</a></td>
                         <td>{{t.assigned}}</td>
-                        <td>{{t.qualification}}</td>
+                        <td>{{t.qualification | lowercase}}</td>
                         <td>{{t.timeToComplete}}</td>
                         <td ng-if="!t.timeInDevelopment">Not in development yet</td>
                         <td ng-if="t.timeInDevelopment">{{t.timeInDevelopment}}</td>
