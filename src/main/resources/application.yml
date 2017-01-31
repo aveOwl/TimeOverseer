@@ -7,9 +7,18 @@ logging:
       timeoverseer: debug
 
 spring:
+  datasource:
+    url: ${JDBC_DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
+    dbcp:
+      max-active: 10
+      max-idle: 5
+      min-idle: 2
+      initial-size: 5
+      remove-abandoned: true
   thymeleaf:
     cache: false
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
