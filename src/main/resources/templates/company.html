@@ -29,7 +29,10 @@
                             <td>{{company.products}}</td>
                         </tr>
                     </table>
-                    <button class="btn btn-default col-lg-4" ng-click="companyInfo = !companyInfo">Edit</button>
+                    <div class="btn-toolbar">
+                        <button class="btn btn-default col-lg-4" ng-click="companyInfo = !companyInfo">Edit</button>
+                        <button class="btn btn-remove col-lg-4" ng-click="removeCompany()" ng-disabled="!noEmployees">Remove</button>
+                    </div>
                 </div>
                 <!--Update Company-->
                 <div ng-show="!companyInfo">
@@ -67,7 +70,8 @@
                         <th>Name</th>
                         <th>Login</th>
                         <th>Qualification</th>
-                        <th>Position</th>
+                        <th class="col-lg-3">Position</th>
+                        <th class="col-sm-1">Remove</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,6 +81,13 @@
                         <td>{{dev.login}}</td>
                         <td>{{dev.qualification | lowercase}}</td>
                         <td>Developer</td>
+                        <td>
+                            <div class="material-switch pull-right col-lg-12">
+                                <input id="{{dev.id}}" name="{{dev.id}}" type="checkbox"
+                                       ng-click="checkDev($index)"/>
+                                <label for="{{dev.id}}" class="label-danger"></label>
+                            </div>
+                        </td>
                     </tr>
                     <tr ng-repeat="pm in projectManagers">
                         <td><a class="top-link" ui-sref="projectManagers({id: pm.id})">{{pm.firstName}}
@@ -84,10 +95,20 @@
                         <td>{{pm.login}}</td>
                         <td>{{pm.qualification | lowercase}}</td>
                         <td>Project Manager</td>
+                        <td>
+                            <div class="material-switch pull-right col-lg-12">
+                                <input id="{{pm.id}}" name="{{pm.id}}" type="checkbox"
+                                       ng-click="checkPm($index)"/>
+                                <label for="{{pm.id}}" class="label-danger"></label>
+                            </div>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-                <button class="btn btn-default col-lg-2" ng-click="employeesInfo = !employeesInfo">Add</button>
+                <div class="btn-toolbar">
+                    <button class="btn btn-default col-lg-2" ng-click="employeesInfo = !employeesInfo">Add</button>
+                    <button class="btn btn-remove col-lg-2" ng-click="removeEmployees()" ng-disabled="noEmployees">Remove</button>
+                </div>
             </div>
             <!--Add Employee-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="employeesInfo">

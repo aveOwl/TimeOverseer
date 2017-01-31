@@ -1,103 +1,143 @@
 /**
- * Company controller.
+ * Company Controller.
  */
 (function () {
     'use strict';
 
-    // fetch app
-    var app = angular.module('overseer');
+    angular.module('overseer')
+        .controller('CompanyController', CompanyController);
 
-    // define controller
-    var CompanyController = function ($scope, $resource, $stateParams, $log, CompanyService, DeveloperService, ProjectManagerService) {
+    CompanyController.$inject = ['$scope', '$stateParams', '$log', '$window', 'CompanyService'];
+    function CompanyController($scope, $stateParams, $log, $window, CompanyService) {
+        var companyId = $stateParams.id;
+
         $scope.companyInfo = true;
         $scope.employeesInfo = true;
         $scope.customersInfo = true;
+        $scope.updateCompany = updateCompany;
+        $scope.removeCompany = removeCompany;
+        $scope.addEmployee = addEmployee;
+        $scope.removeEmployees = removeEmployees;
+        $scope.checkDev = checkDev;
+        $scope.checkPm = checkPm;
 
-        var companyId = $stateParams.id; // id from route
+        getCompany();
 
-        CompanyService.get({id: companyId}).$promise
-            .then(function success(company) {
-                $scope.company = company;
-                $log.debug("Fetched company", $scope.company);
+        /**
+         * Retrieves company by id from route.
+         */
+        function getCompany() {
+            CompanyService.perform().get({id: companyId}).$promise
+                .then(function (company) {
+                    $scope.company = company;
+                    $log.debug("Fetched company", company);
 
-                $scope.updateCompany = function () {
-                    CompanyService.update({id: companyId}, $scope.company).$promise
-                        .then(function success(company) {
-                            $log.debug("Successfully updated company", company);
-                        }, function error(response) {
-                            $log.error("Failed to update company", response);
-                        });
-                };
+                    getEmployees(company);
+                    getCustomers(company);
 
-                // EMPLOYEES
-                var Employees = $resource(company._links.employees.href);
-                Employees.get().$promise
-                    .then(function success(employees) {
-                        // if employees is present in '_embedded' there is no developers or projectManagers
-                        $scope.noEmployees = typeof employees._embedded.employees != 'undefined';
-                        $scope.developers = employees._embedded.developers;
-                        $scope.projectManagers = employees._embedded.projectManagers;
+                }, function (error) {
+                    $log.error("Failed to fetch company by id", error);
+                });
+        }
 
-                        $log.debug("Fetched developers for company", $scope.developers);
-                        $log.debug("Fetched projectManagers for company", $scope.projectManagers);
+        /**
+         * Performs full update on company entity.
+         */
+        function updateCompany() {
+            CompanyService.perform().update({id: companyId}, $scope.company).$promise
+                .then(function (company) {
+                    $log.debug("Successfully updated company", company);
 
-                        $scope.employee = {
-                            firstName: $scope.firstName,
-                            lastName: $scope.lastName,
-                            login: $scope.login,
-                            password: $scope.password,
-                            qualification: $scope.qualification,
-                            employer: company._links.self.href
-                        };
+                }, function (error) {
+                    $log.error("Failed to update company", error);
+                });
+        }
 
-                        $scope.addEmployee = function () {
-                            if ($scope.employee.position == 'Developer') {
-                                DeveloperService.save($scope.employee).$promise
-                                    .then(function (dev) {
-                                        if (typeof $scope.developers == 'undefined') {
-                                            $scope.developers = [];
-                                            $scope.noEmployees = false;
-                                        }
-                                        $scope.developers.push(dev);
-                                        $log.debug("Saved developer for company", dev);
-                                    }, function error(response) {
-                                        $log.error("Failed to add developer to company", response);
-                                    });
-                            } else {
-                                ProjectManagerService.save($scope.employee).$promise
-                                    .then(function (pm) {
-                                        if (typeof $scope.projectManagers == 'undefined') {
-                                            $scope.projectManagers = [];
-                                            $scope.noEmployees = false;
-                                        }
-                                        $scope.projectManagers.push(pm);
-                                        $log.debug("Saved ProjectManager for company", pm);
-                                    }, function error(response) {
-                                        $log.error("Failed to add projectManager to company", response);
-                                    });
-                            }
-                        };
-                    }, function error(response) {
-                        $log.error("Failed to fetch employees for company", response);
-                    });
+        /**
+         * Removes company.
+         */
+        function removeCompany() {
+            CompanyService.perform().remove({id: companyId}).$promise
+                .then(function () {
+                    $log.debug("Successfully removed company");
+                    $window.location.href = "/#/overseer/";
 
-                // CUSTOMERS
-                var Customers = $resource(company._links.customers.href);
-                Customers.get().$promise
-                    .then(function success(customers) {
-                        $scope.customers = customers._embedded.customers;
-                        $log.debug("Fetched customers for company", $scope.customers);
+                }, function (error) {
+                    $log.error("Failed to remove company", error);
+                })
+        }
 
-                        // TODO customers for company
-                    }, function error(response) {
-                        $log.error("Failed to fetch customers for company", response);
-                    })
-            }, function error(response) {
-                $log.error("Failed to fetch company by id", response);
-            });
-    };
+        /**
+         * Retrieves employees associated with provided company.
+         * @param company
+         */
+        function getEmployees(company) {
+            CompanyService.getEmployees(company).$promise
+                .then(function (employees) {
+                    $scope.noEmployees = CompanyService.isEmployeesPresent(employees);
+                    $scope.developers = CompanyService.getDevelopers(employees);
+                    $scope.projectManagers = CompanyService.getProjectManagers(employees);
 
-    // register controller
-    app.controller('CompanyController',
-        ['$scope', '$resource', '$stateParams', '$log', 'CompanyService', 'DeveloperService', 'ProjectManagerService', CompanyController])
+                    $log.debug("Controller", $scope.developers);
+
+                    $log.debug("Fetched developers for company", $scope.developers);
+                    $log.debug("Fetched projectManagers for company", $scope.projectManagers);
+
+                    $scope.employee = {
+                        firstName: $scope.firstName,
+                        lastName: $scope.lastName,
+                        login: $scope.login,
+                        password: $scope.password,
+                        qualification: $scope.qualification,
+                        employer: company._links.self.href
+                    };
+
+                }, function (error) {
+                    $log.error("Failed to fetch employees for company", error);
+                });
+        }
+
+        /**
+         * Adds employee to company. Developer or ProjectManager depending
+         * on specified position.
+         */
+        function addEmployee() {
+            $scope.noEmployees = false;
+            if ($scope.employee.position == 'Developer') {
+                CompanyService.addDeveloper($scope.employee);
+            } else if ($scope.employee.position == 'ProjectManager') {
+                CompanyService.addProjectManager($scope.employee);
+            }
+        }
+
+        function removeEmployees() {
+            CompanyService.removeEmployees($scope.developers, $scope.projectManagers);
+            if ($scope.developers.length == 0 && $scope.projectManagers.length == 0) {
+                $scope.noEmployees = true;
+            }
+        }
+
+        function checkDev(index) {
+            CompanyService.checkDev($scope.developers, index);
+        }
+
+        function checkPm(index) {
+            CompanyService.checkPm($scope.projectManagers, index);
+        }
+
+        /**
+         * Retrieves customers associated with provided company.
+         * @param company
+         */
+        function getCustomers(company) {
+            CompanyService.getCustomers(company).$promise
+                .then(function (response) {
+                    $scope.customers = response._embedded.customers;
+                    $log.debug("Fetched customers for company", $scope.customers);
+
+                }, function (error) {
+                    $log.error("Failed to fetch customers for company", error);
+                })
+        }
+    }
 }());
