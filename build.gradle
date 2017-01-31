@@ -57,7 +57,7 @@ dependencies {
 }
 
 bootRepackage {
-    mainClass = 'com.timeoverseer.Application'
+    mainClass = 'com.timeoverseer.Overseer'
 }
 
 task wrapper(type: Wrapper) {
