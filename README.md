@@ -19,7 +19,6 @@ keep track of working hours on their projects.
 - [x] **ProjectManager** settles tasks for **Employees** specifying start date and time to finish.
 - [x] **Employee** can work on different **Tasks** at the same time.
 - [x] Several **Employees** can be developing one **Task**.
-- [ ] **Employee** confirms the receipt of the **Task**, records execution time or sends the request to extend development time.
 
 * Application roles.
 - [ ] **Administrator** creates objects in the system such as **Employee**, **Customer**, **Project**, assigns **ProjectManager**.
