@@ -1,24 +1,27 @@
-server:
-  port: 9090
+##
+# Spring Profile Configuration
+##
+spring:
+  profiles:
+    active: dev
+##
+# Hibernate Configuration
+##
+  jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
 
+##
+# Application Logging Configuration
+##
 logging:
   level:
     com:
       timeoverseer: debug
 
-spring:
-  datasource:
-    url: ${JDBC_DATABASE_URL}
-    driver-class-name: org.postgresql.Driver
-    dbcp:
-      max-active: 10
-      max-idle: 5
-      min-idle: 2
-      initial-size: 5
-      remove-abandoned: true
-  thymeleaf:
-    cache: false
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: true
+##
+# Tomcat Configuration
+##
+server:
+  port: 9090
