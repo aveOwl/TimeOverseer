@@ -14,14 +14,27 @@
         $scope.companyInfo = true;
         $scope.employeesInfo = true;
         $scope.customersInfo = true;
+
         $scope.updateCompany = updateCompany;
+        $scope.cancelEdit = cancelEdit;
         $scope.removeCompany = removeCompany;
+
         $scope.addEmployee = addEmployee;
+        $scope.cancelEmployeeAdd = cancelEmployeeAdd;
+
+        $scope.addToRemoveList = addToRemoveList;
         $scope.removeEmployees = removeEmployees;
-        $scope.checkDev = checkDev;
-        $scope.checkPm = checkPm;
+
+        $scope.selected = {};
+        $scope.someSelected = function (object) {
+            return Object.keys(object).some(function (key) {
+                return object[key];
+            })
+        };
 
         getCompany();
+
+        var localCompany;
 
         /**
          * Retrieves company by id from route.
@@ -31,6 +44,8 @@
                 .then(function (company) {
                     $scope.company = company;
                     $log.debug("Fetched company", company);
+
+                    localCompany = angular.copy(company);
 
                     getEmployees(company);
                     getCustomers(company);
@@ -54,10 +69,18 @@
         }
 
         /**
+         * Resets edit form to previous state.
+         */
+        function cancelEdit() {
+            $scope.company = angular.copy(localCompany);
+            $scope.companyInfo = true;
+        }
+
+        /**
          * Removes company.
          */
         function removeCompany() {
-            CompanyService.perform().remove({id: companyId}).$promise
+            CompanyService.perform().addToRemoveList({id: companyId}).$promise
                 .then(function () {
                     $log.debug("Successfully removed company");
                     $location.path("/#/overseer");
@@ -80,16 +103,6 @@
 
                     $log.debug("Fetched developers for company", $scope.developers);
                     $log.debug("Fetched projectManagers for company", $scope.projectManagers);
-
-                    $scope.employee = {
-                        firstName: $scope.firstName,
-                        lastName: $scope.lastName,
-                        login: $scope.login,
-                        password: $scope.password,
-                        qualification: $scope.qualification,
-                        employer: company._links.self.href
-                    };
-
                 }, function (error) {
                     $log.error("Failed to fetch employees for company", error);
                 });
@@ -99,33 +112,45 @@
          * Adds employee to company. Developer or ProjectManager depending
          * on specified position.
          */
-        function addEmployee() {
-            
+        function addEmployee(employee) {
             $scope.noEmployees = false;
-            if ($scope.employee.position == 'Developer') {
-                CompanyService.addDeveloper($scope.employee);
-            } else if ($scope.employee.position == 'ProjectManager') {
-                CompanyService.addProjectManager($scope.employee);
-            }
+            employee.employer = $scope.company._links.self.href;
+
+            CompanyService.addEmployee(employee);
+
+            $scope.employee = {};
+            $scope.employee_form.$setPristine();
         }
 
-        function verifyLogin(login) {
-
+        /**
+         * Resets employee form to its previous state.
+         */
+        function cancelEmployeeAdd() {
+            $scope.employeesInfo = true;
         }
 
+        /**
+         * Adds employee to remove list specifying its position.
+         * @param employee
+         * @param position
+         */
+        function addToRemoveList(employee, position) {
+            employee.position = position;
+            CompanyService.addToRemoveList(employee);
+        }
+
+        /**
+         * Removes all employees prepared to removal and excludes them from
+         * developers and projectManagers list.
+         */
         function removeEmployees() {
+            $scope.developers = CompanyService.exclude($scope.developers);
+            $scope.projectManagers = CompanyService.exclude($scope.projectManagers);
+
             CompanyService.removeEmployees($scope.developers, $scope.projectManagers);
             if ($scope.developers.length == 0 && $scope.projectManagers.length == 0) {
                 $scope.noEmployees = true;
             }
-        }
-
-        function checkDev(index) {
-            CompanyService.checkDev($scope.developers, index);
-        }
-
-        function checkPm(index) {
-            CompanyService.checkPm($scope.projectManagers, index);
         }
 
         /**

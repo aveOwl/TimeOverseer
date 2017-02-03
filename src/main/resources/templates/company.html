@@ -46,7 +46,7 @@
                                     ng-click="companyInfo = true" ng-disabled="company_form.$invalid">Submit
                             </button>
                             <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                    ng-click="companyInfo = true">Cancel
+                                    ng-click="cancelEdit()">Cancel
                             </button>
                         </div>
                     </form>
@@ -83,8 +83,8 @@
                         <td>Developer</td>
                         <td>
                             <div class="material-switch pull-right col-lg-12">
-                                <input id="{{dev.id}}" name="{{dev.id}}" type="checkbox"
-                                       ng-click="checkDev($index)"/>
+                                <input id="{{dev.id}}" name="{{dev.id}}" type="checkbox" ng-click="addToRemoveList(dev, 'Developer')"
+                                ng-model="selected[dev.id]"/>
                                 <label for="{{dev.id}}" class="label-danger"></label>
                             </div>
                         </td>
@@ -97,8 +97,8 @@
                         <td>Project Manager</td>
                         <td>
                             <div class="material-switch pull-right col-lg-12">
-                                <input id="{{pm.id}}" name="{{pm.id}}" type="checkbox"
-                                       ng-click="checkPm($index)"/>
+                                <input id="{{pm.id}}" name="{{pm.id}}" type="checkbox" ng-click="addToRemoveList(pm, 'ProjectManager')"
+                                ng-model="selected[pm.id]"/>
                                 <label for="{{pm.id}}" class="label-danger"></label>
                             </div>
                         </td>
@@ -107,13 +107,13 @@
                 </table>
                 <div class="btn-toolbar">
                     <button class="btn btn-default col-lg-2" ng-click="employeesInfo = !employeesInfo">Add</button>
-                    <button class="btn btn-remove col-lg-2" ng-click="removeEmployees()" ng-disabled="noEmployees">Remove</button>
+                    <button class="btn btn-remove col-lg-2" ng-click="removeEmployees()" ng-disabled="noEmployees || !someSelected(selected)">Remove</button>
                 </div>
             </div>
             <!--Add Employee-->
             <div class="col-lg-4 col-lg-offset-2 text-left" ng-hide="employeesInfo">
                 <h3>Employee</h3>
-                <form name="employee_form" class="form-horizontal" ng-submit="addEmployee()">
+                <form name="employee_form" class="form-horizontal" ng-submit="addEmployee(employee)">
 
                     <div ng-include="'/templates/fragments/employeeForm.html'"></div>
 
@@ -122,7 +122,7 @@
                                 ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid || employee_form.$pending">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                ng-click="employeesInfo = true">Cancel
+                                ng-click="cancelEmployeeAdd()">Cancel
                         </button>
                     </div>
                 </form>
