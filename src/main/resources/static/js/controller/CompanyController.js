@@ -7,8 +7,8 @@
     angular.module('overseer')
         .controller('CompanyController', CompanyController);
 
-    CompanyController.$inject = ['$scope', '$stateParams', '$log', '$window', 'CompanyService'];
-    function CompanyController($scope, $stateParams, $log, $window, CompanyService) {
+    CompanyController.$inject = ['$scope', '$stateParams', '$log', '$location', 'CompanyService'];
+    function CompanyController($scope, $stateParams, $log, $location, CompanyService) {
         var companyId = $stateParams.id;
 
         $scope.companyInfo = true;
@@ -60,7 +60,7 @@
             CompanyService.perform().remove({id: companyId}).$promise
                 .then(function () {
                     $log.debug("Successfully removed company");
-                    $window.location.href = "/#/overseer/";
+                    $location.path("/#/overseer");
 
                 }, function (error) {
                     $log.error("Failed to remove company", error);
@@ -77,8 +77,6 @@
                     $scope.noEmployees = CompanyService.isEmployeesPresent(employees);
                     $scope.developers = CompanyService.getDevelopers(employees);
                     $scope.projectManagers = CompanyService.getProjectManagers(employees);
-
-                    $log.debug("Controller", $scope.developers);
 
                     $log.debug("Fetched developers for company", $scope.developers);
                     $log.debug("Fetched projectManagers for company", $scope.projectManagers);
@@ -102,12 +100,17 @@
          * on specified position.
          */
         function addEmployee() {
+            
             $scope.noEmployees = false;
             if ($scope.employee.position == 'Developer') {
                 CompanyService.addDeveloper($scope.employee);
             } else if ($scope.employee.position == 'ProjectManager') {
                 CompanyService.addProjectManager($scope.employee);
             }
+        }
+
+        function verifyLogin(login) {
+
         }
 
         function removeEmployees() {

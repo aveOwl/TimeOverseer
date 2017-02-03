@@ -119,7 +119,7 @@
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid">Submit
+                                ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid || employee_form.$pending">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="employeesInfo = true">Cancel

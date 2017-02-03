@@ -1,5 +1,6 @@
 <!--CUSTOMER FIRST NAME-->
-<div class="form-group" ng-class="{'has-error': customer_form.firstName.$dirty && customer_form.firstName.$error.required}">
+<div class="form-group"
+     ng-class="{'has-error': customer_form.firstName.$dirty && customer_form.firstName.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="firstName">First Name:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="firstName"
@@ -9,11 +10,16 @@
                class="form-control"
                ng-model="$parent.customer.firstName"
                required/>
-        <span ng-show="customer_form.firstName.$dirty && customer_form.firstName.$error.required" class="help-block">First Name is required</span>
+        <div ng-if="customer_form.firstName.$dirty">
+            <div ng-messages="customer_form.firstName.$error" role="alert">
+                <span ng-message="required" class="help-block">FirstName is required</span>
+            </div>
+        </div>
     </div>
 </div>
 <!--CUSTOMER LAST NAME-->
-<div class="form-group" ng-class="{'has-error': customer_form.lastName.$dirty && customer_form.lastName.$error.required}">
+<div class="form-group"
+     ng-class="{'has-error': customer_form.lastName.$dirty && customer_form.lastName.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="lastName">Last Name:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="lastName"
@@ -23,11 +29,16 @@
                class="form-control"
                ng-model="$parent.customer.lastName"
                required/>
-        <span ng-show="customer_form.lastName.$dirty && customer_form.lastName.$error.required" class="help-block">Last Name is required</span>
+        <div ng-if="customer_form.lastName.$dirty">
+            <div ng-messages="customer_form.lastName.$error" role="alert">
+                <span ng-message="required" class="help-block">LastName is required</span>
+            </div>
+        </div>
     </div>
 </div>
 <!--CUSTOMER LOGIN-->
-<div class="form-group" ng-class="{'has-error': customer_form.login.$dirty && customer_form.login.$error.required}">
+<div class="form-group" ng-class="{'has-error': customer_form.login.$dirty &&
+     (customer_form.login.$error.required || customer_form.login.$error.minlength || customer_form.login.$error.login)}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="login">Login:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="login"
@@ -35,13 +46,25 @@
                type="text"
                placeholder="Login"
                class="form-control"
+               ng-class="{'loading': customer_form.login.$pending}"
                ng-model="$parent.customer.login"
-               required/>
-        <span ng-show="customer_form.login.$dirty && customer_form.login.$error.required" class="help-block">Login is required</span>
+               ng-model-options="{updateOn: 'blur'}"
+               required
+               minlength="4"
+               unique-validator/>
+        <div ng-if="customer_form.login.$dirty">
+            <div ng-messages="customer_form.login.$error" role="alert">
+                <div ng-messages-include="/templates/fragments/loginMessages.html"></div>
+                <div ng-messages="customer_form.login.$pending">
+                    <span ng-message="login" class="text-info">Checking login availability</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--CUSTOMER PASSWORD-->
-<div class="form-group" ng-class="{'has-error': customer_form.password.$dirty && customer_form.password.$error.required}">
+<div class="form-group" ng-class="{'has-error': customer_form.password.$dirty &&
+     (customer_form.password.$error.required || customer_form.password.$error.pattern)}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="password">Password:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
         <input id="password"
@@ -50,12 +73,19 @@
                placeholder="Password"
                class="form-control"
                ng-model="$parent.customer.password"
-               required/>
-        <span ng-show="customer_form.password.$dirty && customer_form.password.$error.required" class="help-block">Password is required</span>
+               ng-model-options="{updateOn: 'blur'}"
+               required
+               ng-pattern="/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/"/>
+        <div ng-if="customer_form.password.$dirty">
+            <div ng-messages="customer_form.password.$error" role="alert">
+                <div ng-messages-include="/templates/fragments/passwordMessages.html"></div>
+            </div>
+        </div>
     </div>
 </div>
 <!--CUSTOMER BUSINESS INTERESTS-->
-<div class="form-group" ng-class="{'has-error': customer_form.businessInterests.$dirty && customer_form.businessInterests.$error.required}">
+<div class="form-group"
+     ng-class="{'has-error': customer_form.businessInterests.$dirty && customer_form.businessInterests.$error.required}">
     <label ng-class="activeTab == 'customer' ? 'col-lg-4 control-label' : 'sr-only'" for="businessInterests">Business
         Interests:</label>
     <div ng-class="activeTab == 'customer' ? 'col-lg-8' : ''">
@@ -67,6 +97,10 @@
                ng-model="$parent.customer.businessInterests"
                required/>
         <small class="form-text text-left">Separate each interest with comma</small>
-        <span ng-show="customer_form.businessInterests.$dirty && customer_form.businessInterests.$error.required" class="help-block">Business Interests is required</span>
+        <div ng-if="customer_form.businessInterests.$dirty">
+            <div ng-messages="customer_form.businessInterests.$error" role="alert">
+                <span ng-message="required" class="help-block">Business Interests is required</span>
+            </div>
+        </div>
     </div>
 </div>

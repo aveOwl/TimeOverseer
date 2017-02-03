@@ -10,7 +10,11 @@
                class="form-control"
                ng-model="$parent.employee.firstName"
                required/>
-        <span ng-show="employee_form.firstName.$dirty && employee_form.firstName.$error.required" class="help-block">FirstName is required</span>
+        <div ng-if="employee_form.firstName.$dirty">
+            <div ng-messages="employee_form.firstName.$error" role="alert">
+                <span ng-message="required" class="help-block">FirstName is required</span>
+            </div>
+        </div>
     </div>
 </div>
 <!--EMPLOYEE LAST NAME-->
@@ -25,11 +29,16 @@
                class="form-control"
                ng-model="$parent.employee.lastName"
                required/>
-        <span ng-show="employee_form.lastName.$dirty && employee_form.lastName.$error.required" class="help-block">LastName is required</span>
+        <div ng-if="employee_form.lastName.$dirty">
+            <div ng-messages="employee_form.lastName.$error" role="alert">
+                <span ng-message="required" class="help-block">LastName is required</span>
+            </div>
+        </div>
     </div>
 </div>
 <!--EMPLOYEE LOGIN-->
-<div class="form-group" ng-class="{'has-error': employee_form.login.$dirty && employee_form.login.$error.required}">
+<div class="form-group" ng-class="{'has-error': employee_form.login.$dirty &&
+     (employee_form.login.$error.required || employee_form.login.$error.minlength || employee_form.login.$error.login)}">
     <label class="col-lg-4 control-label" for="login">Login:</label>
     <div class="col-lg-8">
         <input id="login"
@@ -37,14 +46,25 @@
                type="text"
                placeholder="Login"
                class="form-control"
+               ng-class="{'loading': employee_form.login.$pending}"
                ng-model="$parent.employee.login"
-               required/>
-        <span ng-show="employee_form.login.$dirty && employee_form.login.$error.required" class="help-block">Login is required</span>
+               ng-model-options="{updateOn: 'blur'}"
+               required
+               minlength="4"
+               unique-validator/>
+        <div ng-if="employee_form.login.$dirty">
+            <div ng-messages="employee_form.login.$error" role="alert">
+                <div ng-messages-include="/templates/fragments/loginMessages.html"></div>
+                <div ng-messages="employee_form.login.$pending">
+                    <span ng-message="login" class="text-info">Checking login availability</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <!--EMPLOYEE PASSWORD-->
 <div class="form-group"
-     ng-class="{'has-error': employee_form.password.$dirty && employee_form.password.$error.required}">
+     ng-class="{'has-error': employee_form.password.$dirty && (employee_form.password.$error.required || employee_form.password.$error.pattern)}">
     <label class="col-lg-4 control-label" for="password">Password:</label>
     <div class="col-lg-8">
         <input id="password"
@@ -53,8 +73,14 @@
                placeholder="Password"
                class="form-control"
                ng-model="$parent.employee.password"
-               required/>
-        <span ng-show="employee_form.password.$dirty && employee_form.password.$error.required" class="help-block">Password is required</span>
+               ng-model-options="{updateOn: 'blur'}"
+               required
+               ng-pattern="/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/"/>
+        <div ng-if="employee_form.password.$dirty">
+            <div ng-messages="employee_form.password.$error" role="alert">
+                <div ng-messages-include="/templates/fragments/passwordMessages.html"></div>
+            </div>
+        </div>
     </div>
 </div>
 <!--EMPLOYEE QUALIFICATION-->
@@ -76,8 +102,11 @@
         <label class="radio col-lg-4"><input type="radio" name="qualification" required
                                              ng-model="$parent.employee.qualification"
                                              value="ARCHITECT">Architect</label>
-        <span ng-show="employee_form.qualification.$dirty && employee_form.qualification.$error.required"
-              class="help-block">Qualification is required</span>
+        <div ng-if="employee_form.qualification.$dirty">
+            <div ng-messages="employee_form.qualification.$error" role="alert">
+                <span ng-message="required" class="help-block">Qualification is required</span>
+            </div>
+        </div>
     </div>
 </div>
 <!--EMPLOYEE POSITION-->
@@ -99,6 +128,10 @@
                    value="ProjectManager"
                    ng-required="activeTab == 'company'">
             ProjectManager</label>
-        <span ng-show="employee_form.position.$dirty && employee_form.position.$error.required" class="help-block">Position is required</span>
+        <div ng-if="employee_form.position.$dirty">
+            <div ng-messages="employee_form.position.$error" role="alert">
+                <span ng-message="required" class="help-block">Position is required</span>
+            </div>
+        </div>
     </div>
 </div>
