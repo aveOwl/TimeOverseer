@@ -43,7 +43,7 @@ public class Person extends AbstractEntity {
     @Column(name = "last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "login", nullable = false)
+    @Column(name = "login", unique = true, nullable = false)
     private String login;
 
     @Column(name = "password", nullable = false)

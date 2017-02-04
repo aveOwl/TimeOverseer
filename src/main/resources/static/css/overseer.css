@@ -379,3 +379,11 @@ body {
     color: black;
     background-color: #A94442;
 }
+
+.loading {
+    background-color: #ffffff;
+    background-image: url("http://techdefencelabs.com/public/img/loading.gif");
+    background-size: 25px 25px;
+    background-position:right center;
+    background-repeat: no-repeat;
+}

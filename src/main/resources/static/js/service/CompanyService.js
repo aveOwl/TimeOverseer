@@ -13,8 +13,7 @@
         var developers = [];
         var projectManagers = [];
 
-        var devToDelete = [];
-        var pmToDelete = [];
+        var removeList = [];
 
         // Basic CRUD operations
         companyService.perform = function () {
@@ -53,34 +52,50 @@
             return projectManagers;
         };
 
+
         /**
-         * Adds Developer to company.
+         * Adds employee to company.
          */
-        companyService.addDeveloper = function (dev) {
-            DeveloperService.perform().save(dev).$promise
-                .then(function (savedDev) {
-                    $log.debug("Saved developer for company", savedDev);
-                    developers.push(savedDev);
+        companyService.addEmployee = function (employee) {
+            switch (employee.position) {
+                case 'Developer':
+                    addDeveloper(employee);
+                    break;
+                case 'ProjectManager':
+                    addProjectManager(employee);
+                    break;
+                default:
+                    $log.error("Specified position is not supported");
+            }
+        };
+
+        /**
+         * Adds developer to company.
+         */
+        function addDeveloper(employee) {
+            DeveloperService.perform().save(employee).$promise
+                .then(function (dev) {
+                    $log.debug("Saved developer for company", dev);
+                    developers.push(dev);
 
                 }, function (error) {
                     $log.error("Failed to add developer to company", error);
                 });
-        };
+        }
 
         /**
-         * Adds ProjectManager to company.
+         * Adds projectManager to company.
          */
-        companyService.addProjectManager = function (pm) {
-            ProjectManagerService.perform().save(pm).$promise
-                .then(function (savedPm) {
-                    $log.debug("Saved ProjectManager for company", savedPm);
-                    projectManagers.push(savedPm);
+        function addProjectManager(employee) {
+            ProjectManagerService.perform().save(employee).$promise
+                .then(function (pm) {
+                    $log.debug("Saved ProjectManager for company", pm);
+                    projectManagers.push(pm);
 
                 }, function (error) {
                     $log.error("Failed to add projectManager to company", error);
                 });
-
-        };
+        }
 
         /**
          * Returns true if company has no developers or projectManagers associated with it,
@@ -91,58 +106,48 @@
         };
 
         /**
-         * Clears projectManager and developer remove lists.
-         *
-         * @param developers set of developers to remove marked developer from.
-         * @param projectManagers set of projectManagers to remove marked projectManager from.
+         * Adds employee to remove list, if employee already in remove list
+         * removes it from the list.
          */
-        companyService.removeEmployees = function (developers, projectManagers) {
-            $log.debug("Removing developers", devToDelete);
-            devToDelete.forEach(function (dev) {
-                removeFromArray(dev, developers);
-                DeveloperService.perform().remove({id: dev.id});
-            });
-            $log.debug("Removing projectManagers", pmToDelete);
-            pmToDelete.forEach(function (pm) {
-                removeFromArray(pm, projectManagers);
-                ProjectManagerService.perform().remove({id: pm.id});
-            });
-        };
-
-        /**
-         * Adds single developer from provided developers set
-         * to remove list based on provided index.
-         *
-         * @param developers set of developers.
-         * @param index index to identify developer by.
-         */
-        companyService.checkDev = function (developers, index) {
-            var dev = developers[index];
-            if (devToDelete.includes(dev)) {
-                $log.debug("Removing developer from delete list", dev);
-                removeFromArray(dev, pmToDelete);
+        companyService.addToRemoveList = function (employee) {
+            if (removeList.includes(employee)) {
+                $log.debug("Removing employee from remove list", employee);
+                removeFromArray(employee, removeList);
             } else {
-                $log.debug("Preparing to delete developer", dev);
-                devToDelete.push(dev);
+                $log.debug("Preparing to delete employee", employee);
+                removeList.push(employee);
             }
         };
 
         /**
-         * Adds single projectManager from provided projectManagers set
-         * to remove list based on provided index.
-         *
-         * @param projectManagers set of projectManagers.
-         * @param index index to identify projectManager by.
+         * Clears remove lists.
          */
-        companyService.checkPm = function (projectManagers, index) {
-            var pm = projectManagers[index];
-            if (pmToDelete.includes(pm)) {
-                $log.debug("Removing projectManager from delete list", pm);
-                removeFromArray(pm, pmToDelete);
-            } else {
-                $log.debug("Preparing to delete projectManager", pm);
-                pmToDelete.push(pm);
-            }
+        companyService.removeEmployees = function (selected) {
+            $log.debug("Removing employees", removeList);
+            removeList.forEach(function (employee) {
+                delete selected[employee.id];
+                switch (employee.position) {
+                    case 'Developer':
+                        DeveloperService.perform().remove({id: employee.id});
+                        break;
+                    case 'ProjectManager':
+                        ProjectManagerService.perform().remove({id: employee.id});
+                        break;
+                    default:
+                        $log.error("Specified position is not supported");
+                }
+            });
+            removeList = [];
+        };
+
+        /**
+         * Removes from provided employees list all employees present in remove list.
+         * @param employees
+         */
+        companyService.exclude = function (employees) {
+            return employees.filter(function (e) {
+                return !removeList.includes(e);
+            });
         };
 
         /**
