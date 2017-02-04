@@ -30,7 +30,7 @@ class ProjectProjectManagerSpec extends Specification {
     def company = ["Apple", of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
     def projectManager = ["Jake", "Main", "Ross", "glanes", company, SENIOR, null] as ProjectManager
 
-    def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
+    def customer = ["Jake", "Main", "Blake", "glanes", "software"] as Customer
     def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
 
     void setup() {
