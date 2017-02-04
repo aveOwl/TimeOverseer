@@ -14,27 +14,20 @@
         $scope.companyInfo = true;
         $scope.employeesInfo = true;
         $scope.customersInfo = true;
+        $scope.selected = {};
 
         $scope.updateCompany = updateCompany;
-        $scope.cancelEdit = cancelEdit;
+        $scope.cancelOnCompany = cancelOnCompany;
         $scope.removeCompany = removeCompany;
 
         $scope.addEmployee = addEmployee;
-        $scope.cancelEmployeeAdd = cancelEmployeeAdd;
-
+        $scope.cancelOnEmployee = cancelOnEmployee;
         $scope.addToRemoveList = addToRemoveList;
         $scope.removeEmployees = removeEmployees;
 
-        $scope.selected = {};
-        $scope.someSelected = function (object) {
-            return Object.keys(object).some(function (key) {
-                return object[key];
-            })
-        };
+        $scope.someSelected = someSelected;
 
         getCompany();
-
-        var localCompany;
 
         /**
          * Retrieves company by id from route.
@@ -45,7 +38,7 @@
                     $scope.company = company;
                     $log.debug("Fetched company", company);
 
-                    localCompany = angular.copy(company);
+                    $scope.originCompany = angular.copy(company);
 
                     getEmployees(company);
                     getCustomers(company);
@@ -56,7 +49,7 @@
         }
 
         /**
-         * Performs full update on company entity.
+         * Performs full company update.
          */
         function updateCompany() {
             CompanyService.perform().update({id: companyId}, $scope.company).$promise
@@ -69,10 +62,10 @@
         }
 
         /**
-         * Resets edit form to previous state.
+         * Resets company to its previous state.
          */
-        function cancelEdit() {
-            $scope.company = angular.copy(localCompany);
+        function cancelOnCompany() {
+            $scope.company = angular.copy($scope.originCompany);
             $scope.companyInfo = true;
         }
 
@@ -80,7 +73,7 @@
          * Removes company.
          */
         function removeCompany() {
-            CompanyService.perform().addToRemoveList({id: companyId}).$promise
+            CompanyService.perform().remove({id: companyId}).$promise
                 .then(function () {
                     $log.debug("Successfully removed company");
                     $location.path("/#/overseer");
@@ -101,6 +94,16 @@
                     $scope.developers = CompanyService.getDevelopers(employees);
                     $scope.projectManagers = CompanyService.getProjectManagers(employees);
 
+                    $scope.employee = {
+                        firstName: '',
+                        lastName: '',
+                        login: '',
+                        password: '',
+                        qualification: '',
+                        position: ''
+                    };
+                    $scope.originEmployee = angular.copy($scope.employee);
+
                     $log.debug("Fetched developers for company", $scope.developers);
                     $log.debug("Fetched projectManagers for company", $scope.projectManagers);
                 }, function (error) {
@@ -109,8 +112,7 @@
         }
 
         /**
-         * Adds employee to company. Developer or ProjectManager depending
-         * on specified position.
+         * Adds employee to company.
          */
         function addEmployee(employee) {
             $scope.noEmployees = false;
@@ -118,15 +120,23 @@
 
             CompanyService.addEmployee(employee);
 
-            $scope.employee = {};
-            $scope.employee_form.$setPristine();
+            resetEmployeeForm();
+        }
+
+        /**
+         * Resets employee to its previous state.
+         */
+        function cancelOnEmployee() {
+            $scope.employeesInfo = true;
+            resetEmployeeForm();
         }
 
         /**
          * Resets employee form to its previous state.
          */
-        function cancelEmployeeAdd() {
-            $scope.employeesInfo = true;
+        function resetEmployeeForm() {
+            $scope.employee = angular.copy($scope.originEmployee);
+            $scope.employee_form.$setPristine();
         }
 
         /**
@@ -147,7 +157,7 @@
             $scope.developers = CompanyService.exclude($scope.developers);
             $scope.projectManagers = CompanyService.exclude($scope.projectManagers);
 
-            CompanyService.removeEmployees($scope.developers, $scope.projectManagers);
+            CompanyService.removeEmployees($scope.selected);
             if ($scope.developers.length == 0 && $scope.projectManagers.length == 0) {
                 $scope.noEmployees = true;
             }
@@ -166,6 +176,15 @@
                 }, function (error) {
                     $log.error("Failed to fetch customers for company", error);
                 })
+        }
+
+        /**
+         * Returns true if at least one employee marked to removal.
+         */
+        function someSelected(object) {
+            return Object.keys(object).some(function (key) {
+                return object[key];
+            })
         }
     }
 }());

@@ -46,7 +46,7 @@
                                     ng-click="companyInfo = true" ng-disabled="company_form.$invalid">Submit
                             </button>
                             <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                    ng-click="cancelEdit()">Cancel
+                                    ng-click="cancelOnCompany()">Cancel
                             </button>
                         </div>
                     </form>
@@ -122,7 +122,7 @@
                                 ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid || employee_form.$pending">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
-                                ng-click="cancelEmployeeAdd()">Cancel
+                                ng-click="cancelOnEmployee()">Cancel
                         </button>
                     </div>
                 </form>

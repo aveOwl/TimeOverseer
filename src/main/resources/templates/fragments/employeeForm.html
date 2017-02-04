@@ -73,7 +73,6 @@
                placeholder="Password"
                class="form-control"
                ng-model="$parent.employee.password"
-               ng-model-options="{updateOn: 'blur'}"
                required
                ng-pattern="/^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)[0-9a-zA-Z]{6,}$/"/>
         <div ng-if="employee_form.password.$dirty">

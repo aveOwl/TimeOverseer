@@ -122,9 +122,10 @@
         /**
          * Clears remove lists.
          */
-        companyService.removeEmployees = function () {
+        companyService.removeEmployees = function (selected) {
             $log.debug("Removing employees", removeList);
             removeList.forEach(function (employee) {
+                delete selected[employee.id];
                 switch (employee.position) {
                     case 'Developer':
                         DeveloperService.perform().remove({id: employee.id});
