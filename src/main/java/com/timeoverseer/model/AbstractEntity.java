@@ -15,14 +15,14 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @ToString
 @EqualsAndHashCode
-public class AbstractEntity implements Identifiable<Long> {
+class AbstractEntity implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", unique = true, nullable = false)
     private final Long id;
 
-    protected AbstractEntity() {
+    AbstractEntity() {
         this.id = null;
     }
 }

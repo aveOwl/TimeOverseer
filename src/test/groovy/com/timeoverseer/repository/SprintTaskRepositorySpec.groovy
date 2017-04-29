@@ -20,7 +20,7 @@ import static java.time.LocalDate.of
 @EntityScan(basePackages = "com.timeoverseer.model")
 @DataJpaTest
 @Unroll
-class SprintTaskRepository extends Specification {
+class SprintTaskRepositorySpec extends Specification {
     @Autowired
     TaskRepository taskRepository
     @Autowired
