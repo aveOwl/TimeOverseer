@@ -1,80 +1,56 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.*
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import static com.timeoverseer.model.enums.Qualification.MIDDLE
-import static com.timeoverseer.model.enums.Qualification.TRAINEE
-import static java.time.LocalDate.of
 
 @ContextConfiguration(classes = [DeveloperRepository, TaskRepository])
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class DeveloperTaskSpec extends Specification {
+class DeveloperTaskSpec extends AbstractRepositorySpec {
     @Autowired
     TaskRepository taskRepository
     @Autowired
     DeveloperRepository developerRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def company = ["Apple", of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
-    def developer = ["Rob", "Lowe", "Sake", "enuss", company, TRAINEE, null] as Developer
-
-    def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
-    def sprint = ["First Phase", project] as Sprint
-
-    def task = ["First Task", false, MIDDLE, 20L, sprint] as Task
 
     void setup() {
-        company.addEmployee(developer)
-        developer.employer = company
+        company.addEmployee(developer1)
+        developer1.employer = company
 
-        company.addCustomer(customer)
-        customer.addCompany(company)
+        company.addCustomer(customer1)
+        customer1.addCompany(company)
 
-        customer.addProject(project)
-        project.customer = customer
+        customer1.addProject(project)
+        project.customer = customer1
 
         project.addSprint(sprint)
         sprint.project = project
 
-        sprint.addTask(task)
-        task.sprint = sprint
+        sprint.addTask(task1)
+        task1.sprint = sprint
 
-        developer.addTask(task)
-        task.addDeveloper(developer)
+        developer1.addTask(task1)
+        task1.addDeveloper(developer1)
 
         entityManager.persistAndFlush(company)
     }
 
     def "should not remove developer when task removed"() {
         given:
-        developer.removeTask(task)
+        developer1.removeTask(task1)
 
         when:
-        taskRepository.delete(task)
+        taskRepository.delete(task1)
 
         then:
-        developerRepository.findByLogin("Sake") != null
+        developerRepository.findByLogin(developer1.login) != null
     }
 
     def "should not remove task when developer removed"() {
         given:
-        task.removeDeveloper(developer)
+        task1.removeDeveloper(developer1)
 
         when:
-        developerRepository.delete(developer)
+        developerRepository.delete(developer1)
 
         then:
-        taskRepository.findByName("First Task") != null
+        taskRepository.findByName(task1.name) != null
     }
 }

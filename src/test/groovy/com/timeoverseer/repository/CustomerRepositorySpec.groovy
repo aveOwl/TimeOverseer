@@ -1,62 +1,50 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Customer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
 
 @ContextConfiguration(classes = CustomerRepository)
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class CustomerRepositorySpec extends Specification {
+class CustomerRepositorySpec extends AbstractRepositorySpec {
     @Autowired
     CustomerRepository customerRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
 
     void setup() {
-        entityManager.persistAndFlush(customer)
+        entityManager.persistAndFlush(customer1)
     }
 
     def "should persist customer"() {
         when:
-        def cust = customerRepository.findByFirstName("Jake")
+        def savedCustomer = customerRepository.findByFirstName(customer1.firstName)
 
         then:
-        cust.businessInterests.contains("software")
-        cust.lastName == 'Main'
+        savedCustomer.id != null
+        savedCustomer.businessInterests.contains(customer1.businessInterests)
+        savedCustomer.lastName == customer1.lastName
     }
 
     def "should delete customer"() {
         when:
-        customerRepository.delete(customer)
+        customerRepository.delete(customer1)
 
         then:
-        customerRepository.findByLastName("Main") == null
+        customerRepository.findByLastName(customer1.lastName) == null
     }
 
     def "should update customer"() {
         given:
-        customer.firstName = "Roland"
+        customer1.firstName = "Roland"
 
         when:
-        def updatedCustomer = customerRepository.save(customer)
+        def updatedCustomer = customerRepository.save(customer1)
 
         then:
         updatedCustomer.firstName == "Roland"
-        updatedCustomer.businessInterests.contains("software")
+        updatedCustomer.businessInterests.contains(customer1.businessInterests)
     }
 
     def "should return null if customer not exists"() {
         when:
-        customerRepository.delete(customer)
+        customerRepository.delete(customer1)
 
         then:
         customerRepository.findByFirstName("Jake") == null

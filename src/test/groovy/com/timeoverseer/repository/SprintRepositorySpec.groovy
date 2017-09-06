@@ -1,45 +1,26 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Customer
-import com.timeoverseer.model.Project
-import com.timeoverseer.model.Sprint
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import static java.time.LocalDate.of
 
 @ContextConfiguration(classes = SprintRepository)
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class SprintRepositorySpec extends Specification {
+class SprintRepositorySpec extends AbstractRepositorySpec {
     @Autowired
     SprintRepository sprintRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
-    def sprint = ["First Phase", project] as Sprint
 
     void setup() {
-        customer.addProject(project)
-        project.customer = customer
+        customer1.addProject(project)
+        project.customer = customer1
 
         project.addSprint(sprint)
         sprint.project = project
 
-        entityManager.persistAndFlush(customer)
+        entityManager.persistAndFlush(customer1)
     }
 
     def "should persist sprint"() {
         when:
-        def fetchedSprint = sprintRepository.findByName("First Phase")
+        def fetchedSprint = sprintRepository.findByName(sprint.name)
 
         then:
         fetchedSprint.project == project
@@ -53,7 +34,7 @@ class SprintRepositorySpec extends Specification {
         sprintRepository.delete(sprint)
 
         then:
-        sprintRepository.findByName("First Phase") == null
+        sprintRepository.findByName(sprint.name) == null
     }
 
     def "should update sprint"() {

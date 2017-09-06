@@ -1,36 +1,18 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Company
-import com.timeoverseer.model.Developer
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import java.time.LocalDate
 
 import static com.timeoverseer.model.enums.Qualification.MIDDLE
-import static com.timeoverseer.model.enums.Qualification.TRAINEE
 
 @ContextConfiguration(classes = DeveloperRepository)
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class DeveloperRepositorySpec extends Specification {
+class DeveloperRepositorySpec extends AbstractRepositorySpec {
     @Autowired
     DeveloperRepository developerRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def company = ["Apple", LocalDate.of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
-    def developer = ["Rob", "Lowe", "Sake", "enuss", company, TRAINEE, null] as Developer
 
     void setup() {
-        company.addEmployee(developer)
-        developer.employer = company
+        company.addEmployee(developer1)
+        developer1.employer = company
         entityManager.persistAndFlush(company)
     }
 
@@ -39,27 +21,27 @@ class DeveloperRepositorySpec extends Specification {
         def fetchedDeveloper = developerRepository.findByEmployer(company)
 
         then:
-        fetchedDeveloper.qualification == TRAINEE
-        fetchedDeveloper.lastName.contains("Lowe")
+        fetchedDeveloper.qualification == developer1.qualification
+        fetchedDeveloper.lastName.contains(developer1.lastName)
     }
 
     def "should delete developer"() {
         given:
-        company.removeEmployee(developer)
+        company.removeEmployee(developer1)
 
         when:
-        developerRepository.delete(developer)
+        developerRepository.delete(developer1)
 
         then:
-        developerRepository.findByFirstName("Rob") == null
+        developerRepository.findByFirstName(developer1.firstName) == null
     }
 
     def "should update developer"() {
         given:
-        developer.qualification = MIDDLE
+        developer1.qualification = MIDDLE
 
         when:
-        def updatedDeveloper = developerRepository.save(developer)
+        def updatedDeveloper = developerRepository.save(developer1)
 
         then:
         updatedDeveloper.qualification == MIDDLE

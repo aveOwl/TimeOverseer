@@ -1,52 +1,36 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Customer
-import com.timeoverseer.model.Project
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import static java.time.LocalDate.of
 
 @ContextConfiguration(classes = ProjectRepository)
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class ProjectRepositorySpec extends Specification {
+class ProjectRepositorySpec extends AbstractRepositorySpec {
     @Autowired
     ProjectRepository projectRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def customer = ["Jake", "Main", "Ross", "glanes", "software"] as Customer
-    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
 
     void setup() {
-        customer.addProject(project)
-        entityManager.persistAndFlush(customer)
+        customer1.addProject(project)
+        entityManager.persistAndFlush(customer1)
     }
 
     def "should persist project"() {
         when:
-        def fetchedProject = projectRepository.findByCustomer(customer)
+        def fetchedProject = projectRepository.findByCustomer(customer1)
 
         then:
-        fetchedProject.description.contains("Generation")
+        fetchedProject.id != null
+        fetchedProject.description.contains(project.description)
     }
 
     def "should delete project"() {
         given:
-        customer.removeProject(project)
+        customer1.removeProject(project)
 
         when:
         projectRepository.delete(project)
 
         then:
-        projectRepository.findByCustomer(customer) == null
+        projectRepository.findByCustomer(customer1) == null
     }
 
     def "should update project"() {

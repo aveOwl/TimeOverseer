@@ -1,27 +1,12 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Company
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import java.time.LocalDate
 
 @ContextConfiguration(classes = CompanyRepository)
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class CompanyRepositorySpec extends Specification {
+class CompanyRepositorySpec extends AbstractRepositorySpec {
     @Autowired
     CompanyRepository companyRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def company = ["Apple", LocalDate.of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
 
     void setup() {
         entityManager.persistAndFlush(company)
@@ -29,11 +14,11 @@ class CompanyRepositorySpec extends Specification {
 
     def "should persist company"() {
         when:
-        def fetchedCompany = companyRepository.findByName("Apple")
+        def fetchedCompany = companyRepository.findByName(company.name)
 
         then:
-        fetchedCompany.products.contains("iPhone")
-        fetchedCompany.founders.contains("Steve Jobs")
+        fetchedCompany.products.contains(company.products)
+        fetchedCompany.founders.contains(company.founders)
     }
 
     def "should delete company"() {
@@ -41,7 +26,7 @@ class CompanyRepositorySpec extends Specification {
         companyRepository.delete(company)
 
         then:
-        companyRepository.findByName("Apple") == null
+        companyRepository.findByName(company.name) == null
     }
 
     def "should update company"() {
@@ -53,6 +38,6 @@ class CompanyRepositorySpec extends Specification {
 
         then:
         updatedCompany.name == "Apple Inc."
-        updatedCompany.founders.contains("Steve Jobs")
+        updatedCompany.founders.contains(company.founders)
     }
 }

@@ -1,45 +1,22 @@
 package com.timeoverseer.repository
 
-import com.timeoverseer.model.Company
-import com.timeoverseer.model.Customer
-import com.timeoverseer.model.Project
-import com.timeoverseer.model.ProjectManager
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.autoconfigure.domain.EntityScan
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager
 import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
-import spock.lang.Unroll
-
-import static com.timeoverseer.model.enums.Qualification.SENIOR
-import static java.time.LocalDate.of
 
 @ContextConfiguration(classes = [ProjectRepository, ProjectManagerRepository])
-@EntityScan(basePackages = "com.timeoverseer.model")
-@DataJpaTest
-@Unroll
-class ProjectProjectManagerSpec extends Specification {
+class ProjectProjectManagerSpec extends AbstractRepositorySpec {
     @Autowired
     ProjectRepository projectRepository
     @Autowired
     ProjectManagerRepository projectManagerRepository
-    @Autowired
-    TestEntityManager entityManager
-
-    def company = ["Apple", of(1976, 4, 1), "Computer Software", "Steve Jobs", "iPhone"] as Company
-    def projectManager = ["Jake", "Main", "Ross", "glanes", company, SENIOR, null] as ProjectManager
-
-    def customer = ["Jake", "Main", "Blake", "glanes", "software"] as Customer
-    def project = ["Apple", "New Generation TV", of(2016, 1, 4), of(2016, 1, 5), customer, null] as Project
 
     void setup() {
-        company.addCustomer(customer)
-        customer.addCompany(company)
+        company.addCustomer(customer1)
+        customer1.addCompany(company)
 
         entityManager.persistAndFlush(company)
 
-        customer.addProject(project)
+        customer1.addProject(project)
         company.addEmployee(projectManager)
 
         project.projectManager = projectManager
@@ -51,10 +28,11 @@ class ProjectProjectManagerSpec extends Specification {
         entityManager.persistAndFlush(project)
 
         when:
-        def savedPM = projectManagerRepository.findByLogin("Ross")
+        def savedPM = projectManagerRepository.findByLogin(projectManager.login)
 
         then:
-        savedPM.qualification == SENIOR
+        savedPM.id != null
+        savedPM.qualification == projectManager.qualification
     }
 
     def "should save project with project manager"() {
@@ -62,10 +40,10 @@ class ProjectProjectManagerSpec extends Specification {
         entityManager.persistAndFlush(projectManager)
 
         when:
-        def savedProject = projectRepository.findByCustomer(customer)
+        def savedProject = projectRepository.findByCustomer(customer1)
 
         then:
-        savedProject.description.contains("Generation")
+        savedProject.description.contains(project.description)
     }
 
     def "should not delete project when project manager removed"() {
@@ -77,7 +55,7 @@ class ProjectProjectManagerSpec extends Specification {
         projectManagerRepository.delete(projectManager)
 
         then:
-        projectRepository.findByCustomer(customer) != null
+        projectRepository.findByCustomer(customer1) != null
     }
 
     def "should not delete project manager when project removed"() {
@@ -89,6 +67,6 @@ class ProjectProjectManagerSpec extends Specification {
         projectRepository.delete(project)
 
         then:
-        projectManagerRepository.findByFirstName("Jake") != null
+        projectManagerRepository.findByFirstName(projectManager.firstName) != null
     }
 }
