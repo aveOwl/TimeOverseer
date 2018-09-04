@@ -15,9 +15,10 @@ plugins {
     id 'idea'
     id 'jacoco'
     id 'groovy'
-    id 'org.springframework.boot'
     id 'com.github.kt3k.coveralls' version '2.6.3'
 }
+
+apply plugin: 'org.springframework.boot'
 
 group 'TimeOverseer'
 version '0.1.0'
