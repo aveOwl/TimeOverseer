@@ -1,5 +1,6 @@
 # TimeOverseer
 [![Build Status](https://travis-ci.org/aveowl/TimeOverseer.svg?branch=master)](https://travis-ci.org/aveowl/TimeOverseer)
+[![Coverage Status](https://coveralls.io/repos/github/aveowl/TimeOverseer/badge.svg?branch=master)](https://coveralls.io/github/aveowl/TimeOverseer?branch=master)
 
 TimeOverseer is a management platform with an integrated set of tools and services allowing clients to arrange and 
 keep track of working hours on their projects.
