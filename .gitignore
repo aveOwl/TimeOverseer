@@ -1,8 +1,20 @@
-# Gradle
-.gradle
-build
-out
+# gradle build dir
+build/*
+!build/gradle
 
-# Intellij
-.idea
+# gradle local dir
+.gradle
+.gradletasknamecache
+
+# eclipse files
+.settings
+.classpath
+.project
+bin
+
+# idea files
 *.iml
+*.ipr
+*.iws
+.idea
+out

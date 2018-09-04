@@ -10,12 +10,17 @@ buildscript {
     }
 }
 
+plugins {
+    id 'java'
+    id 'idea'
+    id 'jacoco'
+    id 'groovy'
+    id 'org.springframework.boot'
+    id 'com.github.kt3k.coveralls' version '2.6.3'
+}
+
 group 'TimeOverseer'
 version '0.1.0'
-
-apply plugin: 'groovy'
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -51,6 +56,12 @@ dependencies {
     testCompile "org.spockframework:spock-core"
     testCompile "org.spockframework:spock-spring"
     testCompile "org.springframework.boot:spring-boot-starter-test"
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+    }
 }
 
 bootRepackage {
