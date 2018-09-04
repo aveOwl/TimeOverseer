@@ -2,11 +2,8 @@ buildscript {
     repositories {
         jcenter()
     }
-    ext {
-        springBootVersion = '1.4.3.RELEASE'
-    }
     dependencies {
-        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.4.3.RELEASE"
     }
 }
 
@@ -35,22 +32,16 @@ jar {
     version =  '0.1.0'
 }
 
-ext {
-    groovyVersion = '2.4.1'
-    angularVersion = '1.5.8'
-    bootstrapVersion = '3.3.7'
-}
-
 dependencies {
     compile "org.springframework.boot:spring-boot-starter-data-jpa"
     compile "org.springframework.boot:spring-boot-starter-data-rest"
     compile "com.h2database:h2"
     compile "org.postgresql:postgresql"
-    compile "org.codehaus.groovy:groovy-all:$groovyVersion"
+    compile "org.codehaus.groovy:groovy-all:2.4.1"
 
     compile "org.springframework.boot:spring-boot-devtools"
-    compile "org.webjars.bower:angular:$angularVersion"
-    compile "org.webjars.bower:bootstrap:$bootstrapVersion"
+    compile "org.webjars.bower:angular:1.5.8"
+    compile "org.webjars.bower:bootstrap:3.3.7"
 
     compile "org.projectlombok:lombok"
 
