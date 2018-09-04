@@ -8,6 +8,7 @@
         .controller('NavigationController', NavigationController);
 
     NavigationController.$inject = ['$scope', '$state'];
+
     function NavigationController($scope, $state) {
         $scope.$on("$stateChangeSuccess", function () {
             $scope.activeTab = $state.current.activeTab;

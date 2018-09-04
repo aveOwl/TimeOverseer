@@ -8,6 +8,7 @@
         .factory('TaskService', TaskService);
 
     TaskService.$inject = ['$resource'];
+
     function TaskService($resource) {
         var taskService = {};
 

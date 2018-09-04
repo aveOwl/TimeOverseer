@@ -8,6 +8,7 @@
         .controller('HomeController', HomeController);
 
     HomeController.$inject = ['$scope', '$window', '$log', 'HomeService'];
+
     function HomeController($scope, $window, $log, HomeService) {
 
         $scope.submitCompany = submitCompany;

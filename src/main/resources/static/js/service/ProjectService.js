@@ -8,6 +8,7 @@
         .factory('ProjectService', ProjectService);
 
     ProjectService.$inject = ['$resource'];
+
     function ProjectService($resource) {
         var projectService = {};
 

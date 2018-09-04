@@ -8,6 +8,7 @@
         .controller('DeveloperController', DeveloperController);
 
     DeveloperController.$inject = ['$scope', '$stateParams', '$log', 'DeveloperService'];
+
     function DeveloperController($scope, $stateParams, $log, DeveloperService) {
         var devId = $stateParams.id;
 

@@ -8,6 +8,7 @@
         .factory('SprintService', SprintService);
 
     SprintService.$inject = ['$resource'];
+
     function SprintService($resource) {
         var sprintService = {};
 

@@ -4,13 +4,13 @@
 spring:
   profiles:
     active: prod
-##
-# Hibernate Configuration
-##
+  ##
+  # Hibernate Configuration
+  ##
   jpa:
-      hibernate:
-        ddl-auto: update
-      show-sql: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
 
 ##
 # Application Logging Configuration

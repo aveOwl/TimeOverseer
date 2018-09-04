@@ -8,6 +8,7 @@
         .factory('HomeService', HomeService);
 
     HomeService.$inject = ['CompanyService', 'CustomerService'];
+
     function HomeService(CompanyService, CustomerService) {
         var homeService = {};
 

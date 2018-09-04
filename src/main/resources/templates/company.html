@@ -31,7 +31,9 @@
                     </table>
                     <div class="btn-toolbar">
                         <button class="btn btn-default col-lg-4" ng-click="companyInfo = !companyInfo">Edit</button>
-                        <button class="btn btn-remove col-lg-4" ng-click="removeCompany()" ng-disabled="!noEmployees">Remove</button>
+                        <button class="btn btn-remove col-lg-4" ng-click="removeCompany()" ng-disabled="!noEmployees">
+                            Remove
+                        </button>
                     </div>
                 </div>
                 <!--Update Company-->
@@ -83,8 +85,9 @@
                         <td>Developer</td>
                         <td>
                             <div class="material-switch pull-right col-lg-12">
-                                <input id="{{dev.id}}" name="{{dev.id}}" type="checkbox" ng-click="addToRemoveList(dev, 'Developer')"
-                                ng-model="selected[dev.id]"/>
+                                <input id="{{dev.id}}" name="{{dev.id}}" type="checkbox"
+                                       ng-click="addToRemoveList(dev, 'Developer')"
+                                       ng-model="selected[dev.id]"/>
                                 <label for="{{dev.id}}" class="label-danger"></label>
                             </div>
                         </td>
@@ -97,8 +100,9 @@
                         <td>Project Manager</td>
                         <td>
                             <div class="material-switch pull-right col-lg-12">
-                                <input id="{{pm.id}}" name="{{pm.id}}" type="checkbox" ng-click="addToRemoveList(pm, 'ProjectManager')"
-                                ng-model="selected[pm.id]"/>
+                                <input id="{{pm.id}}" name="{{pm.id}}" type="checkbox"
+                                       ng-click="addToRemoveList(pm, 'ProjectManager')"
+                                       ng-model="selected[pm.id]"/>
                                 <label for="{{pm.id}}" class="label-danger"></label>
                             </div>
                         </td>
@@ -107,7 +111,9 @@
                 </table>
                 <div class="btn-toolbar">
                     <button class="btn btn-default col-lg-2" ng-click="employeesInfo = !employeesInfo">Add</button>
-                    <button class="btn btn-remove col-lg-2" ng-click="removeEmployees()" ng-disabled="noEmployees || !someSelected(selected)">Remove</button>
+                    <button class="btn btn-remove col-lg-2" ng-click="removeEmployees()"
+                            ng-disabled="noEmployees || !someSelected(selected)">Remove
+                    </button>
                 </div>
             </div>
             <!--Add Employee-->
@@ -119,7 +125,8 @@
 
                     <div class="btn-toolbar">
                         <button class="btn navbar-btn btn-default col-lg-4" type="submit"
-                                ng-click="employeesInfo = true" ng-disabled="employee_form.$invalid || employee_form.$pending">Submit
+                                ng-click="employeesInfo = true"
+                                ng-disabled="employee_form.$invalid || employee_form.$pending">Submit
                         </button>
                         <button class="btn navbar-btn btn-default col-lg-4" type="button"
                                 ng-click="cancelOnEmployee()">Cancel

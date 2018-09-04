@@ -8,6 +8,7 @@
         .factory('CompanyService', CompanyService);
 
     CompanyService.$inject = ['$resource', '$log', 'DeveloperService', 'ProjectManagerService'];
+
     function CompanyService($resource, $log, DeveloperService, ProjectManagerService) {
         var companyService = {};
         var developers = [];

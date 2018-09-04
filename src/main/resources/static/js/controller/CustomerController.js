@@ -8,6 +8,7 @@
         .controller('CustomerController', CustomerController);
 
     CustomerController.$inject = ['$scope', '$stateParams', '$log', 'CustomerService', 'ProjectService'];
+
     function CustomerController($scope, $stateParams, $log, CustomerService, ProjectService) {
         var custId = $stateParams.id; // id from route
 

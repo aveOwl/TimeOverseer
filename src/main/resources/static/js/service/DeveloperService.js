@@ -3,11 +3,12 @@
  */
 (function () {
     'use strict';
-    
+
     angular.module('overseer')
         .factory('DeveloperService', DeveloperService);
 
     DeveloperService.$inject = ['$resource'];
+
     function DeveloperService($resource) {
         var developerService = {};
 

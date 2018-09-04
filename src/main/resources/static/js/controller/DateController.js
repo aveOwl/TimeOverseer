@@ -8,6 +8,7 @@
         .controller('DateController', DateController);
 
     DateController.$inject = ['$rootScope', '$log'];
+
     function DateController($rootScope, $log) {
         $rootScope.checkDates = function (startDate, endDate) {
             $log.debug("Verifying dates", [startDate, endDate]);

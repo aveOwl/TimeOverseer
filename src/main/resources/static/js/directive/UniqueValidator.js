@@ -8,6 +8,7 @@
         .directive('uniqueValidator', uniqueValidator);
 
     uniqueValidator.$inject = ['$http', '$q', '$timeout', '$log'];
+
     function uniqueValidator($http, $q, $timeout, $log) {
         return {
             restrict: 'A',

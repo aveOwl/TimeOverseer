@@ -8,6 +8,7 @@
         .controller('CompanyController', CompanyController);
 
     CompanyController.$inject = ['$scope', '$stateParams', '$log', '$location', 'CompanyService'];
+
     function CompanyController($scope, $stateParams, $log, $location, CompanyService) {
         var companyId = $stateParams.id;
 

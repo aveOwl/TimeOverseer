@@ -8,6 +8,7 @@
         .controller('SprintController', SprintController);
 
     SprintController.$inject = ['$scope', '$stateParams', '$log', 'SprintService', 'TaskService'];
+
     function SprintController($scope, $stateParams, $log, SprintService, TaskService) {
         var sprintId = $stateParams.id;
 

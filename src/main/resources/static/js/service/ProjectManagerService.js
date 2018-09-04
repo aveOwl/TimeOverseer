@@ -8,6 +8,7 @@
         .factory('ProjectManagerService', ProjectManagerService);
 
     ProjectManagerService.$inject = ['$resource'];
+
     function ProjectManagerService($resource) {
         var projectManagerService = {};
 

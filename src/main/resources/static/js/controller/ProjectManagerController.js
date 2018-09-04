@@ -8,6 +8,7 @@
         .controller('ProjectManagerController', ProjectManagerController);
 
     ProjectManagerController.$inject = ['$scope', '$stateParams', '$log', 'ProjectManagerService'];
+
     function ProjectManagerController($scope, $stateParams, $log, ProjectManagerService) {
         var pmId = $stateParams.id;
 

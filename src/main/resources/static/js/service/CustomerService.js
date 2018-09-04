@@ -8,6 +8,7 @@
         .factory('CustomerService', CustomerService);
 
     CustomerService.$inject = ['$resource'];
+
     function CustomerService($resource) {
         var customerService = {};
 

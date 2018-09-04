@@ -8,6 +8,7 @@
         .controller('TaskController', TaskController);
 
     TaskController.$inject = ['$scope', '$stateParams', '$log', 'TaskService'];
+
     function TaskController($scope, $stateParams, $log, TaskService) {
         var taskId = $stateParams.id;
 
